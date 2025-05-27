@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+@import "tailwindcss";
+
+@theme inline {
+  --font-var1: "Syne", sans-serif;
+  --font-var2: "Plus Jakarta Sans", sans-serif;
+  
+  --color-brand-white: #F3EFEE;
+  --color-brand-primary: #4777F0;
+  --color-brand-black: #080808;
+  --color-brand-gray: #C8C5C4;
+  --color-brand-darker: #446CD3;
+}
+
+@layer components {
+  .heading1 {
+    @apply font-var1 text-7xl;
+  }
+  .heading2 {
+    @apply font-var1 text-5xl;
+  }
+  .heading3 {
+    @apply font-var1 text-3xl;
+  }
+  .largetext {
+    @apply font-var2 text-2xl;
+  }
+  .regulartext {
+    @apply font-var2 text-lg;
+  }
+  .smalltext {
+    @apply font-var2 text-xs;
+  }
+}
+
+nav{
+  @apply font-var1 text-3xl;
+}
+
