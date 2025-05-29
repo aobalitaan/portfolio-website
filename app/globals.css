@@ -3,7 +3,7 @@
 
 @import "tailwindcss";
 
-@theme inline {
+@theme static {
   --font-var1: "Syne", sans-serif;
   --font-var2: "Plus Jakarta Sans", sans-serif;
   
@@ -39,3 +39,15 @@ nav{
   @apply font-var1 text-3xl;
 }
 
+.wave{
+  animation: wave-animation 27s infinite;
+}
+
+@keyframes wave-animation {
+  0%, 100% {
+    transform: scale(1.3) rotateX(15deg) rotate(-30deg) scaleX(1);
+  }
+  50% {
+    transform: scale(1.2) rotateX(0deg) rotate(-25deg) scaleX(1.2);
+  }
+}

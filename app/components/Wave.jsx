@@ -1,6 +1,7 @@
-import React from 'react';
+'use client'
 
-// Function to interpolate between two colors
+import React, {useState, useEffect} from 'react';
+
 const interpolateColor = (color1, color2, factor) => {
   const hex = (color) => parseInt(color, 16);
   const r1 = hex(color1.slice(1, 3)), g1 = hex(color1.slice(3, 5)), b1 = hex(color1.slice(5, 7));
@@ -11,49 +12,57 @@ const interpolateColor = (color1, color2, factor) => {
   return `#${r}${g}${b}`;
 };
 
-const Wave = () => {
-  // Configurable parameters
-  const numLines = 30;
-  const duration = 15; // Animation duration in seconds
-  const waveStrength = 1.15; // Strength of the wave (amplitude)
-  const twistStrength = 3; // Strength of the twisting effect
+const generateValues = (startY, yOffset, waveStrength, twistStrength, i) => {
+  return Array.from({ length: 5 }, (_, step) => {
+    const angle = (Math.PI / 2) * step;
+    const qY = yOffset - waveStrength + Math.sin(i * 0.2 + angle) * twistStrength;
+    return `M0 ${startY} Q 10 ${qY}, 20 ${yOffset} T 40 ${yOffset} T 60 ${yOffset} T 80 ${yOffset} T 100 ${yOffset}`;
+  }).join(';');
+};
 
-  const paths = [];
+const Wave = ({ startColor = '#4777F0', endColor = '#F54A57' }) => {
+  const numLines = 50;
+  const duration = 45;
+  const waveStrength = 4;
+  const twistStrength = 1.5;
 
-  for (let i = 0; i < numLines; i++) {
-    const yOffset = 10 + (i * 0.35); // Vertical offset for each line
-    const factor = i / (numLines - 1); // Gradient factor from 0 to 1
-    const strokeColor = interpolateColor('#4777F0', '#FF0000', factor); // Interpolate color
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!mounted) return <div className="h-full w-full overflow-hidden" />;
 
-    paths.push(
-      <path
-        key={i}
-        d={`M0 ${yOffset} Q 10 ${yOffset - waveStrength + Math.random() * 10 * twistStrength}, 20 ${yOffset} T 40 ${yOffset} T 60 ${yOffset} T 80 ${yOffset} T 100 ${yOffset}`}
-        fill="none"
-        stroke={strokeColor}
-        strokeWidth="0.015"
-        strokeLinecap="round"
-      >
-        <animate
-          attributeName="d"
-          values={`
-            M0 ${yOffset} Q 10 ${yOffset - waveStrength + Math.sin(i * 0.2) * twistStrength}, 20 ${yOffset} T 40 ${yOffset} T 60 ${yOffset} T 80 ${yOffset} T 100 ${yOffset};
-            M0 ${yOffset} Q 10 ${yOffset + waveStrength + Math.sin(i * 0.2 + Math.PI) * twistStrength}, 20 ${yOffset} T 40 ${yOffset} T 60 ${yOffset} T 80 ${yOffset} T 100 ${yOffset};
-            M0 ${yOffset} Q 10 ${yOffset - waveStrength + Math.sin(i * 0.2) * twistStrength}, 20 ${yOffset} T 40 ${yOffset} T 60 ${yOffset} T 80 ${yOffset} T 100 ${yOffset}`}
-          dur={`${duration}s`}
-          repeatCount="indefinite"
-          keyTimes="0;0.5;1"
-          calcMode="spline"
-          keySplines="0.5 0 0.5 1; 0.5 0 0.5 1"
-        />
-      </path>
-    );
-  }
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-transparent">
-      <svg className="wave h-screen w-screen" viewBox="0 0 100 20" preserveAspectRatio="none">
-        {paths}
+    <div className="h-full overflow-hidden">
+      <svg className="wave h-6/5 md:h-6/5 md:w-6/5 w-full" viewBox="0 0 100 25" preserveAspectRatio="none">
+        {Array.from({ length: numLines }, (_, i) => {
+          const yOffset = 10 + i * 0.125;
+          const factor = i / (numLines - 1);
+          const strokeColor = interpolateColor(startColor, endColor, factor);
+          const startY = yOffset - Math.sin(factor * Math.PI) * 2;
+
+          return (
+            <path
+              key={i}
+              d={`M0 ${startY} Q 10 ${yOffset - waveStrength}, 20 ${yOffset} T 40 ${yOffset} T 60 ${yOffset} T 80 ${yOffset} T 100 ${yOffset}`}
+              fill="none"
+              stroke={strokeColor}
+              strokeWidth="0.025"
+              strokeLinecap="round"
+            >
+              <animate
+                attributeName="d"
+                values={generateValues(startY, yOffset, waveStrength, twistStrength, i)}
+                dur={`${duration}s`}
+                repeatCount="indefinite"
+                keyTimes="0;0.25;0.5;0.75;1"
+                calcMode="spline"
+                keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
+              />
+            </path>
+          );
+        })}
       </svg>
     </div>
   );

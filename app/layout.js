@@ -1,51 +1,69 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useScroll } from 'framer-motion'
 import Navbar from './components/Navbar'
 import './globals.css'
-
-const sections = {
-  contact: { start: 250, end: 300 },
-  about: { start: 200, end: 250 },
-  projects: { start: 100, end: 200 },
-  home: { start: 0, end: 100 },
-}
+import { useState, useEffect } from 'react'
 
 export default function RootLayout({ children }) {
-  const { scrollY } = useScroll()
-  const [activeSection, setActiveSection] = useState('home')
+  const [loadingVisible, setLoadingVisible] = useState(true)
+  const [fadeOut, setFadeOut] = useState(false)
 
   useEffect(() => {
-     if ('scrollRestoration' in history) {
-      history.scrollRestoration = 'manual'
+    const fadeTimer = setTimeout(() => setFadeOut(true), 1250) // when fade starts
+    const removeTimer = setTimeout(() => setLoadingVisible(false), 3000) // when it's fully gone
+
+    return () => {
+      clearTimeout(fadeTimer)
+      clearTimeout(removeTimer)
     }
-
-    window.scrollTo(0, 0)
   }, [])
-
-  useEffect(() => {
-    const unsubscribe = scrollY.on("change", (currentY) => {
-      const scrollPercent = (currentY / window.innerHeight) * 100
-
-      console.log(scrollPercent)
-      for (const [key, range] of Object.entries(sections)) {
-        if (scrollPercent >= range.start-10 && scrollPercent < range.end) {
-          setActiveSection(key)
-          break
-        }
-      }
-    })
-
-    return () => unsubscribe()
-  }, [scrollY])
 
   return (
     <html lang="en">
-      <body>
-        <Navbar activeSection={activeSection} />
+      <body className='overflow-x-hidden'>
+        <Navbar />
         {children}
+
+        {loadingVisible && (
+          <div
+            className={`fixed inset-0 z-[99] flex items-center justify-center bg-brand-black text-brand-primary transition-all duration-1000 ease-in-out ${
+              fadeOut ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100 scale-100'
+            }`}
+            aria-live="polite"
+          >
+            <TypingLoading />
+          </div>
+        )}
       </body>
     </html>
+  )
+}
+
+function TypingLoading() {
+  return (
+    <div className="typing-animation heading2 md:heading1 opacity-0" aria-label="Loading">
+      hello world!
+      <style jsx>{`
+        .typing-animation {
+          white-space: nowrap;
+          overflow: hidden;
+          width: 0;
+          border-right: 2px solid currentColor;
+          animation:
+            typing 0.50s steps(11, end) forwards,
+            blink 0.7s step-end infinite;
+          opacity: 1
+        }
+
+        @keyframes typing {
+          from { width: 0 }
+          to { width: 8.75ch }
+        }
+
+        @keyframes blink {
+          50% { border-color: transparent }
+        }
+      `}</style>
+    </div>
   )
 }
