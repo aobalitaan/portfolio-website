@@ -12,6 +12,20 @@ bg-brand-gray
 bg-brand-darker
 bg-brand-accent
 
+bg-brand-primary/75
+bg-brand-white/75
+bg-brand-black/75
+bg-brand-gray/75
+bg-brand-darker/75
+bg-brand-accent/75
+
+bg-brand-primary/50
+bg-brand-white/50
+bg-brand-black/50
+bg-brand-gray/50
+bg-brand-darker/50
+bg-brand-accent/50
+
 bg-brand-primary/25
 bg-brand-white/25
 bg-brand-black/25
@@ -19,9 +33,3 @@ bg-brand-gray/25
 bg-brand-darker/25
 bg-brand-accent/25
 
-bg-brand-primary/75
-bg-brand-white/75
-bg-brand-black/75
-bg-brand-gray/75
-bg-brand-darker/75
-bg-brand-accent/75

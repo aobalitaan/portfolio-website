@@ -1,6 +1,7 @@
 'use client'
 
-import React, {useState, useEffect} from 'react';
+import React, { useEffect, useRef } from 'react';
+import { ScrollTracker } from '../utils/ScrollTracker';
 
 const interpolateColor = (color1, color2, factor) => {
   const hex = (color) => parseInt(color, 16);
@@ -12,32 +13,55 @@ const interpolateColor = (color1, color2, factor) => {
   return `#${r}${g}${b}`;
 };
 
-const generateValues = (startY, yOffset, waveStrength, twistStrength, i) => {
-  return Array.from({ length: 5 }, (_, step) => {
-    const angle = (Math.PI / 2) * step;
-    const qY = yOffset - waveStrength + Math.sin(i * 0.2 + angle) * twistStrength;
-    return `M0 ${startY} Q 10 ${qY}, 20 ${yOffset} T 40 ${yOffset} T 60 ${yOffset} T 80 ${yOffset} T 100 ${yOffset}`;
-  }).join(';');
+const generatePathD = (startY, yOffset, waveStrength, twistStrength, i, time) => {
+  const angle = time + i * 0.1;
+  const qY = yOffset - waveStrength + Math.sin(angle) * twistStrength;
+  return `M0 ${startY} Q 10 ${qY}, 20 ${yOffset} T 50 ${yOffset} T 70 ${yOffset} T 90 ${yOffset} T 100 ${yOffset}`;
 };
 
-const Wave = ({ startColor = '#4777F0', endColor = '#F54A57' }) => {
-  const numLines = 50;
-  const duration = 45;
-  const waveStrength = 4;
-  const twistStrength = 1.5;
+const Wave = ({ startColor = '#1F51FF', endColor = '#FF3131' }) => {
+  const numLines = 30;
+  const waveStrength = 6;
+  const twistStrength = 3;
+  const duration = 60;
 
-  const [mounted, setMounted] = useState(false);
+  const pathRefs = useRef([]);
+
+  const { activeSection, bgColor, actText, inacText, sections } = ScrollTracker();
+
   useEffect(() => {
-    setMounted(true);
-  }, []);
-  if (!mounted) return <div className="h-full w-full overflow-hidden" />;
+    let frameId;
+    const startTime = performance.now();
 
+    const animate = (time) => {
+      const t = ((time - startTime) / (1000 * (duration/10))) % duration;
+
+      pathRefs.current.forEach((path, i) => {
+        const yOffset = 10 + i * 0.1;
+        const factor = i / (numLines - 1);
+        const startY = yOffset - Math.sin(factor * Math.PI) * 2;
+        const d = generatePathD(startY, yOffset, waveStrength, twistStrength, i, t);
+        if (path) {
+          path.setAttribute('d', d);
+        }
+      });
+
+      frameId = requestAnimationFrame(animate);
+    };
+
+    frameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frameId);
+  });
 
   return (
-    <div className="h-full overflow-hidden">
-      <svg className="wave h-6/5 md:h-6/5 md:w-6/5 w-full" viewBox="0 0 100 25" preserveAspectRatio="none">
+    <div className="h-6/4 overflow-hidden">
+      <svg
+        className="wave scale-x-350 -rotate-75 md:scale-x-250 md:-rotate-60 lg:-rotate-20 lg:scale-x-115 h-screen w-screen origin-center md:h-screen"
+        viewBox="0 0 100 25"
+        preserveAspectRatio="none"
+      >
         {Array.from({ length: numLines }, (_, i) => {
-          const yOffset = 10 + i * 0.125;
+          const yOffset = 10 + i * 0.15;
           const factor = i / (numLines - 1);
           const strokeColor = interpolateColor(startColor, endColor, factor);
           const startY = yOffset - Math.sin(factor * Math.PI) * 2;
@@ -45,22 +69,13 @@ const Wave = ({ startColor = '#4777F0', endColor = '#F54A57' }) => {
           return (
             <path
               key={i}
+              ref={(el) => (pathRefs.current[i] = el)}
               d={`M0 ${startY} Q 10 ${yOffset - waveStrength}, 20 ${yOffset} T 40 ${yOffset} T 60 ${yOffset} T 80 ${yOffset} T 100 ${yOffset}`}
               fill="none"
               stroke={strokeColor}
-              strokeWidth="0.025"
+              strokeWidth="0.05"
               strokeLinecap="round"
-            >
-              <animate
-                attributeName="d"
-                values={generateValues(startY, yOffset, waveStrength, twistStrength, i)}
-                dur={`${duration}s`}
-                repeatCount="indefinite"
-                keyTimes="0;0.25;0.5;0.75;1"
-                calcMode="spline"
-                keySplines="0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1; 0.42 0 0.58 1"
-              />
-            </path>
+            />
           );
         })}
       </svg>

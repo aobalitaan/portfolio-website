@@ -4,10 +4,9 @@ import { useEffect, useState } from 'react'
 import { useScroll } from 'framer-motion'
 
 const sections = {
-  contact: { start: 300, end: 350, bg_color: "brand-black", inac_text: "brand-white", active_text: "brand-primary" },
-  about: { start: 250, end: 300, bg_color: "brand-white", inac_text: "brand-black", active_text: "brand-primary" },
-  skills: { start: 200, end: 250, bg_color: "brand-black", inac_text: "brand-white", active_text: "brand-primary" },
-  projects: { start: 100, end: 200, bg_color: "brand-white", inac_text: "brand-black", active_text: "brand-primary" },
+  about: { start: 300, end: 400, bg_color: "brand-white", inac_text: "brand-black", active_text: "brand-primary" },
+  skills: { start: 200, end: 300, bg_color: "brand-black", inac_text: "brand-white", active_text: "brand-primary" },
+  projects: { start: 100, end: 200, bg_color: "brand-primary", inac_text: "brand-black", active_text: "brand-white" },
   home: { start: 0, end: 100, bg_color: "brand-black", inac_text: "brand-white", active_text: "brand-primary" },
 }
 

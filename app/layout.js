@@ -7,12 +7,15 @@ import { useState, useEffect } from 'react'
 export default function RootLayout({ children }) {
   const [loadingVisible, setLoadingVisible] = useState(true)
   const [fadeOut, setFadeOut] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    const fadeTimer = setTimeout(() => setFadeOut(true), 1250) // when fade starts
-    const removeTimer = setTimeout(() => setLoadingVisible(false), 3000) // when it's fully gone
+    const mountTimer = setTimeout(() => setMounted(true), 1200) // Mount slightly before fadeOut
+    const fadeTimer = setTimeout(() => setFadeOut(true), 1250) // When fade starts
+    const removeTimer = setTimeout(() => setLoadingVisible(false), 3000) // When it's fully gone
 
     return () => {
+      clearTimeout(mountTimer)
       clearTimeout(fadeTimer)
       clearTimeout(removeTimer)
     }
@@ -21,8 +24,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className='overflow-x-hidden'>
-        <Navbar />
-        {children}
+        {mounted && (
+          <>
+            <Navbar />
+            {children}
+          </>
+        )}
 
         {loadingVisible && (
           <div
