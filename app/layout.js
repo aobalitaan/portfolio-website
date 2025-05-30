@@ -1,25 +1,25 @@
-'use client'
+"use client";
 
-import Navbar from './components/Navbar'
-import './globals.css'
-import { useState, useEffect } from 'react'
+import Navbar from "./components/Navbar";
+import "./globals.css";
+import { useState, useEffect } from "react";
 
 export default function RootLayout({ children }) {
-  const [loadingVisible, setLoadingVisible] = useState(true)
-  const [fadeOut, setFadeOut] = useState(false)
-  const [mounted, setMounted] = useState(false)
+  const [loadingVisible, setLoadingVisible] = useState(true);
+  const [fadeOut, setFadeOut] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const mountTimer = setTimeout(() => setMounted(true), 1200) // Mount slightly before fadeOut
-    const fadeTimer = setTimeout(() => setFadeOut(true), 1250) // When fade starts
-    const removeTimer = setTimeout(() => setLoadingVisible(false), 3000) // When it's fully gone
+    const mountTimer = setTimeout(() => setMounted(true), 1200); // Mount slightly before fadeOut
+    const fadeTimer = setTimeout(() => setFadeOut(true), 1250); // When fade starts
+    const removeTimer = setTimeout(() => setLoadingVisible(false), 3000); // When it's fully gone
 
     return () => {
-      clearTimeout(mountTimer)
-      clearTimeout(fadeTimer)
-      clearTimeout(removeTimer)
-    }
-  }, [])
+      clearTimeout(mountTimer);
+      clearTimeout(fadeTimer);
+      clearTimeout(removeTimer);
+    };
+  }, []);
 
   return (
     <html lang="en">
@@ -34,7 +34,7 @@ export default function RootLayout({ children }) {
         {loadingVisible && (
           <div
             className={`fixed inset-0 z-[99] flex items-center justify-center bg-brand-black text-brand-primary transition-all duration-1000 ease-in-out ${
-              fadeOut ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100 scale-100'
+              fadeOut ? "opacity-0 scale-105 pointer-events-none" : "opacity-100 scale-100"
             }`}
             aria-live="polite"
           >
@@ -43,7 +43,7 @@ export default function RootLayout({ children }) {
         )}
       </body>
     </html>
-  )
+  );
 }
 
 function TypingLoading() {
@@ -72,5 +72,5 @@ function TypingLoading() {
         }
       `}</style>
     </div>
-  )
+  );
 }

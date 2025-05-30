@@ -9,7 +9,7 @@ export default function Home() {
   const { activeSection, bgColor, actText, inacText, sections } = ScrollTracker();
 
   return (
-    <div className={`h-screen`}>
+    <div className={"h-screen"}>
       {/* Wave background - full screen, at the back */}
       <div className={`fixed inset-0 z-0 h-screen w-screen bg-${bgColor} transition-colors duration-500 ease-in`}>
         <div className="h-full w-full opacity-50 [mask-image:linear-gradient(to_top,rgba(0,0,0,0.25)_0%,rgba(0,0,0,1)_50%,rgba(0,0,0,0.25)_100%)]">

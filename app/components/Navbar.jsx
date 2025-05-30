@@ -1,50 +1,50 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from "react"
-import { ScrollTracker } from "../utils/ScrollTracker"
-import { Menu, X } from "lucide-react"
-import Logo from "./Logo"
+import { useState, useEffect } from "react";
+import { ScrollTracker } from "../utils/ScrollTracker";
+import { Menu, X } from "lucide-react";
+import Logo from "./Logo";
 
-const routes = ['home', 'projects', 'skills', 'contact']
+const routes = ["home", "projects", "skills", "contact"];
 
 export default function Navbar() {
-  const { activeSection, bgColor, actText, inacText, sections } = ScrollTracker()
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [showMenu, setShowMenu] = useState(false)
+  const { activeSection, bgColor, actText, inacText, sections } = ScrollTracker();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   // Control showMenu for animation mount/unmount
   useEffect(() => {
-    if (menuOpen) setShowMenu(true)
+    if (menuOpen) setShowMenu(true);
     else {
       // delay unmount to allow animation out
-      const timeout = setTimeout(() => setShowMenu(false), 250)
-      return () => clearTimeout(timeout)
+      const timeout = setTimeout(() => setShowMenu(false), 250);
+      return () => clearTimeout(timeout);
     }
-  }, [menuOpen])
+  }, [menuOpen]);
 
   const handleScroll = (route) => {
     if (sections[route]) {
-      const scrollPosition = (sections[route].start / 100) * window.innerHeight
+      const scrollPosition = (sections[route].start / 100) * window.innerHeight;
       window.scrollTo({
         top: scrollPosition,
-        behavior: 'smooth',
-      })
-      setMenuOpen(false)
+        behavior: "smooth",
+      });
+      setMenuOpen(false);
     }
-  }
+  };
 
   return (
     <>
       <nav
-        className={`bg-${ ['home', 'projects'].includes(activeSection) ? `` : `${bgColor}/75`} fixed top-0 z-50 flex justify-between md:justify-start h-20 w-screen items-center gap-4 px-8 transition-all duration-500 ease-in md:gap-8 md:px-12`}
+        className={`bg-${ ["home", "projects"].includes(activeSection) ? "" : `${bgColor}/75`} fixed top-0 z-50 flex justify-between md:justify-start h-20 w-screen items-center gap-4 px-8 transition-all duration-500 ease-in md:gap-8 md:px-12`}
       >
-        <div className="animate-slideDown cursor-pointer" onClick={() => handleScroll('home')}>
+        <div className="animate-slideDown cursor-pointer" onClick={() => handleScroll("home")}>
           <Logo className={` size-12 text-${inacText} transition-all hover:scale-110 duration-250 ease-in`} />
         </div>
 
         {/* Desktop nav links with animation */}
         {routes.map((route, index) => {
-          const isActive = activeSection === route
+          const isActive = activeSection === route;
           return (
             <div
               key={route}
@@ -58,17 +58,17 @@ export default function Navbar() {
             >
               {route}
             </div>
-          )
+          );
         })}
 
-         {/* Menu Icon */}
+        {/* Menu Icon */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
           className={`animate-slideDown focus:outline-none md:hidden cursor-pointer transition-transform duration-250 z-50 ease-in text-${inacText} ${
-            menuOpen ? "rotate-90" : `rotate-0`
+            menuOpen ? "rotate-90" : "rotate-0"
           }`}
-          style={{ animationDelay: `0.1s` }}
+          style={{ animationDelay: "0.1s" }}
         >
           {menuOpen ? <X size={25} /> : <Menu size={25} />}
         </button>
@@ -128,5 +128,5 @@ export default function Navbar() {
         }
       `}</style>
     </>
-  )
+  );
 }
