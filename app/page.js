@@ -27,11 +27,11 @@ export default function Home() {
 
       {/* Content container */}
 
-      <section className="sticky top-0 z-0 h-[125dvh] snap-start">
+      <section className="sticky top-0 z-0 h-screen snap-start">
         <Hero />
       </section>
 
-      <section className="sticky top-0 z-0 h-[125dvh] snap-start">
+      <section className="sticky top-0 z-0 h-[150dvh] snap-start">
         <Projects />
       </section>
 

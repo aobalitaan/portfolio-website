@@ -11,7 +11,7 @@ export default function Hero() {
   return (
     <div
       id="home"
-      className={`relative h-4/5 w-full text-${inacText} px-4 pt-24 pb-4 md:pb-8 md:pt-28 md:px-8 lg:px-16`}
+      className={`relative h-full w-full text-${inacText} px-4 pt-24 pb-4 md:pb-8 md:pt-28 md:px-8 lg:px-16`}
     >
       <div className="grid h-full w-full grid-cols-5 grid-rows-5 gap-4 pb-8">
         <div className="col-span-5 row-start-5 md:col-span-4 md:col-start-1 md:row-start-5">
