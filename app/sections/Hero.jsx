@@ -6,7 +6,7 @@ import FadeScroll from "../components/animation/FadeScroll";
 
 export default function Hero() {
   const { activeSection, bgColor, actText, inacText, sections } = ScrollTracker();
-  const isActive = activeSection === 'home' 
+  const isActive = activeSection === "home";
 
   return (
     <div
@@ -16,31 +16,31 @@ export default function Hero() {
       <div className="grid h-full w-full grid-cols-5 grid-rows-5 gap-4 pb-8">
         <div className="col-span-5 row-start-5 md:col-span-4 md:col-start-1 md:row-start-5">
           <FadeScroll show={isActive} className="flex h-full flex-col justify-end">
-              <SlideDiv type={"left"} animateOnce={true} delay={0.1} className="heading1">AXEL BALITAAN</SlideDiv>
-              <SlideDiv type={"left"} animateOnce={true} delay={0.2} className="heading3 text-base md:text-3xl">
-                Full-Stack Developer | Philippines
-              </SlideDiv>
-              <div className="h-8 lg:h-0"></div>
+            <SlideDiv type={"left"} animateOnce={true} delay={0.1} className="heading1">AXEL BALITAAN</SlideDiv>
+            <SlideDiv type={"left"} animateOnce={true} delay={0.2} className="heading3 text-base md:text-3xl">
+              Full-Stack Developer | Philippines
+            </SlideDiv>
+            <div className="h-8 lg:h-0"></div>
           </FadeScroll>
         </div>
 
         <div className="bg-green rotate-y-180 col-start-5 row-span-3 row-start-2 md:row-span-4 md:row-start-2">
-      
-             <SlideDiv animateOnce={true} delay={0.25}>
-              <div className="flex origin-bottom-left rotate-90 items-end">
-                  <FadeScroll show={isActive}>
-                    <div>
-                      <div className='rotate-y-180'>
-                        <div className="smalltext">
-                          © Designed and built by Axel Balitaan 2025
-                        </div>
-                        <div className="lg:w-128 md:w-100 mt-1 h-1.5 w-80 bg-brand-white md:h-2" />
-                      </div>
+
+          <SlideDiv animateOnce={true} delay={0.25}>
+            <div className="flex origin-bottom-left rotate-90 items-end">
+              <FadeScroll show={isActive}>
+                <div>
+                  <div className='rotate-y-180'>
+                    <div className="smalltext">
+                      © Designed and built by Axel Balitaan 2025
                     </div>
-                  </FadeScroll>
-              </div>
-            </SlideDiv>
-         
+                    <div className="lg:w-128 md:w-100 mt-1 h-1.5 w-80 bg-brand-white md:h-2" />
+                  </div>
+                </div>
+              </FadeScroll>
+            </div>
+          </SlideDiv>
+
         </div>
 
 
@@ -51,7 +51,7 @@ export default function Hero() {
         </FadeScroll>
       </div>
 
-      
+
       <FadeScroll show ={isActive} className="relative bottom-4 left-1/2 flex -translate-x-1/2 items-center justify-center">
         <ArrowDown className={`transition-colors duration-250 animate-bounce text-${actText}`} size={30} />
       </FadeScroll>

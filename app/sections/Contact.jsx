@@ -4,7 +4,7 @@ import { ScrollTracker } from "../utils/ScrollTracker";
 export default function Contact() {
 
   const { activeSection, bgColor, actText, inacText, blur, sections, scrollPercent } = ScrollTracker();
- 
+
   return (
     <div
       id="contact"

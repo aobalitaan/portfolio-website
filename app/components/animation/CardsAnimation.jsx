@@ -15,8 +15,8 @@ const CardsAnimation = ({
   const mult = Math.floor(projectList.length / 2 - index);
 
   // Create springs once
-const springX = useSpring(0, { stiffness: 200, damping: 30 });
-const springRotate = useSpring(0, { stiffness: 200, damping: 30 });
+  const springX = useSpring(0, { stiffness: 200, damping: 30 });
+  const springRotate = useSpring(0, { stiffness: 200, damping: 30 });
 
 
 
@@ -30,12 +30,12 @@ const springRotate = useSpring(0, { stiffness: 200, damping: 30 });
 
   const timeoutRef = useRef(null);
   // Update spring targets when `show` or index changes
-   useEffect(() => {
+  useEffect(() => {
 
-  setTimeout(() => {
-    springX.set(targetX);
-    springRotate.set(targetRotate);
-  }, 100);
+    setTimeout(() => {
+      springX.set(targetX);
+      springRotate.set(targetRotate);
+    }, 100);
 
     if (!show) {
       // Clear any existing timeout and disable immediately

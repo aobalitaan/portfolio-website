@@ -70,7 +70,7 @@ export function ScrollTracker() {
           setBgColor(range.bg_color);
           setInacText(range.inac_text);
           setActText(range.active_text);
-          setBlur(range.blur)
+          setBlur(range.blur);
           break;
         }
       }

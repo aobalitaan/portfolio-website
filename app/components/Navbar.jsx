@@ -36,7 +36,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 z-50 flex h-20 w-screen items-center justify-between gap-4 px-8 transition-all duration-500 ease-in md:justify-start md:gap-8 md:px-12`}
+        className={"fixed top-0 z-50 flex h-20 w-screen items-center justify-between gap-4 px-8 transition-all duration-500 ease-in md:justify-start md:gap-8 md:px-12"}
       >
         <div className="animate-slideDown cursor-pointer" onClick={() => handleScroll("home")}>
           <Logo className={` size-12 text-${inacText} transition-all hover:scale-110 duration-250 ease-in`} />

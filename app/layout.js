@@ -10,17 +10,17 @@ export default function RootLayout({ children }) {
   const [fadeOut, setFadeOut] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  
+
 
   useEffect(() => {
     const mountTimer = setTimeout(() => setMounted(true), 1200); // Mount slightly before fadeOut
     const fadeTimer = setTimeout(() => setFadeOut(true), 1250); // When fade starts
     const removeTimer = setTimeout(() => setLoadingVisible(false), 3000); // When it's fully gone
 
-   // Initialize Lenis
-  const lenis = new Lenis({
-    lerp: 0.1 // default is 0.1 — increase this to make scroll less smooth (e.g., 0.2 or 0.3)
-  });
+    // Initialize Lenis
+    const lenis = new Lenis({
+      lerp: 0.1 // default is 0.1 — increase this to make scroll less smooth (e.g., 0.2 or 0.3)
+    });
 
 
     // Use requestAnimationFrame to continuously update the scroll

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from "framer-motion";
 
-const FadeScroll = ({ show, children, className = '' }) => {
+const FadeScroll = ({ show, children, className = "" }) => {
   return (
     <AnimatePresence>
       {show && (
