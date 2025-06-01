@@ -42,7 +42,7 @@ text-[#385DBA] bg-[#385DBA]
 text-[#355E3B] bg-[#355E3B]
 text-[#164d9c] bg-[#164d9c]
 text-[#461e1e] bg-[#461e1e]
-text-[#2d2d2d] bg-[#2d2d2d]
+text-[#946d48] bg-[#946d48]
 
 
 

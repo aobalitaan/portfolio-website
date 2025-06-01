@@ -37,13 +37,13 @@ export default function Home() {
 
       {/* Sticky section */}
 
-      {/* <section className="sticky top-0 z-0 h-[125dvh] snap-center">
+      <section className="sticky top-0 z-0 h-[125dvh] snap-center">
         <Skills />
       </section>
 
       <section className="sticky z-40 h-[100dvh] snap-center">
         <Contact />
-      </section> */}
+      </section>
     </div>
   );
 }

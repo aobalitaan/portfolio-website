@@ -124,8 +124,8 @@ export default function Projects() {
         </FadeScroll>
       )}
 
-      <div className="h-19/20 no-scrollbar flex items-center overflow-auto transition-all">
-        <div className="ml-auto mr-auto flex w-fit items-center gap-4 px-4">
+      <div className="no-scrollbar flex h-4/5 items-center overflow-visible transition-all">
+        <div className="no-scrollbar ml-auto mr-auto flex h-full w-fit snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4">
           {projectList.map((project, index) => {
             const { zIndex, className } = getCardStyles(index);
 
@@ -133,7 +133,7 @@ export default function Projects() {
               <div
                 key={index}
                 ref={el => (cardRefs.current[index] = el)}
-                className="snap-start"
+                className="snap-center"
                 style={{ zIndex }}
                 onClick={() => {
                   const url = project.prodLink || project.repoLink;

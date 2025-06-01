@@ -25,7 +25,7 @@ const projectList = [
   },
   {
     title: "Portfolio",
-    color: "#2d2d2d",
+    color: "#946d48",
     stack: ["NextJS", "Tailwind"],  // Note: also fixed stack array contents
     desc: "A portfolio site showcasing professional work, projects, and skills. Designed for easy navigation and creative layouts.",
     imagePath: "portfolio.png"
