@@ -25,11 +25,11 @@ export default function Home() {
       </div>
 
       {/* Content container */}
-      <section className="sticky top-0 z-0 h-[125vh] snap-center">
+      <section className="sticky top-0 z-0 h-[125svh] snap-center">
         <Hero />
       </section>
 
-      <section className="sticky top-0 z-0 h-[100vh] snap-center">
+      <section className="sticky top-0 z-0 h-[100svh] snap-center">
         <Projects />
       </section>
 
