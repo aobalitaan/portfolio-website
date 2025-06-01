@@ -13,8 +13,9 @@ export default function Home() {
   const { activeSection, bgColor, actText, inacText, blur, sections } = ScrollTracker();
 
   return (
-    <div className={"snap-y scroll-smooth"}>
+    <div className={"relative snap-y scroll-smooth"}>
       {/* Wave background - full screen, at the back */}
+      
       <div className={`fixed inset-0 z-0 w-screen bg-${bgColor} transition-colors duration-500 ease-in`}>
         <div className="h-screen w-full opacity-50 [mask-image:linear-gradient(to_top,rgba(0,0,0,0.25)_0%,rgba(0,0,0,1)_50%,rgba(0,0,0,0.25)_100%)]">
           <Wave />
@@ -25,20 +26,22 @@ export default function Home() {
       </div>
 
       {/* Content container */}
-      <section className="sticky top-0 z-0 h-[125svh] snap-center">
+      
+      <section className="sticky top-0 z-0 h-[125dvh] snap-start">
         <Hero />
       </section>
 
-      <section className="sticky top-0 z-0 h-[100svh] snap-center">
+      <section className="sticky top-0 z-0 h-[125dvh] snap-start">
         <Projects />
       </section>
 
-      {/* Sticky section
-     <section className="sticky top-0 z-0 h-[125vh] snap-center">
+      {/* Sticky section */}
+
+     {/* <section className="sticky top-0 z-0 h-[125dvh] snap-center">
         <Skills />
       </section>
 
-      <section className="z-40 h-[125vh] snap-center">
+      <section className="sticky z-40 h-[100dvh] snap-center">
         <Contact />
       </section> */}
     </div>

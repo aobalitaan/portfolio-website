@@ -69,11 +69,8 @@ export default function ProjectCard({ disableSwitch, project, switchCard, change
     <div className="h-fit w-auto cursor-pointer rounded-2xl bg-brand-white p-4 shadow-md">
 
       <div
-        onPointerOver={() => handlePointerOver(index)}
-        onClick={() => window.open(project.prodLink || project.repoLink, "_blank")}
-
+        onPointerOver={() => handlePointerOver(index)}    
         onPointerOut={() => handlePointerOut()}
-
         className="pointer-events-auto absolute left-1/2 -translate-x-1/2 top-1/2 hidden -translate-y-1/2 z-25 h-[75%] w-[80%] lg:block"
       />
 

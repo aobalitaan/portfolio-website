@@ -65,7 +65,7 @@ export function ScrollTracker() {
       setScrollPercent(percent);
 
       for (const [key, range] of Object.entries(sections)) {
-        if (percent >= range.start - 10 && percent < range.end) {
+        if (percent >= range.start - 20 && percent < range.end) {
           setActiveSection(key);
           setBgColor(range.bg_color);
           setInacText(range.inac_text);

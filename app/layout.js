@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
   useEffect(() => {
     const mountTimer = setTimeout(() => setMounted(true), 1200); // Mount slightly before fadeOut
     const fadeTimer = setTimeout(() => setFadeOut(true), 1250); // When fade starts
-    const removeTimer = setTimeout(() => setLoadingVisible(false), 3000); // When it's fully gone
+    const removeTimer = setTimeout(() => setLoadingVisible(false), 2000); // When it's fully gone
 
     // Initialize Lenis
     const lenis = new Lenis({
@@ -41,17 +41,17 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body className='overflow-x-hidden'>
+      <body className='bg-brand-black overflow-x-hidden overflow-y-clip'>
         {mounted && (
           <>
-            <div className=''><Navbar /></div>
+            <Navbar />
             {children}
           </>
         )}
 
         {loadingVisible && (
           <div
-            className={`fixed inset-0 z-[99] h-screen w-screen flex items-center justify-center bg-brand-black text-brand-brighter transition-all duration-1000 ease-in-out ${
+            className={`absolute top-0 z-[1000] h-screen w-screen flex items-center justify-center bg-brand-black text-brand-brighter transition-all duration-1000 ease-in-out ${
               fadeOut ? "opacity-0 scale-105 pointer-events-none" : "opacity-100 scale-100"
             }`}
             aria-live="polite"

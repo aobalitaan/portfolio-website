@@ -11,7 +11,7 @@ export default function Skills() {
       id="skills"
       className={`pt-20 relative h-full w-full bg-brand-black backdrop-blur-md text-${inacText} px-4 py-4 md:px-8 lg:px-16 overflow-visible`}
     >
-      Skills
+      Under Construction
     </div>
   );
 }
