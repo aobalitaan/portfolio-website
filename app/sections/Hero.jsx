@@ -11,7 +11,7 @@ export default function Hero() {
   return (
     <div
       id="home"
-      className={`relative h-full w-full text-${inacText} px-4 pt-24 pb-4 md:pb-8 md:pt-28 md:px-8 lg:px-16`}
+      className={`flex flex-col relative h-full w-full text-${inacText} px-4 pt-24 pb-8 md:pb-8 md:pt-28 md:px-8 lg:px-16`}
     >
       <div className="grid h-full w-full grid-cols-5 grid-rows-5 gap-4 pb-8">
         <div className="col-span-5 row-start-5 md:col-span-4 md:col-start-1 md:row-start-5">
@@ -20,7 +20,7 @@ export default function Hero() {
             <SlideDiv type={"left"} animateOnce={true} delay={0.2} className="heading3 text-base md:text-3xl">
               Full-Stack Developer | Philippines
             </SlideDiv>
-            <div className="h-8 lg:h-0"></div>
+
           </FadeScroll>
         </div>
 
@@ -52,7 +52,7 @@ export default function Hero() {
       </div>
 
 
-      <FadeScroll show ={isActive} className="relative bottom-4 left-1/2 flex -translate-x-1/2 items-center justify-center">
+      <FadeScroll show ={isActive} className="flex w-full items-center justify-center">
         <ArrowDown className={`transition-colors duration-250 animate-bounce text-${actText}`} size={30} />
       </FadeScroll>
     </div>
