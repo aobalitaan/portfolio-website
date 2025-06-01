@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body className='bg-brand-black overflow-x-hidden'>
+      <body className='bg-brand-black overflow-x-clip'>
         {mounted && (
           <>
             <Navbar />
@@ -67,7 +67,7 @@ export default function RootLayout({ children }) {
 function TypingLoading() {
   return (
     <div
-      className="heading2 md:heading1 opacity-100 whitespace-nowrap overflow-hidden border-r-2 border-current animate-typing"
+      className="heading2 md:heading1 animate-typing overflow-hidden whitespace-nowrap border-r-2 border-current opacity-100"
       aria-label="Loading"
     >
       hello world!
