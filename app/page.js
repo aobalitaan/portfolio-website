@@ -29,18 +29,18 @@ export default function Home() {
         <Hero />
       </section>
 
-      <section className="sticky top-0 z-0 h-[125vh] snap-center">
+      <section className="sticky top-0 z-0 h-[100vh] snap-center">
         <Projects />
       </section>
 
-      {/* Sticky section */}
+      {/* Sticky section
      <section className="sticky top-0 z-0 h-[125vh] snap-center">
         <Skills />
       </section>
 
       <section className="z-40 h-[125vh] snap-center">
         <Contact />
-      </section>
+      </section> */}
     </div>
   );
 }

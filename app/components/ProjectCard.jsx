@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRef } from 'react';
+import Image from 'next/image';
 
 export default function ProjectCard({ disableSwitch, project, switchCard, changeHoveredCard, index  }) {
 const colorList = [
@@ -69,13 +70,21 @@ const colorList = [
 
       <div
        onPointerOver={() => handlePointerOver(index)}
+        onClick={() => window.open(project.prodLink || project.repoLink, '_blank')}
 
         onPointerOut={() => handlePointerOut()}
 
         className="pointer-events-auto absolute left-1/2 -translate-x-1/2 top-1/2 hidden -translate-y-1/2 z-25 h-[75%] w-[80%] lg:block"
       />
 
-      <div className={`h-75 w-[80vw] md:w-90 bg-[${project.color}] rounded-xl`}></div>
+      <div className={`relative h-75 w-[80vw] md:w-90 bg-[${project.color}] rounded-xl`}>
+        <Image
+            src={`/${project.imagePath}`}
+            alt={project.title}
+            fill
+            className="object-contain rounded-xl"
+          />
+      </div>
 
       <div className={`heading2 line-clamp-1 pt-4 text-[${project.color}]`}>
         {project.title}

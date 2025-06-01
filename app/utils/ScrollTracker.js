@@ -23,9 +23,9 @@ const sections = {
   projects: {
     start: 125,
     end: 250,
-    bg_color: "brand-black/95",
+    bg_color: "brand-primary",
     inac_text: "brand-white",
-    active_text: "brand-primary",
+    active_text: "brand-black",
     blur: "backdrop-blur-xs"
   },
   home: {

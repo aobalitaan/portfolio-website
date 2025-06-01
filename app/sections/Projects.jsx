@@ -82,7 +82,7 @@ useEffect(() => {
   return (
     <div
       id="projects"
-      className={`relative h-4/5 w-full text-${inacText} px-4 pt-24 pb-4 md:pb-8 md:pt-28 md:px-8 lg:px-16 overflow-x-clip`}
+      className={`relative h-full w-full text-${actText} px-4 pt-24 pb-4 md:pb-8 md:pt-28 md:px-8 lg:px-16 overflow-x-clip`}
     >
         
     {activeSection === 'projects' && (
@@ -92,11 +92,11 @@ useEffect(() => {
           animateOnce={true}
           className="flex h-fit w-full items-center justify-between"
         >
-          <div className={`h-2 w-4 md:w-16 lg:w-40 bg-${inacText}`} />
-          <div className={`heading2 text-${inacText} transition-colors duration-250 ease-in`}>
+          <div className={`h-2 w-4 md:w-16 lg:w-40 bg-${actText}`} />
+          <div className={`heading2 text-${actText} transition-colors duration-250 ease-in`}>
             selected projects
           </div>
-          <div className={`h-2 w-4 md:w-16 lg:w-40 bg-${inacText}`} />
+          <div className={`h-2 w-4 md:w-16 lg:w-40 bg-${actText}`} />
         </SlideDiv>
       </FadeScroll>
     )}
