@@ -1,5 +1,5 @@
 "use client";
-
+import PropTypes from "prop-types";
 import Navbar from "./components/Navbar";
 import "./globals.css";
 import { useState, useEffect } from "react";
@@ -66,29 +66,16 @@ export default function RootLayout({ children }) {
 
 function TypingLoading() {
   return (
-    <div className="typing-animation heading2 md:heading1 opacity-0" aria-label="Loading">
+    <div
+      className="heading2 md:heading1 opacity-100 whitespace-nowrap overflow-hidden border-r-2 border-current animate-typing"
+      aria-label="Loading"
+    >
       hello world!
-      <style jsx>{`
-        .typing-animation {
-          white-space: nowrap;
-          overflow: hidden;
-          width: 0;
-          border-right: 2px solid currentColor;
-          animation:
-            typing 0.50s steps(11, end) forwards,
-            blink 0.7s step-end infinite;
-          opacity: 1
-        }
-
-        @keyframes typing {
-          from { width: 0 }
-          to { width: 8.75ch }
-        }
-
-        @keyframes blink {
-          50% { border-color: transparent }
-        }
-      `}</style>
     </div>
+
   );
 }
+
+RootLayout.propTypes = {
+  children: PropTypes.node.isRequired,
+};

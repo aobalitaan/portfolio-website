@@ -65,3 +65,25 @@ nav{
     transform: scale(1.05) rotateX(0deg) rotate(3deg) scaleX(1.05);
   }
 }
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 8.75ch;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+.animate-typing {
+  width: 0;
+  animation:
+    typing 0.5s steps(11, end) forwards,
+    blink 0.7s step-end infinite;
+}
