@@ -41,6 +41,9 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <head>
+        <meta property="og:image" content="/preview.png" />
+      </head>
       <body className='bg-brand-black overflow-x-clip'>
         {mounted && (
           <>

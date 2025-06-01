@@ -59,14 +59,17 @@ export default function Projects() {
     setHoveredCard(index);
   };
 
+
+  const hasScrolledToFirst = useRef(false);
+
   useEffect(() => {
     const containerEl = containerRef.current;
-
     if (!containerEl) return;
 
     // Scroll to center card when inactive
     if (!isActive && scrollPercent > 10) {
       setHoveredCard(null);
+      hasScrolledToFirst.current = false; // Reset flag when leaving the section
 
       const centerIndex = Math.floor(projectList.length / 2);
       const cardEl = cardRefs.current[centerIndex];
@@ -85,10 +88,9 @@ export default function Projects() {
       }
     }
 
-    // Scroll to first card when active
-    if (isActive) {
+    // Scroll to first card only once when section becomes active
+    if (isActive && !hasScrolledToFirst.current) {
       const firstCard = cardRefs.current[0];
-
       if (firstCard) {
         const cardOffsetLeft = firstCard.offsetLeft;
         const cardWidth = firstCard.offsetWidth;
@@ -100,9 +102,13 @@ export default function Projects() {
           left: scrollLeft,
           behavior: "smooth",
         });
+
+        hasScrolledToFirst.current = true; // ✅ mark as done
       }
     }
   }, [isActive, scrollPercent]);
+
+
 
 
 
@@ -132,7 +138,6 @@ export default function Projects() {
   return (
     <div
       id="projects"
-      ref={containerRef}
       className={`relative h-full w-full text-${actText} px-4 pt-24 pb-4 md:pb-8 md:pt-28 md:px-8 lg:px-16 overflow-x-clip`}
     >
       {isActive && (
