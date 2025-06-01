@@ -3,16 +3,34 @@
 import Navbar from "./components/Navbar";
 import "./globals.css";
 import { useState, useEffect } from "react";
+import Lenis from "lenis";
 
 export default function RootLayout({ children }) {
   const [loadingVisible, setLoadingVisible] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
   const [mounted, setMounted] = useState(false);
 
+  
+
   useEffect(() => {
     const mountTimer = setTimeout(() => setMounted(true), 1200); // Mount slightly before fadeOut
     const fadeTimer = setTimeout(() => setFadeOut(true), 1250); // When fade starts
     const removeTimer = setTimeout(() => setLoadingVisible(false), 3000); // When it's fully gone
+
+   // Initialize Lenis
+  const lenis = new Lenis({
+    lerp: 0.1 // default is 0.1 — increase this to make scroll less smooth (e.g., 0.2 or 0.3)
+  });
+
+
+    // Use requestAnimationFrame to continuously update the scroll
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
 
     return () => {
       clearTimeout(mountTimer);
@@ -26,14 +44,14 @@ export default function RootLayout({ children }) {
       <body className='overflow-x-hidden'>
         {mounted && (
           <>
-            <Navbar />
+            <div className=''><Navbar /></div>
             {children}
           </>
         )}
 
         {loadingVisible && (
           <div
-            className={`fixed inset-0 z-[99] flex items-center justify-center bg-brand-black text-brand-primary transition-all duration-1000 ease-in-out ${
+            className={`fixed inset-0 z-[99] h-screen w-screen flex items-center justify-center bg-brand-black text-brand-brighter transition-all duration-1000 ease-in-out ${
               fadeOut ? "opacity-0 scale-105 pointer-events-none" : "opacity-100 scale-100"
             }`}
             aria-live="polite"

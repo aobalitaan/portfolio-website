@@ -3,33 +3,66 @@ text-brand-white
 text-brand-black
 text-brand-gray
 text-brand-darker
-text-brand-accent
+text-brand-brighter
 
 bg-brand-primary
 bg-brand-white
 bg-brand-black
 bg-brand-gray
 bg-brand-darker
-bg-brand-accent
+bg-brand-brighter
 
 bg-brand-primary/75
 bg-brand-white/75
 bg-brand-black/75
 bg-brand-gray/75
 bg-brand-darker/75
-bg-brand-accent/75
+bg-brand-brighter/75
 
 bg-brand-primary/50
 bg-brand-white/50
 bg-brand-black/50
 bg-brand-gray/50
 bg-brand-darker/50
-bg-brand-accent/50
+bg-brand-brighter/50
 
 bg-brand-primary/25
 bg-brand-white/25
 bg-brand-black/25
 bg-brand-gray/25
 bg-brand-darker/25
-bg-brand-accent/25
+bg-brand-brighter/25
 
+bg-brand-black/95
+
+bg-red-200 bg-green-200 bg-blue-200 bg-yellow-200 bg-purple-200 bg-pink-200 bg-indigo-200 bg-teal-200
+text-red-800 text-green-800 text-blue-800 text-yellow-800 text-purple-800 text-pink-800 text-indigo-800 text-teal-800
+
+text-[#385DBA] bg-[#385DBA]
+text-[#355E3B] bg-[#355E3B]
+text-[#164d9c] bg-[#164d9c]
+text-[#461e1e] bg-[#461e1e]
+text-[#2d2d2d] bg-[#2d2d2d]
+
+
+
+rotate-5 rotate-10 rotate-15 rotate-20 rotate-25 rotate-30
+-rotate-5 -rotate-10 -rotate-15 -rotate-20 -rotate-25 -rotate-30
+
+translate-x-25 translate-x-50 translate-x-75 translate-x-100 
+-translate-x-25 -translate-x-50 -translate-x-75 -translate-x-100
+
+z-99 z-98 z-97 z-96 z-95 z-94 z-93 z-92 z-91 z-90
+
+blur-[1px] blur-[2px] blur-[3px] blur-[4px] blur-[5px]
+
+-translate-y-100
+-translate-y-75
+-translate-y-50
+-translate-y-25
+-translate-y-0
+
+backdrop-blur-xs backdrop-blur-md
+
+ml-auto mr-auto
+ml-24 mr-24

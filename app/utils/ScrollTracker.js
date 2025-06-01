@@ -4,12 +4,39 @@ import { useEffect, useState } from "react";
 import { useScroll } from "framer-motion";
 
 const sections = {
-  about: { start: 300, end: 400, bg_color: "brand-white", inac_text: "brand-black", active_text: "brand-primary" },
-  skills: { start: 200, end: 300, bg_color: "brand-black", inac_text: "brand-white", active_text: "brand-primary" },
-  projects: { start: 100, end: 200, bg_color: "brand-primary", inac_text: "brand-black", active_text: "brand-white" },
-  home: { start: 0, end: 100, bg_color: "brand-black", inac_text: "brand-white", active_text: "brand-primary" },
+  contact: {
+    start: 375,
+    end: 500,
+    bg_color: "brand-white",
+    inac_text: "brand-black",
+    active_text: "brand-primary",
+    blur: "backdrop-blur-md bg-brand-white/75"
+  },
+  skills: {
+    start: 250,
+    end: 375,
+    bg_color: "brand-black",
+    inac_text: "brand-white",
+    active_text: "brand-primary",
+    blur: "backdrop-blur-md bg-brand-black/75"
+  },
+  projects: {
+    start: 125,
+    end: 250,
+    bg_color: "brand-black/95",
+    inac_text: "brand-white",
+    active_text: "brand-primary",
+    blur: "backdrop-blur-xs"
+  },
+  home: {
+    start: 0,
+    end: 125,
+    bg_color: "brand-black",
+    inac_text: "brand-white",
+    active_text: "brand-primary",
+    blur: ""
+  },
 };
-
 
 export function ScrollTracker() {
   const { scrollY } = useScroll();
@@ -17,11 +44,14 @@ export function ScrollTracker() {
   const [bgColor, setBgColor] = useState(sections.home.bg_color);
   const [inacText, setInacText] = useState(sections.home.inac_text);
   const [actText, setActText] = useState(sections.home.active_text);
+  const [blur, setBlur] = useState(sections.home.blur);
+  const [scrollPercent, setScrollPercent] = useState(0);
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "manual";
     }
+
     setActiveSection("home");
     setBgColor(sections.home.bg_color);
     setInacText(sections.home.inac_text);
@@ -31,22 +61,23 @@ export function ScrollTracker() {
 
   useEffect(() => {
     const unsubscribe = scrollY.on("change", (currentY) => {
-      const scrollPercent = (currentY / window.innerHeight) * 100;
+      const percent = (currentY / window.innerHeight) * 100;
+      setScrollPercent(percent);
 
       for (const [key, range] of Object.entries(sections)) {
-        if (scrollPercent >= range.start - 10 && scrollPercent < range.end) {
+        if (percent >= range.start - 10 && percent < range.end) {
           setActiveSection(key);
           setBgColor(range.bg_color);
           setInacText(range.inac_text);
           setActText(range.active_text);
+          setBlur(range.blur)
           break;
         }
       }
     });
 
-
     return () => unsubscribe();
   }, [scrollY]);
 
-  return { activeSection, bgColor, actText, inacText, sections };
+  return { activeSection, bgColor, actText, inacText, blur, sections, scrollPercent };
 }

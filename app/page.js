@@ -4,33 +4,43 @@ import { ScrollTracker } from "./utils/ScrollTracker";
 import Hero from "./sections/Hero";
 import Projects from "./sections/Projects";
 import Wave from "./components/Wave";
+import Skills from "./sections/Skills";
+
+import Lenis from "lenis";
+import Contact from "./sections/Contact";
 
 export default function Home() {
-  const { activeSection, bgColor, actText, inacText, sections } = ScrollTracker();
+  const { activeSection, bgColor, actText, inacText, blur, sections } = ScrollTracker();
 
   return (
-    <div className={"h-screen"}>
+    <div className={"snap-y scroll-smooth"}>
       {/* Wave background - full screen, at the back */}
-      <div className={`fixed inset-0 z-0 h-screen w-screen bg-${bgColor} transition-colors duration-500 ease-in`}>
-        <div className="h-full w-full opacity-50 [mask-image:linear-gradient(to_top,rgba(0,0,0,0.25)_0%,rgba(0,0,0,1)_50%,rgba(0,0,0,0.25)_100%)]">
+      <div className={`fixed inset-0 z-0 w-screen bg-${bgColor} transition-colors duration-500 ease-in`}>
+        <div className="h-screen w-full opacity-50 [mask-image:linear-gradient(to_top,rgba(0,0,0,0.25)_0%,rgba(0,0,0,1)_50%,rgba(0,0,0,0.25)_100%)]">
           <Wave />
         </div>
       </div>
 
-
-      {/* Content container with responsive padding */}
-      <div className="relative top-20 z-10 h-full">
-        <div className="h-[calc(100vh-80px)]">
-          <Hero />
-        </div>
+      <div className={`fixed inset-0 z-0 h-screen w-screen ${blur} transition-all duration-750 ease-in`}>
       </div>
 
-      <div className="sticky z-10 h-full pt-20">
-        <div className="h-[calc(100vh-80px)]">
-          <Projects />
-        </div>
-      </div>
+      {/* Content container */}
+      <section className="sticky top-0 z-0 h-[125vh] snap-center">
+        <Hero />
+      </section>
 
+      <section className="sticky top-0 z-0 h-[125vh] snap-center">
+        <Projects />
+      </section>
+
+      {/* Sticky section */}
+     <section className="sticky top-0 z-0 h-[125vh] snap-center">
+        <Skills />
+      </section>
+
+      <section className="z-40 h-[125vh] snap-center">
+        <Contact />
+      </section>
     </div>
   );
 }
