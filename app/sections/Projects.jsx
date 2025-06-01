@@ -60,14 +60,18 @@ export default function Projects() {
   };
 
   useEffect(() => {
+    const containerEl = containerRef.current;
+
+    if (!containerEl) return;
+
+    // Scroll to center card when inactive
     if (!isActive && scrollPercent > 10) {
       setHoveredCard(null);
 
       const centerIndex = Math.floor(projectList.length / 2);
       const cardEl = cardRefs.current[centerIndex];
-      const containerEl = cardEl?.parentElement?.parentElement; // adjust depending on structure
 
-      if (cardEl && containerEl) {
+      if (cardEl) {
         const cardOffsetLeft = cardEl.offsetLeft;
         const cardWidth = cardEl.offsetWidth;
         const containerWidth = containerEl.offsetWidth;
@@ -80,7 +84,26 @@ export default function Projects() {
         });
       }
     }
+
+    // Scroll to first card when active
+    if (isActive) {
+      const firstCard = cardRefs.current[0];
+
+      if (firstCard) {
+        const cardOffsetLeft = firstCard.offsetLeft;
+        const cardWidth = firstCard.offsetWidth;
+        const containerWidth = containerEl.offsetWidth;
+
+        const scrollLeft = cardOffsetLeft - (containerWidth - cardWidth) / 2;
+
+        containerEl.scrollTo({
+          left: scrollLeft,
+          behavior: "smooth",
+        });
+      }
+    }
   }, [isActive, scrollPercent]);
+
 
 
   const getCardStyles = (index) => {
@@ -125,7 +148,10 @@ export default function Projects() {
       )}
 
       <div className="no-scrollbar h-7/12 flex items-center overflow-visible transition-all">
-        <div className="no-scrollbar ml-auto mr-auto flex h-full w-fit snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4">
+        <div 
+          ref ={containerRef}
+          className="no-scrollbar ml-auto mr-auto flex h-full w-fit snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4"
+        >
           {projectList.map((project, index) => {
             const { zIndex, className } = getCardStyles(index);
 

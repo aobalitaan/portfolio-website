@@ -13,7 +13,7 @@ export default function Home() {
   const { activeSection, bgColor, actText, inacText, blur, sections } = ScrollTracker();
 
   return (
-    <div className={"relative snap-y scroll-smooth"}>
+    <div className={"relative snap-y snap-mandatory scroll-smooth"}>
       {/* Wave background - full screen, at the back */}
 
       <div className={`fixed inset-0 z-0 w-screen bg-${bgColor} transition-colors duration-500 ease-in`}>
@@ -37,11 +37,11 @@ export default function Home() {
 
       {/* Sticky section */}
 
-      <section className="sticky top-0 z-0 h-[125dvh] snap-center">
+      <section className="sticky top-0 z-0 h-[125dvh] snap-start">
         <Skills />
       </section>
 
-      <section className="sticky z-40 h-[100dvh] snap-center">
+      <section className="sticky z-40 h-[100dvh] snap-start">
         <Contact />
       </section>
     </div>
