@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <div className={"relative snap-y scroll-smooth"}>
       {/* Wave background - full screen, at the back */}
-      
+
       <div className={`fixed inset-0 z-0 w-screen bg-${bgColor} transition-colors duration-500 ease-in`}>
         <div className="h-screen w-full opacity-50 [mask-image:linear-gradient(to_top,rgba(0,0,0,0.25)_0%,rgba(0,0,0,1)_50%,rgba(0,0,0,0.25)_100%)]">
           <Wave />
@@ -26,7 +26,7 @@ export default function Home() {
       </div>
 
       {/* Content container */}
-      
+
       <section className="sticky top-0 z-0 h-[125dvh] snap-start">
         <Hero />
       </section>
@@ -37,7 +37,7 @@ export default function Home() {
 
       {/* Sticky section */}
 
-     {/* <section className="sticky top-0 z-0 h-[125dvh] snap-center">
+      {/* <section className="sticky top-0 z-0 h-[125dvh] snap-center">
         <Skills />
       </section>
 

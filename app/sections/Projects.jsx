@@ -13,7 +13,7 @@ export default function Projects() {
     actText,
     scrollPercent
   } = ScrollTracker();
-  
+
   const isActive = activeSection === "projects";
 
   const [hoveredCard, setHoveredCard] = useState(null);
@@ -136,7 +136,7 @@ export default function Projects() {
                 className="snap-start"
                 style={{ zIndex }}
                 onClick={() => {
-                const url = project.prodLink || project.repoLink;
+                  const url = project.prodLink || project.repoLink;
                   if (url) window.location.href = url;
                 }}
 
