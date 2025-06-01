@@ -1,7 +1,6 @@
 "use client";
 
 import { motion, useAnimation } from "framer-motion";
-import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 
 const getInitial = (type) => {
@@ -21,45 +20,42 @@ const getInitial = (type) => {
 
 const SlideDiv = ({
   children,
-  animateOnce = true,
+  show = true,
   type = "bottom",
   delay = 0,
   className = "",
 }) => {
   const controls = useAnimation();
-  const [ref, inView] = useInView({
-    triggerOnce: animateOnce,
-    rootMargin: "0% 0% -10% 0%", // top, right, bottom, left
-  });
 
   useEffect(() => {
-    if (inView) {
+    if (show) {
       controls.start({
         x: 0,
         y: 0,
         opacity: 1,
         transition: {
           type: "spring",
-          stiffness: 100,
-          damping: 12,
+          stiffness: 200,
+          damping: 20,
           mass: 1.75,
           delay,
         },
       });
-    } else if (!animateOnce) {
+    } else {
       controls.start(getInitial(type));
     }
-  }, [inView, controls, animateOnce, type, delay]);
+  }, [show, controls, type, delay]);
 
   return (
-    <motion.div
-      ref={ref}
-      initial={getInitial(type)}
-      animate={controls}
-      className={className}
-    >
-      {children}
-    </motion.div>
+    <div className={`overflow-hidden ${className}`}>
+      <motion.div
+        initial={getInitial(type)}
+        animate={controls}
+        className="h-full w-full"
+      >
+        {children}
+      </motion.div>
+    </div>
   );
 };
 
