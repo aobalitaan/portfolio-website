@@ -148,7 +148,7 @@ export default function Projects() {
       )}
 
       <div className="no-scrollbar h-7/12 flex items-center overflow-visible transition-all">
-        <div 
+        <div
           ref ={containerRef}
           className="no-scrollbar ml-auto mr-auto flex h-full w-fit snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4"
         >
