@@ -138,7 +138,7 @@ export default function Projects() {
   return (
     <div
       id="projects"
-      className={`relative h-full w-full text-${actText} px-4 pt-24 pb-4 md:pb-8 md:pt-28 md:px-8 lg:px-16 overflow-x-clip`}
+      className={`relative h-1/2 w-full text-${actText} px-4 pt-24 pb-4 md:pb-8 md:pt-28 md:px-8 lg:px-16 overflow-x-clip`}
     >
       {isActive && (
         <FadeScroll show={true}>
@@ -152,7 +152,7 @@ export default function Projects() {
         </FadeScroll>
       )}
 
-      <div className="no-scrollbar h-7/12 flex items-center overflow-visible transition-all">
+      <div className="no-scrollbar h-9/10 flex items-center overflow-visible transition-all">
         <div
           ref ={containerRef}
           className="no-scrollbar ml-auto mr-auto flex h-full w-fit snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4"
@@ -182,6 +182,7 @@ export default function Projects() {
                   >
                     <ProjectCard
                       toggledisableSwitch={setDisableSwitch}
+                      show={isActive}
                       disableSwitch={disableSwitch}
                       switchCard={switchCard}
                       changeHoveredCard={setHoveredCard}

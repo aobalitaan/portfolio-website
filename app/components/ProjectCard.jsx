@@ -1,8 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
 import { useRef } from "react";
 import Image from "next/image";
 
-export default function ProjectCard({ disableSwitch, project, switchCard, changeHoveredCard, index  }) {
+export default function ProjectCard({ disableSwitch, project, show, switchCard, changeHoveredCard, index  }) {
   const colorList = [
     { bg: "bg-red-100", text: "text-red-700" },
     { bg: "bg-rose-100", text: "text-rose-700" },
@@ -53,7 +53,9 @@ export default function ProjectCard({ disableSwitch, project, switchCard, change
   const hoverTimeout = useRef(null); // holds the timer
 
   const handlePointerOver = (index) => {
-    if (disableSwitch == true) return;
+    if (disableSwitch == true){
+      return;
+    }
     hoverTimeout.current = setTimeout(() => {
       switchCard(index);
     }, 300); // adjust hover delay here (e.g., 150ms)
@@ -66,12 +68,12 @@ export default function ProjectCard({ disableSwitch, project, switchCard, change
 
 
   return (
-    <div className="h-fit w-auto cursor-pointer rounded-2xl bg-brand-white p-4 shadow-md">
+    <div className={"bg-brand-white duration-250 h-fit w-auto rounded-2xl p-4 shadow-md transition-all ease-in"}>
 
       <div
         onPointerOver={() => handlePointerOver(index)}
         onPointerOut={() => handlePointerOut()}
-        className="pointer-events-auto absolute left-1/2 -translate-x-1/2 top-1/2 hidden -translate-y-1/2 z-25 h-[75%] w-[80%] lg:block"
+        className={`z-25 pointer-events-auto absolute left-1/2 top-1/2 hidden h-[75%] w-[80%] -translate-x-1/2 -translate-y-1/2 ${show ? "cursor-pointer" : ""} lg:block`}
       />
 
       <div className={`relative h-75 w-[80vw] md:w-90 bg-[${project.color}] rounded-xl`}>
@@ -79,7 +81,7 @@ export default function ProjectCard({ disableSwitch, project, switchCard, change
           src={`/${project.imagePath}`}
           alt={project.title}
           fill
-          className="object-contain rounded-xl"
+          className="rounded-xl object-contain"
         />
       </div>
 
@@ -91,7 +93,7 @@ export default function ProjectCard({ disableSwitch, project, switchCard, change
         {project.stack.map((tag, index) => addTag(tag, index))}
       </div>
 
-      <div className="smalltext w-[80vw] md:w-90 line-clamp-3 h-[6rem] pt-4 text-brand-black">
+      <div className="smalltext md:w-90 text-brand-black line-clamp-3 h-[6rem] w-[80vw] pt-4">
         {project.desc}
       </div>
 

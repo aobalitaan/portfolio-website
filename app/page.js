@@ -31,7 +31,7 @@ export default function Home() {
         <Hero />
       </section>
 
-      <section className="sticky top-0 z-0 h-[150dvh] snap-start">
+      <section className="sticky top-0 z-0 h-[200dvh] snap-start">
         <Projects />
       </section>
 

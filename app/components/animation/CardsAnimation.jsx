@@ -4,8 +4,8 @@ import projectList from "@/app/utils/ProjectList";
 
 const CardsAnimation = ({
   children,
-  className = "transition-all duration-100 ease-in-out",
-  translateDistance = 350,
+  className = "",
+  translateDistance = 400,
   rotateAmount = 10,
   index,
   show,
@@ -15,8 +15,10 @@ const CardsAnimation = ({
   const mult = Math.floor(projectList.length / 2 - index);
 
   // Create springs once
-  const springX = useSpring(0, { stiffness: 200, damping: 30 });
-  const springRotate = useSpring(0, { stiffness: 200, damping: 30 });
+  const springX = useSpring(0, { stiffness: 200, damping: 35 });
+  const springRotate = useSpring(0, { stiffness: 200, damping: 35 });
+
+
 
 
 
@@ -62,7 +64,7 @@ const CardsAnimation = ({
         transformOrigin: "center",
         willChange: "transform, filter",
       }}
-      className={className}
+      className={`${className} ${show ? "" : "scale-80"} transition-transform duration-250 ease-out`}
     >
       {children}
     </motion.div>

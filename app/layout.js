@@ -42,7 +42,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <meta property="og:image" content="/preview.png" />
+        <meta property="og:title" content="Portfolio | Axel Balitaan" />
+        <meta property="og:description" content="Full-Stack Developer | UPLB | Philippines" />
+        <meta property="og:image" content="https://drive.google.com/file/d/1Ty4pJT-jvP4E2iw3bNnmwTHVs8voRtus/view?usp=sharing" />
       </head>
       <body className='bg-brand-black overflow-x-clip'>
         {mounted && (
