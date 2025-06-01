@@ -124,8 +124,8 @@ export default function Projects() {
         </FadeScroll>
       )}
 
-      <div className="overflow-auto transition-all h-19/20 flex items-center no-scrollbar">
-        <div className="flex items-center ml-auto mr-auto px-4 gap-4 w-fit">
+      <div className="h-19/20 no-scrollbar flex items-center overflow-auto transition-all">
+        <div className="ml-auto mr-auto flex w-fit items-center gap-4 px-4">
           {projectList.map((project, index) => {
             const { zIndex, className } = getCardStyles(index);
 

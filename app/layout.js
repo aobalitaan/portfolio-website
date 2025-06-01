@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body className='bg-brand-black overflow-x-hidden overflow-y-clip'>
+      <body className='bg-brand-black overflow-x-hidden'>
         {mounted && (
           <>
             <Navbar />

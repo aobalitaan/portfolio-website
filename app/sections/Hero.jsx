@@ -34,7 +34,7 @@ export default function Hero() {
                     <div className="smalltext">
                       © Designed and built by Axel Balitaan 2025
                     </div>
-                    <div className="lg:w-128 md:w-100 mt-1 h-1.5 w-80 bg-brand-white md:h-2" />
+                    <div className="lg:w-128 md:w-100 bg-brand-white mt-1 h-1.5 w-80 md:h-2" />
                   </div>
                 </div>
               </FadeScroll>
