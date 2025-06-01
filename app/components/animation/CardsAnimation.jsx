@@ -25,7 +25,7 @@ const CardsAnimation = ({
   const targetRotate = show ? 0 : -rotateAmount * mult;
   const targetFilter = show
     ? "brightness(1) blur(0px)"
-    : `brightness(${1.0 - mult / 10}) blur(1px)`;
+    : `brightness(${1.0 - mult / 10})`;
 
 
   const timeoutRef = useRef(null);
