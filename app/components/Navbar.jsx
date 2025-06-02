@@ -24,16 +24,16 @@ export default function Navbar() {
   }, [menuOpen]);
 
   const handleScroll = (route) => {
-    if (sections[route]) {
-      const scrollPosition = (sections[route].start / 100) * window.innerHeight;
-      window.scrollTo({
-        top: scrollPosition,
-        behavior: "smooth",
-      });
-      setMenuOpen(false);
+    if (route === "home") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      const targetElement = document.getElementById(route);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth" });
+      }
     }
+    setMenuOpen(false);
   };
-
   return (
     <>
       <nav

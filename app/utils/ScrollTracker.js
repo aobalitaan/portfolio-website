@@ -21,7 +21,7 @@ const sections = {
     blur: "backdrop-blur-md bg-brand-black/75"
   },
   projects: {
-    start: 100,
+    start: 80,
     end: 200,
     bg_color: "brand-primary",
     inac_text: "brand-white",

@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
 
     // Initialize Lenis once
     if (!lenisRef.current) {
-      lenisRef.current = new Lenis({ lerp: 0.1 });
+      lenisRef.current = new Lenis({ lerp: 0.1, wheelMultiplier: 0.9 });
       const raf = (time) => {
         lenisRef.current.raf(time);
         requestAnimationFrame(raf);
