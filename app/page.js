@@ -25,7 +25,6 @@ export default function Home() {
       <div className={`fixed inset-0 z-0 h-screen w-screen ${blur} transition-all duration-750 ease-in`}>
       </div>
 
-      {/* Content container */}
 
       <section className="sticky top-0 z-0 h-screen snap-start">
         <Hero />
@@ -35,15 +34,13 @@ export default function Home() {
         <Projects />
       </section>
 
-      {/* Sticky section */}
-
-      <section className="top-0 z-0 h-screen snap-start">
+      {/* <section className="top-0 z-0 h-screen snap-start">
         <Skills />
       </section>
 
       <section className="z-40 h-screen snap-start">
         <Contact />
-      </section>
+      </section> */}
     </div>
   );
 }
