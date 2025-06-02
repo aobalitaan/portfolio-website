@@ -14,7 +14,7 @@ export default function Projects() {
     scrollPercent
   } = ScrollTracker();
 
-  const isActive = activeSection != 'home';
+  const isActive = activeSection != "home";
 
   const [hoveredCard, setHoveredCard] = useState(null);
   const [disableSwitch, setDisableSwitch] = useState(false);

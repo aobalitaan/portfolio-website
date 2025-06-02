@@ -11,6 +11,7 @@ export default function Navbar() {
   const { activeSection, bgColor, actText, inacText, blur, sections } = ScrollTracker();
   const [menuOpen, setMenuOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const isbgBlur = activeSection != "home";
 
   // Control showMenu for animation mount/unmount
   useEffect(() => {
@@ -36,8 +37,9 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={"fixed top-0 z-50 flex h-20 w-screen items-center justify-between gap-4 px-8 transition-all duration-500 ease-in md:justify-start md:gap-8 md:px-12"}
+        className={"from-brand-black/25 fixed top-0 z-50 flex h-20 w-screen items-center justify-between gap-4 bg-gradient-to-b to-transparent px-8 transition-all duration-500 ease-in md:justify-start md:gap-8 md:px-12"}
       >
+
         <div className="animate-slideDown cursor-pointer" onClick={() => handleScroll("home")}>
           <Logo className={` size-12 text-${inacText} transition-all hover:scale-110 duration-250 ease-in`} />
         </div>
