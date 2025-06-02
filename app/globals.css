@@ -88,6 +88,6 @@ nav{
 .animate-typing {
   width: 0;
   animation:
-    typing 0.5s steps(11, end) forwards,
-    blink 0.7s step-end infinite;
+    typing 0.4s steps(11, end) forwards,
+    blink 0.75s step-end infinite;
 }

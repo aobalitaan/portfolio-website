@@ -18,11 +18,6 @@ const CardsAnimation = ({
   const springX = useSpring(0, { stiffness: 200, damping: 35 });
   const springRotate = useSpring(0, { stiffness: 200, damping: 35 });
 
-
-
-
-
-
   const targetX = show ? 0 : translateDistance * mult;
   const targetRotate = show ? 0 : -rotateAmount * mult;
   const targetFilter = show

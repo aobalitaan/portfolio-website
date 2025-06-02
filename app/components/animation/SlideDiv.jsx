@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useAnimation } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 const getInitial = (type) => {
   switch (type) {
@@ -23,12 +23,14 @@ const SlideDiv = ({
   show = true,
   type = "bottom",
   delay = 0,
+  animateOnce = true,
   className = "",
 }) => {
   const controls = useAnimation();
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    if (show) {
+    if (show && (!animateOnce || !hasAnimated.current)) {
       controls.start({
         x: 0,
         y: 0,
@@ -40,16 +42,20 @@ const SlideDiv = ({
           mass: 1.75,
           delay,
         },
+      }).then(() => {
+        if (animateOnce) {
+          hasAnimated.current = true;
+        }
       });
-    } else {
+    } else if (!show && !animateOnce) {
       controls.start(getInitial(type));
     }
-  }, [show, controls, type, delay]);
+  }, [show, controls, type, delay, animateOnce]);
 
   return (
     <div className={`overflow-hidden ${className}`}>
       <motion.div
-        initial={getInitial(type)}
+        initial={animateOnce && hasAnimated.current ? { x: 0, y: 0, opacity: 1 } : getInitial(type)}
         animate={controls}
         className="h-full w-full"
       >

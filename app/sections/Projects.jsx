@@ -67,7 +67,7 @@ export default function Projects() {
     if (!containerEl) return;
 
     // Scroll to center card when inactive
-    if (!isActive && scrollPercent > 10) {
+    if (!isActive) {
       setHoveredCard(null);
       hasScrolledToFirst.current = false; // Reset flag when leaving the section
 
@@ -156,7 +156,7 @@ export default function Projects() {
         </div>
       )}
 
-      <div className="no-scrollbar h-9/10 flex items-center overflow-visible transition-all">
+      <div className="no-scrollbar h-8/10 flex items-center overflow-visible transition-all">
         <div
           ref ={containerRef}
           className="no-scrollbar ml-auto mr-auto flex h-full w-fit snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4"

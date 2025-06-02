@@ -80,7 +80,7 @@ export default function ProjectCard({ disableSwitch, project, show, switchCard, 
         <Image
           src={`/${project.imagePath}`}
           alt={project.title}
-          fill
+          fill={true}
           className="rounded-xl object-contain"
         />
       </div>

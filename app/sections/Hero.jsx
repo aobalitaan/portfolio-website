@@ -16,8 +16,8 @@ export default function Hero() {
       <div className="grid h-full w-full grid-cols-5 grid-rows-5 gap-4 pb-8">
         <div className="col-span-5 row-start-5 md:col-span-4 md:col-start-1 md:row-start-5">
           <FadeScroll show={isActive} className="flex h-full flex-col justify-end">
-            <SlideDiv show={isActive} type={"left"} animateOnce={true} delay={0.1} className="heading1">AXEL BALITAAN</SlideDiv>
-            <SlideDiv show={isActive} type={"left"} animateOnce={true} delay={0.2} className="heading3 text-base md:text-3xl">
+            <SlideDiv show={isActive} animateOnce={true} type={"left"} delay={0.1} className="heading1">AXEL BALITAAN</SlideDiv>
+            <SlideDiv show={isActive} animateOnce={true} type={"left"} delay={0.2} className="heading3 text-base md:text-3xl">
               Full-Stack Developer | Philippines
             </SlideDiv>
 
@@ -26,7 +26,7 @@ export default function Hero() {
 
         <div className="bg-green rotate-y-180 col-start-5 row-span-3 row-start-2 md:row-span-4 md:row-start-2">
 
-          <SlideDiv delay={0.25} show={isActive} className={"overflow-visible"} type ={"bottom"} >
+          <SlideDiv delay={0.25} show={isActive} animateOnce={true} className={"overflow-visible"} type ={"bottom"} >
             <div className="flex origin-bottom-left rotate-90 items-end">
               <FadeScroll show={isActive}>
                 <div>
@@ -44,7 +44,7 @@ export default function Hero() {
 
 
         <FadeScroll show={isActive} className="col-span-3 col-start-3 row-start-1 md:col-span-2 md:col-start-4 md:row-start-1">
-          <SlideDiv show={isActive} type={"right"} animateOnce={true} delay={0.3} className="regulartext text-right">
+          <SlideDiv show={isActive} animateOnce={true} type={"right"} delay={0.3} className="regulartext text-right">
             I build web and mobile apps that blend functionality with aesthetics.
           </SlideDiv>
         </FadeScroll>
