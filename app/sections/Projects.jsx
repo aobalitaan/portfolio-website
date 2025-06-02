@@ -142,17 +142,17 @@ export default function Projects() {
     >
       {isActive && (
         <div className="px-4 md:px-8 lg:px-16">
-        <FadeScroll show={true}>
-          <SlideDiv type="top" animateOnce className="p-4">
-            <div className="flex h-fit w-full items-center justify-between">
-              <div className={`h-2 w-4 md:w-16 lg:w-40 bg-${actText}`} />
-              <div className={`heading2 text-${actText} transition-colors duration-250 ease-in`}>
-                selected projects
+          <FadeScroll show={true}>
+            <SlideDiv type="top" animateOnce className="p-4">
+              <div className="flex h-fit w-full items-center justify-between">
+                <div className={`h-2 w-4 md:w-16 lg:w-40 bg-${actText}`} />
+                <div className={`heading2 text-${actText} transition-colors duration-250 ease-in`}>
+                  selected projects
+                </div>
+                <div className={`h-2 w-4 md:w-16 lg:w-40 bg-${actText}`} />
               </div>
-              <div className={`h-2 w-4 md:w-16 lg:w-40 bg-${actText}`} />
-            </div>
-          </SlideDiv>
-        </FadeScroll>
+            </SlideDiv>
+          </FadeScroll>
         </div>
       )}
 
