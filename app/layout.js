@@ -44,7 +44,7 @@ export default function RootLayout({ children }) {
       <head>
         <meta property="og:title" content="Portfolio | Axel Balitaan" />
         <meta property="og:description" content="Full-Stack Developer | UPLB | Philippines" />
-        <meta property="og:image" content="https://drive.google.com/file/d/1Ty4pJT-jvP4E2iw3bNnmwTHVs8voRtus/view?usp=sharing" />
+        <meta property="og:image" content="https://raw.githubusercontent.com/aobalitaan/portfolio-website/319197aedc96ceab5cb6a1c47bb77a9c93a0b1bb/public/preview.png" />
       </head>
       <body className='bg-brand-black overflow-x-clip'>
         {mounted && (
