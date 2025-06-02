@@ -138,9 +138,10 @@ export default function Projects() {
   return (
     <div
       id="projects"
-      className={`relative h-1/2 w-full text-${actText} px-4 pt-24 pb-4 md:pb-8 md:pt-28 md:px-8 lg:px-16 overflow-x-clip`}
+      className={`relative h-full w-full text-${actText} px-0 pt-24 pb-4 md:pb-8 md:pt-28 overflow-x-clip`}
     >
       {isActive && (
+        <div className="px-4 md:px-8 lg:px-16">
         <FadeScroll show={true}>
           <SlideDiv type="top" animateOnce className="p-4">
             <div className="flex h-fit w-full items-center justify-between">
@@ -152,6 +153,7 @@ export default function Projects() {
             </div>
           </SlideDiv>
         </FadeScroll>
+        </div>
       )}
 
       <div className="no-scrollbar h-9/10 flex items-center overflow-visible transition-all">

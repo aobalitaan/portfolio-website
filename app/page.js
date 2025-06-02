@@ -31,17 +31,17 @@ export default function Home() {
         <Hero />
       </section>
 
-      <section className="sticky top-0 z-0 h-[200dvh] snap-start">
+      <section className="top-0 z-0 h-screen snap-start">
         <Projects />
       </section>
 
       {/* Sticky section */}
 
-      <section className="sticky top-0 z-0 h-[125dvh] snap-start">
+      <section className="top-0 z-0 h-screen snap-start">
         <Skills />
       </section>
 
-      <section className="sticky z-40 h-[100dvh] snap-start">
+      <section className="z-40 h-screen snap-start">
         <Contact />
       </section>
     </div>

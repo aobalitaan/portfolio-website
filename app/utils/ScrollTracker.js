@@ -5,24 +5,24 @@ import { useScroll } from "framer-motion";
 
 const sections = {
   contact: {
-    start: 375,
-    end: 500,
+    start: 300,
+    end: 400,
     bg_color: "brand-white",
     inac_text: "brand-black",
     active_text: "brand-primary",
     blur: "backdrop-blur-md bg-brand-white/75"
   },
   skills: {
-    start: 250,
-    end: 375,
+    start: 200,
+    end: 300,
     bg_color: "brand-black",
     inac_text: "brand-white",
     active_text: "brand-primary",
     blur: "backdrop-blur-md bg-brand-black/75"
   },
   projects: {
-    start: 125,
-    end: 250,
+    start: 100,
+    end: 200,
     bg_color: "brand-primary",
     inac_text: "brand-white",
     active_text: "brand-black",
@@ -30,7 +30,7 @@ const sections = {
   },
   home: {
     start: 0,
-    end: 125,
+    end: 100,
     bg_color: "brand-black",
     inac_text: "brand-white",
     active_text: "brand-primary",
@@ -65,7 +65,7 @@ export function ScrollTracker() {
       setScrollPercent(percent);
 
       for (const [key, range] of Object.entries(sections)) {
-        if (percent >= range.start - 25 && percent < range.end) {
+        if (percent >= range.start - 15 && percent < range.end) {
           setActiveSection(key);
           setBgColor(range.bg_color);
           setInacText(range.inac_text);
