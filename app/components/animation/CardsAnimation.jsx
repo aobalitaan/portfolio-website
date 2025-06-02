@@ -64,7 +64,7 @@ const CardsAnimation = ({
         transformOrigin: "center",
         willChange: "transform, filter",
       }}
-      className={`${className} ${show ? "" : "scale-80"} transition-transform duration-250 ease-out`}
+      className={`${className} ${show ? "" : "scale-75 md:scale-80"} transition-transform duration-250 ease-out`}
     >
       {children}
     </motion.div>
