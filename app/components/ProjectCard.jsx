@@ -30,7 +30,7 @@ export default function ProjectCard({ disableSwitch, project, show, switchCard, 
       } else if (code >= 48 && code <= 57) {
         return sum + (code - 48);
       }
-      return sum; 
+      return sum;
     }, 0);
 
 

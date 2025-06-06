@@ -2,7 +2,7 @@ const projectList = [
   {
     title: "tayo",
     color: "#385DBA",
-    stack: ["Flutter", "Firebase"], 
+    stack: ["Flutter", "Firebase"],
     desc: "A mobile donation application, enabling seamless donations, multi-address management, QR Generation, and real-time updates.",
     imagePath: "tayo.png",
     repoLink: "https://github.com/aobalitaan/tayo-donation-app"
@@ -26,7 +26,7 @@ const projectList = [
   {
     title: "Portfolio",
     color: "#946d48",
-    stack: ["NextJS", "Tailwind"], 
+    stack: ["NextJS", "Tailwind"],
     desc: "A portfolio site showcasing professional work, projects, and skills. Designed for easy navigation and creative layouts.",
     imagePath: "portfolio.png"
   },

@@ -102,7 +102,7 @@ export default function Projects() {
           behavior: "smooth",
         });
 
-        hasScrolledToFirst.current = true; 
+        hasScrolledToFirst.current = true;
       }
     }
   }, [isActive, scrollPercent]);
