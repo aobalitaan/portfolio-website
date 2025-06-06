@@ -14,7 +14,6 @@ const CardsAnimation = ({
 }) => {
   const mult = Math.floor(projectList.length / 2 - index);
 
-  // Create springs once
   const springX = useSpring(0, { stiffness: 200, damping: 35 });
   const springRotate = useSpring(0, { stiffness: 200, damping: 35 });
 
@@ -26,7 +25,6 @@ const CardsAnimation = ({
 
 
   const timeoutRef = useRef(null);
-  // Update spring targets when `show` or index changes
   useEffect(() => {
 
     setTimeout(() => {
@@ -35,18 +33,15 @@ const CardsAnimation = ({
     }, 100);
 
     if (!show) {
-      // Clear any existing timeout and disable immediately
       clearTimeout(timeoutRef.current);
       toggledisableSwitch?.(true);
       changeHoveredCard?.(null);
     } else {
-      // Wait 250ms before enabling again
       timeoutRef.current = setTimeout(() => {
         toggledisableSwitch?.(false);
       }, 500);
     }
 
-    // Cleanup
     return () => clearTimeout(timeoutRef.current);
   }, [show]);
 

@@ -14,8 +14,6 @@ export default function Home() {
 
   return (
     <div className={"relative snap-y snap-mandatory scroll-smooth"}>
-      {/* Wave background - full screen, at the back */}
-
       <div className={`fixed inset-0 z-0 w-screen bg-${bgColor} transition-colors duration-500 ease-in`}>
         <div className="h-screen w-full opacity-50 [mask-image:linear-gradient(to_top,rgba(0,0,0,0.25)_0%,rgba(0,0,0,1)_50%,rgba(0,0,0,0.25)_100%)]">
           <Wave />
@@ -26,11 +24,11 @@ export default function Home() {
       </div>
 
 
-      <section className="sticky top-0 z-0 h-screen snap-start">
+      <section className="sticky top-0 z-0 h-screen min-h-[720px] snap-start">
         <Hero />
       </section>
 
-      <section className="top-0 z-0 h-screen snap-start">
+      <section className="top-0 z-0 h-screen min-h-[720px] snap-start">
         <Projects />
       </section>
 

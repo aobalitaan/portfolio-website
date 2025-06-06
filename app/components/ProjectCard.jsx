@@ -26,13 +26,11 @@ export default function ProjectCard({ disableSwitch, project, show, switchCard, 
       const code = char.charCodeAt(0);
 
       if (code >= 97 && code <= 122) {
-      // letters a-z
         return sum + (code - 96);
       } else if (code >= 48 && code <= 57) {
-      // digits 0-9
         return sum + (code - 48);
       }
-      return sum; // ignore other chars
+      return sum; 
     }, 0);
 
 
@@ -50,7 +48,7 @@ export default function ProjectCard({ disableSwitch, project, show, switchCard, 
     );
   };
 
-  const hoverTimeout = useRef(null); // holds the timer
+  const hoverTimeout = useRef(null);
 
   const handlePointerOver = (index) => {
     if (disableSwitch == true){
@@ -58,11 +56,11 @@ export default function ProjectCard({ disableSwitch, project, show, switchCard, 
     }
     hoverTimeout.current = setTimeout(() => {
       switchCard(index);
-    }, 300); // adjust hover delay here (e.g., 150ms)
+    }, 300);
   };
 
   const handlePointerOut = () => {
-    clearTimeout(hoverTimeout.current); // cancel if moved away early
+    clearTimeout(hoverTimeout.current);
     changeHoveredCard(null);
   };
 

@@ -5,7 +5,7 @@ import { ScrollTracker } from "../utils/ScrollTracker";
 import { Menu, X } from "lucide-react";
 import Logo from "./Logo";
 
-const routes = ["home", "projects", "skills", "contact"];
+const routes = ["home", "projects"];
 
 export default function Navbar() {
   const { activeSection, bgColor, actText, inacText, blur, sections } = ScrollTracker();
@@ -13,11 +13,9 @@ export default function Navbar() {
   const [showMenu, setShowMenu] = useState(false);
   const isbgBlur = activeSection != "home";
 
-  // Control showMenu for animation mount/unmount
   useEffect(() => {
     if (menuOpen) setShowMenu(true);
     else {
-      // delay unmount to allow animation out
       const timeout = setTimeout(() => setShowMenu(false), 250);
       return () => clearTimeout(timeout);
     }
@@ -44,7 +42,6 @@ export default function Navbar() {
           <Logo className={` size-12 text-${inacText} transition-all hover:scale-110 duration-250 ease-in`} />
         </div>
 
-        {/* Desktop nav links with animation */}
         {routes.map((route, index) => {
           const isActive = activeSection === route;
           return (
@@ -63,7 +60,6 @@ export default function Navbar() {
           );
         })}
 
-        {/* Menu Icon */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
@@ -76,7 +72,6 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* Fullscreen menu overlay */}
       <div
         onClick={() => setMenuOpen(!menuOpen)}
         className={`
@@ -101,7 +96,6 @@ export default function Navbar() {
         ))}
       </div>
 
-      {/* Inline CSS for animation with bounce */}
       <style jsx>{`
         .navbar-options {
           opacity: 0;

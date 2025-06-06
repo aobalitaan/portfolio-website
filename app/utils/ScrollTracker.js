@@ -4,22 +4,22 @@ import { useEffect, useState } from "react";
 import { useScroll } from "framer-motion";
 
 const sections = {
-  contact: {
-    start: 300,
-    end: 400,
-    bg_color: "brand-white",
-    inac_text: "brand-black",
-    active_text: "brand-primary",
-    blur: "backdrop-blur-md bg-brand-white/75"
-  },
-  skills: {
-    start: 200,
-    end: 300,
-    bg_color: "brand-black",
-    inac_text: "brand-white",
-    active_text: "brand-primary",
-    blur: "backdrop-blur-md bg-brand-black/75"
-  },
+  // contact: {
+  //   start: 300,
+  //   end: 400,
+  //   bg_color: "brand-white",
+  //   inac_text: "brand-black",
+  //   active_text: "brand-primary",
+  //   blur: "backdrop-blur-md bg-brand-white/75"
+  // },
+  // skills: {
+  //   start: 200,
+  //   end: 300,
+  //   bg_color: "brand-black",
+  //   inac_text: "brand-white",
+  //   active_text: "brand-primary",
+  //   blur: "backdrop-blur-md bg-brand-black/75"
+  // },
   projects: {
     start: 80,
     end: 200,

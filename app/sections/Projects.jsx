@@ -66,10 +66,10 @@ export default function Projects() {
     const containerEl = containerRef.current;
     if (!containerEl) return;
 
-    // Scroll to center card when inactive
+
     if (!isActive) {
       setHoveredCard(null);
-      hasScrolledToFirst.current = false; // Reset flag when leaving the section
+      hasScrolledToFirst.current = false;
 
       const centerIndex = Math.floor(projectList.length / 2);
       const cardEl = cardRefs.current[centerIndex];
@@ -88,7 +88,6 @@ export default function Projects() {
       }
     }
 
-    // Scroll to first card only once when section becomes active
     if (isActive && !hasScrolledToFirst.current) {
       const firstCard = cardRefs.current[0];
       if (firstCard) {
@@ -103,7 +102,7 @@ export default function Projects() {
           behavior: "smooth",
         });
 
-        hasScrolledToFirst.current = true; // ✅ mark as done
+        hasScrolledToFirst.current = true; 
       }
     }
   }, [isActive, scrollPercent]);

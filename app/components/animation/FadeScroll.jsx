@@ -8,10 +8,10 @@ const FadeScroll = ({ show, children, className = "" }) => {
       className={className}
       animate={{
         opacity: show ? 1 : 0,
-        scale: show ? 1 : 0.8 // Scale down to 0.8 when not shown
+        scale: show ? 1 : 0.8 
       }}
       transition={{ duration: 0.25 }}
-      style={{ pointerEvents: show ? "auto" : "none" }} // Prevent interaction when hidden
+      style={{ pointerEvents: show ? "auto" : "none" }} 
     >
       {children}
     </motion.div>
