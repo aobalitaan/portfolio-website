@@ -24,7 +24,7 @@ export default function Home() {
       </div>
 
 
-      <section className="sticky top-0 z-0 h-screen min-h-[720px] snap-start">
+      <section className="h-lvh sticky top-0 z-0 min-h-[720px] snap-start">
         <Hero />
       </section>
 
