@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { ScrollTracker } from "../utils/ScrollTracker";
 
 const interpolateColor = (color1, color2, factor) => {
   const hex = (color) => parseInt(color, 16);
@@ -27,8 +26,6 @@ const Wave = ({ startColor = "#1F51FF", endColor = "#FF3131" }) => {
 
   const pathRefs = useRef([]);
 
-  const { activeSection, bgColor, actText, inacText, sections } = ScrollTracker();
-
   useEffect(() => {
     let frameId;
     const startTime = performance.now();
@@ -51,7 +48,7 @@ const Wave = ({ startColor = "#1F51FF", endColor = "#FF3131" }) => {
 
     frameId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(frameId);
-  });
+  }, []);
 
   return (
     <div className="h-6/4 overflow-hidden">
