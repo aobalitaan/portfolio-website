@@ -170,8 +170,10 @@ export default function Projects() {
                 className="snap-center"
                 style={{ zIndex }}
                 onClick={() => {
-                  const url = project.prodLink || project.repoLink;
-                  if (url) window.location.href = url;
+                  if (isActive) {
+                    const url = project.prodLink || project.repoLink;
+                    if (url) window.location.href = url;
+                  }
                 }}
 
               >

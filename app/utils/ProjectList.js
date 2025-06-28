@@ -21,7 +21,7 @@ const projectList = [
     stack: ["NextJS", "Tailwind"],
     desc: "An alumni tracking system with features for user management, event organization, job postings, and news updates. Served as the frontend developer.",
     imagePath: "ASTRA.png",
-    prodLink: "https://icsa.crabdance.com"
+    repoLink: "https://github.com/fofajardo/cmsc128-ics-astra.git"
   },
   {
     title: "Portfolio",
