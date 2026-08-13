@@ -28,15 +28,11 @@ export default function Skills() {
             className="overflow-visible"
           >
             <FadeScroll show={isActive}>
-              <div className="flex items-baseline gap-3">
-                <span className={`font-var1 text-sm opacity-40 ${actText}`}>
-                  {String(i + 1).padStart(2, "0")}
-                </span>
+              <div className="flex items-baseline gap-4">
                 <div className={`smalltext uppercase tracking-[0.2em] ${actText}`}>
                   {group.group}
                 </div>
-                <div className={`h-px flex-1 opacity-20 ${actBg}`} />
-                <span className="smalltext opacity-40">{group.items.length}</span>
+                <div className={`h-px flex-1 opacity-15 ${actBg}`} />
               </div>
 
               <div className="mt-4 grid grid-cols-4 gap-x-3 gap-y-5 sm:grid-cols-6 md:grid-cols-8 md:gap-x-6 lg:grid-cols-12">

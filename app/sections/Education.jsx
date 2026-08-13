@@ -38,7 +38,7 @@ export default function Education() {
             <div className="grid grid-cols-12 items-end gap-x-6 gap-y-4">
               <div className="col-span-12 md:col-span-7">
                 <div className="heading1 leading-[0.95]">{education.degree}</div>
-                <div className="largetext mt-1 opacity-80">{education.school}</div>
+                <div className="largetext mt-1 opacity-75">{education.school}</div>
               </div>
 
               {/* The honour is the headline fact — set it as display type
@@ -47,17 +47,17 @@ export default function Education() {
                 <div className={`font-var1 text-2xl leading-none md:text-4xl ${actText}`}>
                   {education.honors[0]}
                 </div>
-                <div className="smalltext mt-2 opacity-65">
+                <div className="smalltext mt-2 opacity-50">
                   {education.honors.slice(1).join(" · ")} · {education.period}
                 </div>
               </div>
 
               <div className="col-span-12">
-                <div className={`h-px w-full opacity-20 ${actBg}`} />
-                <div className="smalltext mt-3 flex flex-wrap gap-x-6 gap-y-1 opacity-70">
+                <div className={`h-px w-full opacity-15 ${actBg}`} />
+                <div className="smalltext mt-3 flex flex-col gap-1 opacity-75">
                   {education.awards.map((a) => (
-                    <span key={a} className="flex items-baseline gap-2">
-                      <span className={`h-px w-3 shrink-0 ${actBg}`} />
+                    <span key={a} className="flex items-baseline gap-3">
+                      <span className={`h-px w-4 shrink-0 opacity-60 ${actBg}`} />
                       {a}
                     </span>
                   ))}
@@ -78,16 +78,15 @@ export default function Education() {
                     href={c.link}
                     target="_blank"
                     rel="noreferrer"
-                    className="group block transition-opacity hover:opacity-70"
+                    className="group block transition-opacity hover:opacity-75"
                   >
                     <div className="regulartext inline-flex items-start gap-1 leading-snug">
                       {c.title}
                       <ArrowUpRight size={16} className="mt-1 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </div>
-                    <div className="smalltext mt-1 opacity-60">
-                      {c.issuer} · {c.period}
+                    <div className="smalltext mt-1 opacity-50">
+                      {c.issuer} · {c.period} · ID {c.credentialId}
                     </div>
-                    <div className="smalltext opacity-45">ID {c.credentialId}</div>
                   </a>
                 ))}
               </Card>
@@ -96,8 +95,8 @@ export default function Education() {
                 {publications.map((p) => (
                   <div key={p.title}>
                     <div className="regulartext max-w-[52ch] italic leading-snug">{p.title}</div>
-                    <div className="smalltext mt-2 opacity-60">{p.authors}</div>
-                    <div className="smalltext mt-1 opacity-45">
+                    <div className="smalltext mt-2 opacity-75">{p.authors}</div>
+                    <div className="smalltext mt-1 opacity-50">
                       {p.venue} · {p.period} · {p.publisher}
                     </div>
                   </div>
