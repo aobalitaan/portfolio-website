@@ -1,3 +1,6 @@
+// Split into a single lead line plus short scannable highlights, rather than
+// three long bullets. Long bullets read as a wall of text at a glance; a lead
+// carries the narrative and the highlights get skimmed.
 const experienceList = [
   {
     company: "BriarBear",
@@ -5,11 +8,19 @@ const experienceList = [
     role: "Software Engineer",
     location: "US (Remote)",
     period: "Jul 2025 — Aug 2026",
-    bullets: [
-      "Shipped production features across a suite of AI products — a node-based workflow builder, an LLM support chatbot with vector search and streaming, a recommendation engine, and automation pipelines.",
-      "~10 tickets a sprint across Next.js, Node.js, and Supabase — holding Clean Architecture boundaries at that pace rather than in spite of it.",
-      "Sprint planning, architecture reviews, deploys, and reliability audits with a team spread across time zones.",
+    lead: "Shipped production features across a suite of AI products, working with designers, product owners and engineers across time zones.",
+    highlights: [
+      "Node-based AI workflow builder (Wyren)",
+      "LLM support chatbot — vector search, streaming",
+      "AI gift recommendation engine",
+      "Business process automation pipelines",
     ],
+    metrics: [
+      // Not "~10": Syne draws the tilde high and small, so it reads as a middot.
+      { value: "10", label: "avg. Jira tickets / sprint" },
+      { value: "Clean Arch.", label: "held at that pace" },
+    ],
+    stack: ["Next.js", "Node.js", "Supabase"],
   },
   {
     company: "Limitless Lab",
@@ -17,10 +28,17 @@ const experienceList = [
     role: "Software Engineer Intern",
     location: "Mandaluyong, PH",
     period: "Jun 2025 — Aug 2025",
-    bullets: [
-      "Built \"Limitless Funds,\" an AI grant-discovery platform, from Figma prototype through backend integration.",
-      "Wired Gemini and Mistral through OpenRouter to automate grant matching and proposal drafting — cutting the paperwork load on grassroots organizations.",
+    lead: "Built \"Limitless Funds,\" an AI grant-discovery platform, from Figma prototype through backend integration.",
+    highlights: [
+      "Gemini + Mistral via OpenRouter",
+      "Automated grant matching",
+      "Automated proposal drafting",
+      "Cut paperwork load on grassroots orgs",
     ],
+    metrics: [
+      { value: "Full SDLC", label: "prototype to production" },
+    ],
+    stack: ["Figma", "OpenRouter"],
   },
 ];
 

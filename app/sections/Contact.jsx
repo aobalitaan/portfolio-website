@@ -20,7 +20,7 @@ export default function Contact() {
         <SlideDiv show={isActive} animateOnce type="left" delay={0.1} className="overflow-visible">
           <FadeScroll show={isActive}>
             <div className={`smalltext uppercase tracking-widest ${actText}`}>get in touch</div>
-            <div className="heading1 mt-2">Let&apos;s build something.</div>
+            <div className="heading1 mt-2 leading-[0.95] md:text-7xl">Let&apos;s build<br />something.</div>
             <div className="regulartext mt-3 max-w-xl opacity-80">
               Open to software engineering roles and collaborations on AI-powered products.
             </div>
