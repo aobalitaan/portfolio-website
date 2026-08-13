@@ -1,6 +1,5 @@
 import { motion, useSpring } from "framer-motion";
 import { useEffect, useRef } from "react";
-import projectList from "@/app/utils/ProjectList";
 
 const CardsAnimation = ({
   children,
@@ -8,11 +7,15 @@ const CardsAnimation = ({
   translateDistance = 400,
   rotateAmount = 10,
   index,
+  length = 1,
   show,
   toggledisableSwitch,
   changeHoveredCard,
 }) => {
-  const mult = Math.floor(projectList.length / 2 - index);
+  // Fan the deck symmetrically about its midpoint. Must not floor: with an even
+  // card count the offsets are halves, and flooring pins the last card to 0 so
+  // it never animates.
+  const mult = (length - 1) / 2 - index;
 
   const springX = useSpring(0, { stiffness: 200, damping: 35 });
   const springRotate = useSpring(0, { stiffness: 200, damping: 35 });
@@ -21,7 +24,7 @@ const CardsAnimation = ({
   const targetRotate = show ? 0 : -rotateAmount * mult;
   const targetFilter = show
     ? "brightness(1) blur(0px)"
-    : `brightness(${1.0 - mult / 10})`;
+    : `brightness(${1.0 - Math.abs(mult) / 10})`;
 
 
   const timeoutRef = useRef(null);

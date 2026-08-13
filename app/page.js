@@ -1,44 +1,47 @@
 "use client";
 
-import { ScrollTracker } from "./utils/ScrollTracker";
+import Backdrop from "./components/Backdrop";
 import Hero from "./sections/Hero";
 import Projects from "./sections/Projects";
-import Wave from "./components/Wave";
+import Experience from "./sections/Experience";
+import Education from "./sections/Education";
 import Skills from "./sections/Skills";
-
-import Lenis from "lenis";
 import Contact from "./sections/Contact";
 
+// min-h rather than fixed h: Experience/Education/Skills overflow one viewport
+// on narrow screens, and ScrollProvider measures the real offsets anyway.
+// `flex` matters — with height:auto a child's h-full collapses to content, so
+// sections stretch via flex-1 instead.
+const sectionClass = "relative z-10 flex min-h-svh";
+
 export default function Home() {
-  const { activeSection, bgColor, actText, inacText, blur, sections } = ScrollTracker();
-
   return (
-    <div className={"relative snap-y snap-mandatory scroll-smooth"}>
-      <div className={`fixed inset-0 z-0 w-screen bg-${bgColor} transition-colors duration-500 ease-in`}>
-        <div className="h-screen w-full opacity-50 [mask-image:linear-gradient(to_top,rgba(0,0,0,0.25)_0%,rgba(0,0,0,1)_50%,rgba(0,0,0,0.25)_100%)]">
-          <Wave />
-        </div>
-      </div>
+    <div className="relative">
+      <Backdrop />
 
-      <div className={`fixed inset-0 z-0 h-screen w-screen ${blur} transition-all duration-750 ease-in`}>
-      </div>
-
-
-      <section className="h-svh sticky top-0 z-0 min-h-[720px] snap-start">
+      <section data-section="home" className="sticky top-0 z-0 h-svh min-h-[720px]">
         <Hero />
       </section>
 
-      <section className="top-0 z-0 h-screen min-h-[720px] snap-start">
+      <section data-section="projects" className={sectionClass}>
         <Projects />
       </section>
 
-      {/* <section className="top-0 z-0 h-screen snap-start">
+      <section data-section="experience" className={sectionClass}>
+        <Experience />
+      </section>
+
+      <section data-section="education" className={sectionClass}>
+        <Education />
+      </section>
+
+      <section data-section="skills" className={sectionClass}>
         <Skills />
       </section>
 
-      <section className="z-40 h-screen snap-start">
+      <section data-section="contact" className={sectionClass}>
         <Contact />
-      </section> */}
+      </section>
     </div>
   );
 }

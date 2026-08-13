@@ -8,6 +8,10 @@ import nextJsPlugin from "@next/eslint-plugin-next";
 
 export default defineConfig([
   {
+    // `next lint` excluded build output implicitly; plain `eslint .` does not.
+    ignores: [".next/**", "node_modules/**", "out/**", "build/**", "next-env.d.ts"],
+  },
+  {
     files: ["**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}"],
     languageOptions: {
       parserOptions: {
@@ -46,7 +50,9 @@ export default defineConfig([
     },
   },
   {
-    files: ["**/*.{jsx,mjsx,tsx,mtsx}"],
+    // App Router entrypoints (layout.js, page.js) are .js, so the Next rules and
+    // the prop-types opt-out have to cover .js too — not just .jsx.
+    files: ["**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}"],
     plugins: {
       "@next/next": nextJsPlugin,
     },

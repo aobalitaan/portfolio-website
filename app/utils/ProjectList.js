@@ -1,34 +1,21 @@
 const projectList = [
   {
-    title: "tayo",
-    color: "#385DBA",
-    stack: ["Flutter", "Firebase"],
-    desc: "A mobile donation application, enabling seamless donations, multi-address management, QR Generation, and real-time updates.",
-    imagePath: "tayo.png",
-    repoLink: "https://github.com/aobalitaan/tayo-donation-app"
+    title: "Wyren",
+    subtitle: "Visual AI Workflow Builder",
+    color: "#E4502A",
+    stack: ["NextJS", "TypeScript", "Gemini", "Kling AI", "ElevenLabs", "Supabase", "Stripe"],
+    desc: "Wire AI nodes — text, image, video, voice — into pipelines that run themselves. 20 node types, async execution, live progress, and a model registry that absorbs new providers on its own.",
+    imagePath: "wyren.webp",
+    prodLink: "https://wyren.ai/"
   },
   {
-    title: "farm2table",
-    color: "#355E3B",
-    stack: ["MongoDB", "Express.js", "React", "Node.js"],
-    desc: "An e-commerce web app with secure user authentication, role-based authorization, and advanced admin features.",
-    imagePath: "farm2table.png",
-    repoLink: "https://github.com/ChristianMorelos/CMSC-100-Project"
-  },
-  {
-    title: "ASTRA",
-    color: "#164d9c",
-    stack: ["NextJS", "Tailwind"],
-    desc: "An alumni tracking system with features for user management, event organization, job postings, and news updates. Served as the frontend developer.",
-    imagePath: "ASTRA.png",
-    repoLink: "https://github.com/fofajardo/cmsc128-ics-astra.git"
-  },
-  {
-    title: "Portfolio",
-    color: "#946d48",
-    stack: ["NextJS", "Tailwind"],
-    desc: "A portfolio site showcasing professional work, projects, and skills. Designed for easy navigation and creative layouts.",
-    imagePath: "portfolio.png"
+    title: "Arca.ph",
+    subtitle: "AI Training Network for Filipinos",
+    color: "#1668B3",
+    stack: ["NextJS", "Supabase", "Vercel", "Render", "Claude Code"],
+    desc: "Practical AI training tools and curriculum for Filipino digital workers. Built end-to-end, shipped spec- and test-driven, and still the lead engineer on it.",
+    imagePath: "arca.webp",
+    prodLink: "https://arca.ph"
   },
 ];
 
