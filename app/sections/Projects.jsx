@@ -1,48 +1,20 @@
-import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
-import { useScroll, useTransform } from "framer-motion";
-import { ScrollTracker } from "../utils/ScrollTracker";
+import React, { useState, useEffect, useRef } from "react";
+import { useScrollTheme } from "../utils/ScrollProvider";
 import ProjectCard from "../components/ProjectCard";
 import projectList from "../utils/ProjectList";
-import SlideDiv from "../components/animation/SlideDiv";
-import FadeScroll from "../components/animation/FadeScroll";
+import SectionHeading from "../components/SectionHeading";
 import CardsAnimation from "../components/animation/CardsAnimation";
 
 export default function Projects() {
-  const {
-    activeSection,
-    actText,
-    scrollPercent
-  } = ScrollTracker();
+  const { activeSection, actText, actBg, scrollPercent } = useScrollTheme();
 
-  const isActive = activeSection != "home";
+  const isActive = activeSection !== "home";
 
   const [hoveredCard, setHoveredCard] = useState(null);
   const [disableSwitch, setDisableSwitch] = useState(false);
 
   const cardRefs = useRef([]);
   const containerRef = useRef(null);
-  const [offsetTop, setOffsetTop] = useState(0);
-  const [screenHeight, setScreenHeight] = useState(0);
-  const { scrollY } = useScroll();
-
-  useLayoutEffect(() => {
-    const measure = () => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        setOffsetTop(window.scrollY + rect.top);
-        setScreenHeight(window.innerHeight);
-      }
-    };
-
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, []);
-
-  const scrollEffect = useTransform(scrollY, scrollYValue => {
-    const distanceToTop = offsetTop - scrollYValue;
-    return distanceToTop / screenHeight;
-  });
 
   const switchCard = async (index) => {
     if (index === hoveredCard || !isActive) return;
@@ -66,49 +38,29 @@ export default function Projects() {
     const containerEl = containerRef.current;
     if (!containerEl) return;
 
+    // Centre a single card, not the rail's midpoint — with two cards the
+    // midpoint falls in the gap between them and both get half-cut on mobile.
+    // On desktop the rail doesn't overflow, so this is a no-op there.
+    const centreCard = (i) => {
+      const cardEl = cardRefs.current[i];
+      if (!cardEl) return;
+      containerEl.scrollTo({
+        left: cardEl.offsetLeft - (containerEl.clientWidth - cardEl.offsetWidth) / 2,
+        behavior: "smooth",
+      });
+    };
 
     if (!isActive) {
       setHoveredCard(null);
       hasScrolledToFirst.current = false;
-
-      const centerIndex = Math.floor(projectList.length / 2);
-      const cardEl = cardRefs.current[centerIndex];
-
-      if (cardEl) {
-        const cardOffsetLeft = cardEl.offsetLeft;
-        const cardWidth = cardEl.offsetWidth;
-        const containerWidth = containerEl.offsetWidth;
-
-        const scrollLeft = cardOffsetLeft - (containerWidth - cardWidth) / 2;
-
-        containerEl.scrollTo({
-          left: scrollLeft,
-          behavior: "smooth",
-        });
-      }
+      centreCard(0);
     }
 
     if (isActive && !hasScrolledToFirst.current) {
-      const firstCard = cardRefs.current[0];
-      if (firstCard) {
-        const cardOffsetLeft = firstCard.offsetLeft;
-        const cardWidth = firstCard.offsetWidth;
-        const containerWidth = containerEl.offsetWidth;
-
-        const scrollLeft = cardOffsetLeft - (containerWidth - cardWidth) / 2;
-
-        containerEl.scrollTo({
-          left: scrollLeft,
-          behavior: "smooth",
-        });
-
-        hasScrolledToFirst.current = true;
-      }
+      centreCard(0);
+      hasScrolledToFirst.current = true;
     }
   }, [isActive, scrollPercent]);
-
-
-
 
 
   const getCardStyles = (index) => {
@@ -119,65 +71,58 @@ export default function Projects() {
     if (noHover || isHovered) {
       return {
         zIndex,
-        className: isHovered ? "scale-105 z-29" : "",
+        style: { transform: isHovered ? "scale(1.05)" : "none" },
       };
     }
 
-    const diff = Math.abs(index - hoveredCard);
-    const rotation = `${index > hoveredCard ? "" : "-"}rotate-${(diff * 5) % 30}`;
-    const translate = `${index < hoveredCard ? "" : "-"}translate-x-${diff * 25}`;
-    const extra = "translate-y-16 brightness-90 scale-85 blur-[1px]";
+    // Computed transforms cannot be Tailwind classes — Tailwind only ships
+    // utilities it can find as literal strings. These go inline.
+    const signed = index - hoveredCard;
+    const diff = Math.abs(signed);
+    const deg = Math.sign(signed) * ((diff * 5) % 30);
+    const tx = -Math.sign(signed) * diff * 100;
 
     return {
       zIndex,
-      className: `${rotation} ${translate} ${extra}`,
+      style: {
+        transform: `translateX(${tx}px) translateY(4rem) rotate(${deg}deg) scale(0.85)`,
+        filter: "blur(1px) brightness(0.9)",
+      },
     };
   };
 
   return (
     <div
       id="projects"
-      className={`relative h-full w-full text-${actText} px-0 pt-24 pb-4 md:pb-8 md:pt-28 overflow-x-clip`}
+      className={`relative flex w-full flex-1 flex-col ${actText} px-0 pt-24 pb-4 md:pb-8 md:pt-28 overflow-x-clip`}
     >
       {isActive && (
         <div className="px-4 md:px-8 lg:px-16">
-          <FadeScroll show={true}>
-            <SlideDiv type="top" animateOnce className="p-4">
-              <div className="flex h-fit w-full items-center justify-between">
-                <div className={`h-2 w-4 md:w-16 lg:w-40 bg-${actText}`} />
-                <div className={`heading2 text-${actText} transition-colors duration-250 ease-in`}>
-                  selected projects
-                </div>
-                <div className={`h-2 w-4 md:w-16 lg:w-40 bg-${actText}`} />
-              </div>
-            </SlideDiv>
-          </FadeScroll>
+          <SectionHeading title="selected projects" actText={actText} actBg={actBg} show={true} />
         </div>
       )}
 
-      <div className="no-scrollbar h-8/10 flex items-center overflow-visible transition-all">
+      <div className="no-scrollbar flex flex-1 items-center overflow-visible transition-all">
         <div
-          ref ={containerRef}
+          ref={containerRef}
           className="no-scrollbar ml-auto mr-auto flex h-full w-fit snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4"
         >
           {projectList.map((project, index) => {
-            const { zIndex, className } = getCardStyles(index);
+            const { zIndex, style } = getCardStyles(index);
 
             return (
-              <div
-                key={index}
+              <a
+                key={project.title}
                 ref={el => (cardRefs.current[index] = el)}
-                className="snap-center"
+                href={project.prodLink || project.repoLink}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${project.title} — ${project.subtitle}`}
+                className="snap-center relative block"
                 style={{ zIndex }}
-                onClick={() => {
-                  if (isActive) {
-                    const url = project.prodLink || project.repoLink;
-                    if (url) window.location.href = url;
-                  }
-                }}
-
+                onClick={(e) => { if (!isActive) e.preventDefault(); }}
               >
-                <div className={`transition-all duration-250 ease-in-out ${className}`}>
+                <div className="transition-all duration-250 ease-in-out" style={style}>
                   <CardsAnimation
                     toggledisableSwitch={setDisableSwitch}
                     changeHoveredCard={setHoveredCard}
@@ -186,7 +131,6 @@ export default function Projects() {
                     show={isActive}
                   >
                     <ProjectCard
-                      toggledisableSwitch={setDisableSwitch}
                       show={isActive}
                       disableSwitch={disableSwitch}
                       switchCard={switchCard}
@@ -196,7 +140,7 @@ export default function Projects() {
                     />
                   </CardsAnimation>
                 </div>
-              </div>
+              </a>
             );
           })}
         </div>

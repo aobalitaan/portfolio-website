@@ -1,90 +1,51 @@
-"use client";
-import PropTypes from "prop-types";
-import Navbar from "./components/Navbar";
+import { Syne, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import { useState, useEffect, useRef } from "react";
-import Lenis from "lenis";
+import AppShell from "./components/AppShell";
+
+const syne = Syne({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-syne",
+});
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-jakarta",
+});
+
+// Set NEXT_PUBLIC_SITE_URL to the custom domain once it's pointed; Vercel
+// supplies VERCEL_URL for preview and production deploys in the meantime.
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_URL && `https://${process.env.VERCEL_URL}`) ||
+  "http://localhost:3000";
+
+export const metadata = {
+  metadataBase: new URL(siteUrl),
+  title: "Portfolio | Axel Balitaan",
+  description:
+    "Axel Balitaan — Software Engineer building full-stack AI products. BS Computer Science, UP Los Baños.",
+  openGraph: {
+    title: "Portfolio | Axel Balitaan",
+    description: "Software Engineer | Full-Stack & AI | Philippines",
+    type: "website",
+    images: [{ url: "/preview.jpg", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Portfolio | Axel Balitaan",
+    description: "Software Engineer | Full-Stack & AI | Philippines",
+    images: ["/preview.jpg"],
+  },
+};
 
 export default function RootLayout({ children }) {
-  const [loadingVisible, setLoadingVisible] = useState(true);
-  const [fadeOut, setFadeOut] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [startTyping, setStartTyping] = useState(false);
-  const lenisRef = useRef(null);
-
-  useEffect(() => {
-    const typeTimer = setTimeout(() => setStartTyping(true), 250);
-    const mountTimer = setTimeout(() => setMounted(true), 1200);
-    const fadeTimer = setTimeout(() => setFadeOut(true), 1250);
-    const removeTimer = setTimeout(() => setLoadingVisible(false), 2000);
-
-    // Initialize Lenis once
-    if (!lenisRef.current) {
-      lenisRef.current = new Lenis({ lerp: 0.1, wheelMultiplier: 0.9 });
-      const raf = (time) => {
-        lenisRef.current.raf(time);
-        requestAnimationFrame(raf);
-      };
-      requestAnimationFrame(raf);
-    }
-
-    return () => {
-      clearTimeout(typeTimer);
-      clearTimeout(mountTimer);
-      clearTimeout(fadeTimer);
-      clearTimeout(removeTimer);
-    };
-  }, []);
-
   return (
-    <html lang="en">
-      <head>
-        <meta property="og:title" content="Portfolio | Axel Balitaan" />
-        <meta property="og:description" content="Full-Stack Developer | UPLB | Philippines" />
-        <meta
-          property="og:image"
-          content="https://raw.githubusercontent.com/aobalitaan/portfolio-website/319197aedc96ceab5cb6a1c47bb77a9c93a0b1bb/public/preview.png"
-        />
-      </head>
+    <html lang="en" className={`${syne.variable} ${jakarta.variable}`}>
       <body className="bg-brand-black overflow-x-clip">
-        {mounted && (
-          <>
-            <Navbar />
-            {children}
-          </>
-        )}
-
-        {loadingVisible && (
-          <LoadingScreen fadeOut={fadeOut} startTyping={startTyping} />
-        )}
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );
 }
-
-function LoadingScreen({ fadeOut, startTyping }) {
-  return (
-    <div
-      className={`absolute top-0 z-[1000] h-screen w-screen flex items-center justify-center bg-brand-black text-brand-brighter transition-all duration-1000 ease-in-out ${
-        fadeOut ? "opacity-0 scale-105 pointer-events-none" : "opacity-100 scale-100"
-      }`}
-      aria-live="polite"
-    >
-      {startTyping && (
-        <div className="heading2 md:heading1 animate-typing overflow-hidden whitespace-nowrap border-r-2 border-current opacity-100">
-          hello world!
-        </div>
-      )}
-    </div>
-  );
-}
-
-RootLayout.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-LoadingScreen.propTypes = {
-  fadeOut: PropTypes.node.isRequired,
-  startTyping: PropTypes.node.isRequired
-};
-

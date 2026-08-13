@@ -1,14 +1,72 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+// eslint.config.js
+import { defineConfig } from "eslint/config";
+import globals from "globals";
+import js from "@eslint/js";
+import reactPlugin from "eslint-plugin-react";
+import stylisticJsPlugin from "@stylistic/eslint-plugin-js";
+import nextJsPlugin from "@next/eslint-plugin-next";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const eslintConfig = [...compat.extends("next/core-web-vitals")];
-
-export default eslintConfig;
+export default defineConfig([
+  {
+    // `next lint` excluded build output implicitly; plain `eslint .` does not.
+    ignores: [".next/**", "node_modules/**", "out/**", "build/**", "next-env.d.ts"],
+  },
+  {
+    files: ["**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}"],
+    languageOptions: {
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      globals: {
+        ...globals.node,
+        ...globals.serviceworker,
+        ...globals.browser,
+        ...globals.mocha,
+      },
+    },
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+    plugins: {
+      react: reactPlugin,
+      "@stylistic/js": stylisticJsPlugin,
+    },
+    rules: {
+      ...js.configs.recommended.rules,
+      ...reactPlugin.configs.flat.recommended.rules,
+      ...reactPlugin.configs.flat["jsx-runtime"].rules,
+      "@stylistic/js/indent": ["error", 2],
+      "@stylistic/js/quotes": ["error", "double"],
+      "@stylistic/js/semi": ["error", "always"],
+      "@stylistic/js/no-trailing-spaces": "error",
+      "no-undef": "warn",
+      "no-unused-vars": "off",
+    },
+  },
+  {
+    // App Router entrypoints (layout.js, page.js) are .js, so the Next rules and
+    // the prop-types opt-out have to cover .js too — not just .jsx.
+    files: ["**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}"],
+    plugins: {
+      "@next/next": nextJsPlugin,
+    },
+    rules: {
+      ...nextJsPlugin.configs.recommended.rules,
+      ...nextJsPlugin.configs["core-web-vitals"].rules,
+      "@next/next/no-img-element": "off",
+      "react/prop-types": "off",
+      "react/no-unknown-property": [
+        "error",
+        {
+          ignore: ["jsx", "global"],
+        },
+      ],
+    },
+  },
+]);

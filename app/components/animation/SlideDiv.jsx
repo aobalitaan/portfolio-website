@@ -39,7 +39,7 @@ const SlideDiv = ({
           type: "spring",
           stiffness: 200,
           damping: 20,
-          mass: 1.75,
+          mass: 1,
           delay,
         },
       }).then(() => {

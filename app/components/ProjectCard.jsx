@@ -1,53 +1,9 @@
-import React, {useState} from "react";
+import React from "react";
 import { useRef } from "react";
 import Image from "next/image";
+import Tag from "./Tag";
 
-export default function ProjectCard({ disableSwitch, project, show, switchCard, changeHoveredCard, index  }) {
-  const colorList = [
-    { bg: "bg-red-100", text: "text-red-700" },
-    { bg: "bg-rose-100", text: "text-rose-700" },
-    { bg: "bg-pink-100", text: "text-pink-700" },
-    { bg: "bg-fuchsia-100", text: "text-fuchsia-700" },
-    { bg: "bg-purple-100", text: "text-purple-700" },
-    { bg: "bg-violet-100", text: "text-violet-700" },
-    { bg: "bg-indigo-100", text: "text-indigo-700" },
-    { bg: "bg-blue-100", text: "text-blue-700" },
-    { bg: "bg-teal-100", text: "text-teal-700" },
-    { bg: "bg-green-200", text: "text-green-700" },
-    { bg: "bg-lime-100", text: "text-lime-700" },
-    { bg: "bg-yellow-100", text: "text-yellow-700" },
-    { bg: "bg-amber-100", text: "text-amber-700" },
-    { bg: "bg-orange-100", text: "text-orange-700" },
-  ];
-
-
-  const getLetterSum = (str) =>
-    str.toLowerCase().split("").reduce((sum, char) => {
-      const code = char.charCodeAt(0);
-
-      if (code >= 97 && code <= 122) {
-        return sum + (code - 96);
-      } else if (code >= 48 && code <= 57) {
-        return sum + (code - 48);
-      }
-      return sum;
-    }, 0);
-
-
-  const addTag = (tag, index) => {
-    const sum = getLetterSum(tag + tag.slice(0,4));
-    const color = colorList[sum % colorList.length];
-
-    return (
-      <div
-        key={index}
-        className={`px-2 py-1 rounded-full smalltext ${color.bg} ${color.text}`}
-      >
-        {tag}
-      </div>
-    );
-  };
-
+export default function ProjectCard({ disableSwitch, project, show, switchCard, changeHoveredCard, index }) {
   const hoverTimeout = useRef(null);
 
   const handlePointerOver = (index) => {
@@ -66,7 +22,9 @@ export default function ProjectCard({ disableSwitch, project, show, switchCard, 
 
 
   return (
-    <div className={"bg-brand-white duration-250 h-fit w-auto rounded-2xl p-4 shadow-md transition-all ease-in"}>
+    // Width is pinned here rather than on each child: the tag row is
+    // min-content-sized, so an auto-width card stretches to fit every chip.
+    <div className={"bg-brand-white duration-250 h-fit w-[80vw] md:w-[392px] rounded-2xl p-4 shadow-md transition-all ease-in"}>
 
       <div
         onPointerOver={() => handlePointerOver(index)}
@@ -74,24 +32,35 @@ export default function ProjectCard({ disableSwitch, project, show, switchCard, 
         className={`z-25 pointer-events-auto absolute left-1/2 top-1/2 hidden h-[75%] w-[80%] -translate-x-1/2 -translate-y-1/2 ${show ? "cursor-pointer" : ""} lg:block`}
       />
 
-      <div className={`relative h-75 w-[80vw] md:w-90 bg-[${project.color}] rounded-xl`}>
+      <div
+        className="relative aspect-16/10 w-full rounded-xl overflow-hidden"
+        style={{ backgroundColor: project.color }}
+      >
         <Image
           src={`/${project.imagePath}`}
-          alt={project.title}
+          alt={`${project.title} — ${project.subtitle}`}
           fill={true}
-          className="rounded-xl object-contain"
+          sizes="(max-width: 768px) 80vw, 360px"
+          priority={index === 0}
+          className="rounded-xl object-cover object-top"
         />
       </div>
 
-      <div className={`heading2 line-clamp-1 pt-4 text-[${project.color}]`}>
+      <div className="heading2 line-clamp-1 pt-4" style={{ color: project.color }}>
         {project.title}
       </div>
 
-      <div className="mt-2 flex flex-row gap-1 overflow-x-auto">
-        {project.stack.map((tag, index) => addTag(tag, index))}
+      <div className="regulartext text-brand-black/70 line-clamp-1">
+        {project.subtitle}
       </div>
 
-      <div className="smalltext md:w-90 text-brand-black line-clamp-3 h-[6rem] w-[80vw] pt-4">
+      {/* Wrap rather than scroll — on desktop there's no touch affordance, so a
+          horizontally-scrolled row just hides the back half of the stack. */}
+      <div className="text-brand-black/70 mt-3 flex min-h-16 w-full flex-wrap content-start gap-1.5">
+        {project.stack.map((tag) => <Tag key={tag} label={tag} />)}
+      </div>
+
+      <div className="smalltext text-brand-black line-clamp-4 h-[6rem] w-full pt-3">
         {project.desc}
       </div>
 

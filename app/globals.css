@@ -1,11 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@750&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200&display=swap');
-
 @import "tailwindcss";
 
+/* Fonts are self-hosted through next/font in app/layout.js — no render-blocking
+   request to fonts.googleapis.com. */
 @theme static {
-  --font-var1: "Syne", sans-serif;
-  --font-var2: "Plus Jakarta Sans", sans-serif;
+  --font-var1: var(--font-syne), sans-serif;
+  --font-var2: var(--font-jakarta), sans-serif;
   
   --color-brand-white: #F3EFEE;
   --color-brand-primary: #5e8cff;
@@ -18,21 +17,27 @@
 @layer components {
   .heading1 {
     @apply font-var1 text-4xl md:text-6xl;
+    font-weight: 750;
   }
   .heading2 {
     @apply font-var1 text-2xl md:text-4xl;
+    font-weight: 750;
   }
   .heading3 {
     @apply font-var1 text-xl md:text-2xl;
+    font-weight: 750;
   }
   .largetext {
     @apply font-var2 text-xl md:text-2xl;
+    font-weight: 200;
   }
   .regulartext {
     @apply font-var2 text-base md:text-lg;
+    font-weight: 400;
   }
   .smalltext {
     @apply font-var2 text-xs md:text-sm;
+    font-weight: 400;
   }
   .no-scrollbar::-webkit-scrollbar {
     display: none;
@@ -40,9 +45,6 @@
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
-  }
-  .snap-y {
-    scroll-snap-type: y mandatory;
   }
   .snap-center {
     scroll-snap-align: center;
@@ -55,6 +57,21 @@
 
 nav{
   @apply font-var1 text-3xl;
+  font-weight: 750;
+}
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 .wave{
