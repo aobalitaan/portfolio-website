@@ -71,7 +71,7 @@ export default function SkillIcon({ label }) {
           <Glyph aria-label={label} strokeWidth={1.5} className="h-[85%] w-[85%]" />
         ) : null}
       </div>
-      <span className="smalltext leading-tight opacity-70">{label}</span>
+      <span className="smalltext leading-tight">{label}</span>
     </div>
   );
 }

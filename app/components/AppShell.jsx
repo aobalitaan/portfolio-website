@@ -13,9 +13,9 @@ export default function AppShell({ children }) {
   const lenisRef = useRef(null);
 
   useEffect(() => {
-    const typeTimer = setTimeout(() => setStartTyping(true), 250);
-    const fadeTimer = setTimeout(() => setFadeOut(true), 1250);
-    const removeTimer = setTimeout(() => setLoadingVisible(false), 2000);
+    const typeTimer = setTimeout(() => setStartTyping(true), 120);
+    const fadeTimer = setTimeout(() => setFadeOut(true), 700);
+    const removeTimer = setTimeout(() => setLoadingVisible(false), 1200);
 
     // Children render immediately now, so the overlay has to hold scroll
     // itself — it used to rely on there being no content behind it.
@@ -23,7 +23,7 @@ export default function AppShell({ children }) {
     document.body.style.overflow = "hidden";
     const unlockTimer = setTimeout(() => {
       document.body.style.overflow = previousOverflow;
-    }, 1250);
+    }, 700);
 
     if (!lenisRef.current) {
       lenisRef.current = new Lenis({ lerp: 0.1, wheelMultiplier: 0.9 });

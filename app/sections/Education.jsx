@@ -42,7 +42,7 @@ export default function Education() {
           <div className="smalltext opacity-70">{education.period}</div>
           <div className="mt-2 flex flex-wrap gap-2">
             {education.honors.map((h) => (
-              <span key={h} className={`smalltext rounded-full px-3 py-1 ${actBg} text-brand-white`}>
+              <span key={h} className={`smalltext rounded-full px-3 py-1 ${actBg} text-brand-white/95`}>
                 {h}
               </span>
             ))}
@@ -80,7 +80,7 @@ export default function Education() {
         <Block label="Research & Publications" delay={0.3} type="right" show={isActive} actText={actText} actBorder={actBorder}>
           {publications.map((p) => (
             <div key={p.title}>
-              <div className="regulartext italic leading-snug">{p.title}</div>
+              <div className="regulartext max-w-[68ch] italic leading-relaxed">{p.title}</div>
               <div className="smalltext mt-1 opacity-80">{p.authors}</div>
               <div className="smalltext opacity-70">
                 {p.venue} · {p.location}

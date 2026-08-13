@@ -28,7 +28,8 @@ export const sections = [
     end: 200,
     bg: "bg-brand-primary",
     bgSoft: "bg-brand-primary/75",
-    inacText: "text-brand-white",
+    // Black, not white: #F3EFEE on #5e8cff is 2.76:1 and fails WCAG AA.
+    inacText: "text-brand-black/80",
     actText: "text-brand-black",
     actBg: "bg-brand-black",
     actBorder: "border-brand-black",
@@ -64,7 +65,7 @@ export const sections = [
     end: 500,
     bg: "bg-brand-primary",
     bgSoft: "bg-brand-primary/75",
-    inacText: "text-brand-white",
+    inacText: "text-brand-black/80",
     actText: "text-brand-black",
     actBg: "bg-brand-black",
     actBorder: "border-brand-black",
@@ -103,7 +104,7 @@ const resolveByPercent = (percent) => {
 // is taller than one viewport. Measuring real offsets keeps the theme in step
 // with what is actually on screen instead of assuming 100vh each.
 const resolveByBands = (bands, scrollY, viewportH) => {
-  const probe = scrollY + viewportH * 0.4;
+  const probe = scrollY + viewportH * 0.2;
   let match = bands[0];
   for (const band of bands) {
     if (probe >= band.top) match = band;
@@ -125,7 +126,7 @@ export function ScrollProvider({ children }) {
       history.scrollRestoration = "manual";
     }
     window.scrollTo(0, 0);
-    const t = setTimeout(() => setIntroDone(true), 1200);
+    const t = setTimeout(() => setIntroDone(true), 700);
     return () => clearTimeout(t);
   }, []);
 

@@ -11,7 +11,7 @@ import React from "react";
 export default function Tag({ label, className = "" }) {
   return (
     <span
-      className={`smalltext inline-flex items-center whitespace-nowrap border border-current/30 px-2.5 py-1 tracking-wide ${className}`}
+      className={`smalltext inline-flex items-center whitespace-nowrap border border-current/50 px-2.5 py-1 tracking-wide ${className}`}
     >
       {label}
     </span>

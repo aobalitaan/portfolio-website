@@ -41,9 +41,11 @@ export default function Navbar() {
         {routes.map((route, index) => {
           const isActive = activeSection === route;
           return (
-            <div
+            <button
               key={route}
+              type="button"
               onClick={() => handleScroll(route)}
+              aria-current={isActive ? "true" : undefined}
               className={`navbar-options hidden text-shadow-lg lg:block font-var1 text-lg xl:text-xl cursor-pointer transition-colors duration-250 ease-in ${
                 isActive
                   ? `${actText} hover:text-brand-darker`
@@ -52,7 +54,7 @@ export default function Navbar() {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               {route}
-            </div>
+            </button>
           );
         })}
 
@@ -60,7 +62,7 @@ export default function Navbar() {
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
           aria-expanded={menuOpen}
-          className={`animate-slideDown focus:outline-none lg:hidden cursor-pointer transition-transform duration-250 z-50 ease-in ${inacText} ${
+          className={`animate-slideDown lg:hidden cursor-pointer transition-transform duration-250 z-50 ease-in ${inacText} ${
             menuOpen ? "rotate-90" : "rotate-0"
           }`}
           style={{ animationDelay: "0.1s" }}
@@ -82,7 +84,7 @@ export default function Navbar() {
           <button
             key={route}
             onClick={() => handleScroll(route)}
-            className={`heading3 cursor-pointer transition-colors duration-200 ease-in ${
+            className={`heading3 cursor-pointer px-6 py-2 transition-colors duration-200 ease-in ${
               activeSection === route
                 ? actText
                 : `${inacText} hover:text-brand-gray`

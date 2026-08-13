@@ -49,9 +49,9 @@ export default function Experience() {
                 <div className="largetext mt-0.5">{job.role}</div>
                 <div className="smalltext opacity-70">{job.location}</div>
 
-                <ul className="mt-3 flex flex-col gap-2">
+                <ul className="mt-3 flex max-w-[68ch] flex-col gap-2">
                   {job.bullets.map((bullet, b) => (
-                    <li key={b} className="regulartext flex gap-2 text-sm leading-snug md:text-base">
+                    <li key={b} className="regulartext flex gap-2 text-sm leading-relaxed md:text-base">
                       <span className={`mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${actBg}`} />
                       <span className="opacity-90">{bullet}</span>
                     </li>
