@@ -14,9 +14,9 @@ export default function Contact() {
   return (
     <div
       id="contact"
-      className={`relative flex w-full flex-1 flex-col ${inacText} px-4 pb-8 pt-24 md:px-8 md:pt-28 lg:px-16`}
+      className={`relative flex w-full flex-1 flex-col ${inacText} px-6 pb-12 pt-24 md:px-10 md:pt-28`}
     >
-      <div className="flex flex-1 flex-col justify-center gap-8">
+      <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center gap-8">
         <SlideDiv show={isActive} animateOnce type="left" delay={0.1} className="overflow-visible">
           <FadeScroll show={isActive}>
             <div className={`smalltext uppercase tracking-widest ${actText}`}>get in touch</div>
@@ -59,7 +59,7 @@ export default function Contact() {
         </div>
       </div>
 
-      <FadeScroll show={isActive}>
+      <FadeScroll show={isActive} className="mx-auto w-full max-w-5xl">
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
           <div className={`h-1.5 w-24 md:w-auto md:flex-1 ${actBg}`} />
           <div className="smalltext shrink-0 opacity-70">© 2026 Axel Balitaan · All Rights Reserved</div>
