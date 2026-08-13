@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useScrollTheme } from "../utils/ScrollProvider";
 import ProjectCard from "../components/ProjectCard";
 import projectList from "../utils/ProjectList";
-import SectionHeading from "../components/SectionHeading";
 import CardsAnimation from "../components/animation/CardsAnimation";
 
 export default function Projects() {
@@ -97,8 +96,11 @@ export default function Projects() {
       className={`relative flex w-full flex-1 flex-col ${actText} px-0 pt-24 pb-4 md:pb-8 md:pt-28 overflow-x-clip`}
     >
       {isActive && (
-        <div className="px-4 md:px-8 lg:px-16">
-          <SectionHeading title="selected projects" actText={actText} actBg={actBg} show={true} />
+        <div className="mx-auto w-full max-w-5xl px-6 md:px-10">
+          <div className="flex items-center gap-4">
+            <h2 className={`heading2 whitespace-nowrap ${actText}`}>selected projects</h2>
+            <div className={`h-px flex-1 opacity-25 ${actBg}`} />
+          </div>
         </div>
       )}
 

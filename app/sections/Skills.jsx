@@ -2,7 +2,7 @@ import React from "react";
 import { useScrollTheme } from "../utils/ScrollProvider";
 import skillList from "../utils/SkillList";
 import SkillIcon from "../components/SkillIcon";
-import SectionHeading from "../components/SectionHeading";
+import Section from "../components/Section";
 import SlideDiv from "../components/animation/SlideDiv";
 import FadeScroll from "../components/animation/FadeScroll";
 
@@ -11,37 +11,40 @@ export default function Skills() {
   const isActive = activeSection === "skills";
 
   return (
-    <div
+    <Section
       id="skills"
-      className={`relative flex w-full flex-1 flex-col ${inacText} px-4 pb-8 pt-24 md:px-8 md:pt-28 lg:px-16`}
+      title="skills"
+      show={isActive}
+      actText={actText}
+      actBg={actBg}
+      inacText={inacText}
     >
-      <SectionHeading title="skills" actText={actText} actBg={actBg} show={isActive} />
-
-      <div className="no-scrollbar mt-4 flex flex-1 flex-col justify-center gap-7 overflow-y-auto md:gap-10">
+      <div className="flex flex-col gap-8 md:gap-10">
         {skillList.map((group, i) => (
           <SlideDiv
             key={group.group}
             show={isActive}
             animateOnce
-            type="bottom"
-            delay={0.1 + i * 0.12}
+            type="left"
+            delay={0.1 + i * 0.1}
             className="overflow-visible"
           >
             <FadeScroll show={isActive}>
-              <div className="flex items-baseline gap-4">
-                <div className={`smalltext uppercase tracking-[0.2em] ${actText}`}>
+              {/* Same 150px meta rail as Experience and Education. Inside the
+                  max-w-5xl column the grid reads dense instead of stranded
+                  across the full 1440px. */}
+              <div className="grid gap-3 md:grid-cols-[150px_1fr] md:gap-8">
+                <div className="smalltext uppercase tracking-[0.15em] opacity-50 md:pt-1.5">
                   {group.group}
                 </div>
-                <div className={`h-px flex-1 opacity-15 ${actBg}`} />
-              </div>
-
-              <div className="mt-4 grid grid-cols-4 gap-x-3 gap-y-5 sm:grid-cols-6 md:grid-cols-8 md:gap-x-6 lg:grid-cols-12">
-                {group.items.map((item) => <SkillIcon key={item} label={item} />)}
+                <div className="grid grid-cols-4 gap-x-4 gap-y-6 sm:grid-cols-6">
+                  {group.items.map((item) => <SkillIcon key={item} label={item} />)}
+                </div>
               </div>
             </FadeScroll>
           </SlideDiv>
         ))}
       </div>
-    </div>
+    </Section>
   );
 }

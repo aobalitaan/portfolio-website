@@ -2,112 +2,91 @@ import React from "react";
 import { ArrowUpRight } from "lucide-react";
 import { useScrollTheme } from "../utils/ScrollProvider";
 import { education, certifications, publications } from "../utils/EducationList";
-import SectionHeading from "../components/SectionHeading";
+import Section from "../components/Section";
 import SlideDiv from "../components/animation/SlideDiv";
 import FadeScroll from "../components/animation/FadeScroll";
 
-// Card, not another left-bordered text block — Experience already owns that
-// treatment, and repeating it is what made the sections blur together.
-// Module scope, not inline: an inline component is a new type every render, and
-// the scroll context updates each frame, so React would remount the subtree and
-// replay SlideDiv's entrance animation continuously.
-function Card({ label, actText, actBorder, children }) {
+// Same meta-left / content-right rail as Experience, so the eye keeps one
+// vertical anchor across sections instead of relearning the layout each screen.
+function Row({ label, show, delay, children }) {
   return (
-    <div className={`flex-1 border p-4 md:p-5 ${actBorder}`}>
-      <div className={`smalltext mb-2 uppercase tracking-[0.2em] ${actText}`}>{label}</div>
-      {children}
-    </div>
+    <SlideDiv show={show} animateOnce type="left" delay={delay} className="overflow-visible">
+      <FadeScroll show={show}>
+        <div className="grid gap-1 md:grid-cols-[150px_1fr] md:gap-8">
+          <div className="smalltext uppercase tracking-[0.15em] opacity-50 md:pt-1.5">{label}</div>
+          <div>{children}</div>
+        </div>
+      </FadeScroll>
+    </SlideDiv>
   );
 }
 
 export default function Education() {
-  const { activeSection, actText, actBg, actBorder, inacText } = useScrollTheme();
+  const { activeSection, actText, actBg, inacText } = useScrollTheme();
   const isActive = activeSection === "education";
 
   return (
-    <div
+    <Section
       id="education"
-      className={`relative flex w-full flex-1 flex-col ${inacText} px-4 pb-8 pt-24 md:px-8 md:pt-28 lg:px-16`}
+      title="education"
+      show={isActive}
+      actText={actText}
+      actBg={actBg}
+      inacText={inacText}
     >
-      <SectionHeading title="education" actText={actText} actBg={actBg} show={isActive} />
+      <div className="flex flex-col gap-10 md:gap-12">
 
-      <div className="no-scrollbar mt-4 flex flex-1 flex-col justify-center gap-8 overflow-y-auto md:gap-12">
+        <Row label="Degree" show={isActive} delay={0.1}>
+          <div className={`heading3 ${actText}`}>{education.degree}</div>
+          <div className="regulartext">{education.school}</div>
+          <div className="regulartext mt-2">
+            {education.honors.join(" · ")}
+            <span className="opacity-50"> · {education.period}</span>
+          </div>
+          <ul className="mt-3 flex flex-col gap-1">
+            {education.awards.map((a) => (
+              <li key={a} className="regulartext flex items-baseline gap-3 text-sm opacity-75">
+                <span className={`h-px w-3 shrink-0 opacity-50 ${actBg}`} />
+                {a}
+              </li>
+            ))}
+          </ul>
+        </Row>
 
-        <SlideDiv show={isActive} animateOnce type="left" delay={0.1} className="overflow-visible">
-          <FadeScroll show={isActive}>
-            <div className="grid grid-cols-12 items-end gap-x-6 gap-y-4">
-              <div className="col-span-12 md:col-span-7">
-                <div className="heading1 leading-[0.95]">{education.degree}</div>
-                <div className="largetext mt-1 opacity-75">{education.school}</div>
+        <Row label="Certification" show={isActive} delay={0.2}>
+          {certifications.map((c) => (
+            <a
+              key={c.credentialId}
+              href={c.link}
+              target="_blank"
+              rel="noreferrer"
+              className="group block transition-opacity hover:opacity-70"
+            >
+              <div className={`largetext inline-flex items-start gap-1 leading-snug ${actText}`}>
+                {c.title}
+                <ArrowUpRight size={16} className="mt-1.5 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </div>
-
-              {/* The honour is the headline fact — set it as display type
-                  rather than burying it in a pill. */}
-              <div className="col-span-12 md:col-span-5 md:text-right">
-                <div className={`font-var1 text-2xl leading-none md:text-4xl ${actText}`}>
-                  {education.honors[0]}
-                </div>
-                <div className="smalltext mt-2 opacity-50">
-                  {education.honors.slice(1).join(" · ")} · {education.period}
-                </div>
+              <div className="regulartext opacity-75">
+                {c.issuer}
+                <span className="opacity-70"> · {c.period} · ID {c.credentialId}</span>
               </div>
+            </a>
+          ))}
+        </Row>
 
-              <div className="col-span-12">
-                <div className={`h-px w-full opacity-15 ${actBg}`} />
-                <div className="smalltext mt-3 flex flex-col gap-1 opacity-75">
-                  {education.awards.map((a) => (
-                    <span key={a} className="flex items-baseline gap-3">
-                      <span className={`h-px w-4 shrink-0 opacity-60 ${actBg}`} />
-                      {a}
-                    </span>
-                  ))}
-                </div>
+        <Row label="Research" show={isActive} delay={0.3}>
+          {publications.map((p) => (
+            <div key={p.title}>
+              <div className={`largetext max-w-[46ch] leading-snug ${actText}`}>{p.title}</div>
+              <div className="regulartext mt-1 opacity-75">{p.authors}</div>
+              <div className="regulartext text-sm opacity-50">
+                {p.venue} · {p.period} · {p.publisher}
               </div>
             </div>
-          </FadeScroll>
-        </SlideDiv>
-
-        <SlideDiv show={isActive} animateOnce type="bottom" delay={0.25} className="overflow-visible">
-          <FadeScroll show={isActive}>
-            <div className="flex flex-col gap-4 md:flex-row md:gap-6">
-
-              <Card label="Certification" actText={actText} actBorder={actBorder}>
-                {certifications.map((c) => (
-                  <a
-                    key={c.credentialId}
-                    href={c.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="group block transition-opacity hover:opacity-75"
-                  >
-                    <div className="regulartext inline-flex items-start gap-1 leading-snug">
-                      {c.title}
-                      <ArrowUpRight size={16} className="mt-1 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </div>
-                    <div className="smalltext mt-1 opacity-50">
-                      {c.issuer} · {c.period} · ID {c.credentialId}
-                    </div>
-                  </a>
-                ))}
-              </Card>
-
-              <Card label="Research" actText={actText} actBorder={actBorder}>
-                {publications.map((p) => (
-                  <div key={p.title}>
-                    <div className="regulartext max-w-[52ch] italic leading-snug">{p.title}</div>
-                    <div className="smalltext mt-2 opacity-75">{p.authors}</div>
-                    <div className="smalltext mt-1 opacity-50">
-                      {p.venue} · {p.period} · {p.publisher}
-                    </div>
-                  </div>
-                ))}
-              </Card>
-
-            </div>
-          </FadeScroll>
-        </SlideDiv>
+          ))}
+        </Row>
 
       </div>
-    </div>
+    </Section>
   );
 }
