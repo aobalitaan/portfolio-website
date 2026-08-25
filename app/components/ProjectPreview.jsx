@@ -2,30 +2,34 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useInView } from "react-intersection-observer";
+import { Play, Pause } from "lucide-react";
 import { useReducedMotion } from "framer-motion";
 
 /**
- * The still is the poster; hover plays a walkthrough of the live product.
+ * The product screenshot is the still; the clip plays over it.
  *
  * The image stays mounted underneath rather than being swapped out, so there's
- * no flash of empty frame while the video decodes its first frame — the video
- * simply fades in on top once it's actually playing.
+ * no flash of empty frame while the video decodes — the video fades in on top
+ * once it's actually playing, and the still is what everyone sees by default.
  *
- * `preload="none"` matters: two 1MB clips that autoload would cost more than
- * the rest of the page combined, and most visitors will never hover either one.
- * The clip is fetched on intent (pointer enters the card) and not before.
+ * `preload="none"` matters: two clips that autoloaded would outweigh the rest
+ * of the page, and most visitors will never start either one. The clip is
+ * fetched on intent and not before.
  *
- * Hover is a pointer idiom, so touch devices get the poster plus an in-view
- * autoplay instead — there's no hover to wait for and no controls to hunt for.
+ * Two input models, because hover is not one:
+ *   - pointer devices  → hovering the card plays it
+ *   - touch devices    → an explicit play/pause button
+ *
+ * The link overlay and the play button are siblings, not nested. A <button>
+ * inside an <a> is invalid, and it also makes "tap to play" and "tap to open"
+ * fight over the same gesture. Here the button toggles playback and never
+ * navigates; anywhere else on the still opens the project.
  */
-export default function ProjectPreview({ src, poster, alt, priority }) {
+export default function ProjectPreview({ src, poster, alt, href, priority }) {
   const videoRef = useRef(null);
   const reduced = useReducedMotion();
   const [playing, setPlaying] = useState(false);
   const [canHover, setCanHover] = useState(true);
-
-  const { ref: inViewRef, inView } = useInView({ threshold: 0.55 });
 
   useEffect(() => {
     setCanHover(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
@@ -45,17 +49,15 @@ export default function ProjectPreview({ src, poster, alt, priority }) {
     setPlaying(false);
   }, []);
 
-  // Touch devices have no hover to key off, so the clip runs while the card
-  // holds the screen and stops when it leaves.
-  useEffect(() => {
-    if (canHover || reduced) return;
-    if (inView) play();
-    else stop();
-  }, [canHover, inView, reduced, play, stop]);
+  const toggle = (e) => {
+    // Never let the control trigger the card's link.
+    e.preventDefault();
+    e.stopPropagation();
+    playing ? stop() : play();
+  };
 
   return (
     <div
-      ref={inViewRef}
       className="absolute inset-0"
       onPointerEnter={canHover ? play : undefined}
       onPointerLeave={canHover ? stop : undefined}
@@ -68,18 +70,6 @@ export default function ProjectPreview({ src, poster, alt, priority }) {
         priority={priority}
         className="object-cover object-top"
       />
-
-      {/* Only where a hover exists. On touch the clip plays itself once the
-          card holds the screen, so the badge would be both wrong and noise. */}
-      {canHover && !reduced && (
-        <div
-          className={`pointer-events-none absolute right-4 top-4 z-10 rounded-full border border-[rgba(243,239,238,0.25)] bg-ground/70 px-3 py-1.5 backdrop-blur-sm transition-opacity duration-500 ${
-            playing ? "opacity-0" : "opacity-100"
-          }`}
-        >
-          <span className="mono text-ink">hover to play</span>
-        </div>
-      )}
 
       {!reduced && (
         <video
@@ -95,6 +85,42 @@ export default function ProjectPreview({ src, poster, alt, priority }) {
             playing ? "opacity-100" : "opacity-0"
           }`}
         />
+      )}
+
+      {/* Click-through to the project. Sits above the media, below the
+          play control. */}
+      <a
+        href={href}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={alt}
+        className="absolute inset-0 z-10"
+      />
+
+      {canHover && !reduced && (
+        <div
+          className={`pointer-events-none absolute bottom-4 left-4 z-20 rounded-full border border-[rgba(243,239,238,0.25)] bg-ground/70 px-3 py-1.5 backdrop-blur-sm transition-opacity duration-500 ${
+            playing ? "opacity-0" : "opacity-100"
+          }`}
+        >
+          <span className="mono text-ink">hover to play</span>
+        </div>
+      )}
+
+      {!canHover && !reduced && (
+        <button
+          type="button"
+          onClick={toggle}
+          aria-label={playing ? "Pause preview" : "Play preview"}
+          className="absolute bottom-4 left-4 z-20 flex items-center gap-2 rounded-full border border-[rgba(243,239,238,0.3)] bg-ground/80 py-2 pl-3 pr-4 backdrop-blur-sm active:scale-95 transition-transform"
+        >
+          {playing ? (
+            <Pause size={14} className="text-ink" fill="currentColor" />
+          ) : (
+            <Play size={14} className="text-ink" fill="currentColor" />
+          )}
+          <span className="mono text-ink">{playing ? "pause" : "play"}</span>
+        </button>
       )}
     </div>
   );
