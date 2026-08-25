@@ -1,38 +1,37 @@
 import React from "react";
-import SlideDiv from "./animation/SlideDiv";
-import FadeScroll from "./animation/FadeScroll";
+import Reveal from "./animation/Reveal";
 
 /**
- * Every section below the hero shares this shell.
+ * Every section below the hero docks onto the wire here.
  *
- * The old layout put content in a full-bleed container starting at the left
- * gutter, so at 1440px the right half of every screen was empty — the content
- * ran to ~950px and stopped. A centred, max-width column gives symmetric
- * margins and a consistent measure, which is what makes the sections feel like
- * one designed page rather than a document dumped left.
+ * The heading forms a T-junction with the spine: a short accent stub runs from
+ * the wire out to the title, then a hairline continues to the right gutter. The
+ * rule isn't decoration — it's the connector geometry that says this block is
+ * attached to the pipeline.
  *
- * The heading is left-aligned to the same edge as the content and its rule runs
- * to the right gutter, so there is a single vertical anchor line down the page.
+ * Two things the old shell got wrong, both fixed here:
+ *
+ * 1. It centred content in a flex-1 box while pinning the heading to the top,
+ *    so most sections were heading → ~150px of dead air → content → ~150px of
+ *    dead air. Rhythm now comes from padding, and sections size to their
+ *    content instead of being stretched to a viewport.
+ * 2. Its top padding (96px) was smaller than the navbar is tall (80px) plus its
+ *    scrim, so headings passed straight through the nav mid-scroll.
  */
-export default function Section({ id, title, show, actText, actBg, inacText, children }) {
+export default function Section({ id, title, children, contentClass = "" }) {
   return (
-    <div
-      id={id}
-      className={`relative flex w-full flex-1 flex-col ${inacText} px-6 pb-12 pt-24 md:px-10 md:pt-28`}
-    >
-      <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col">
-        <FadeScroll show={show}>
-          <SlideDiv type="top" show={show} animateOnce>
-            <div className="flex items-center gap-4">
-              <h2 className={`heading2 whitespace-nowrap ${actText}`}>{title}</h2>
-              <div className={`h-px flex-1 opacity-25 ${actBg}`} />
-            </div>
-          </SlideDiv>
-        </FadeScroll>
+    <div id={id} className="w-full py-28 md:py-40">
+      <div className="mx-auto w-full max-w-5xl px-6 md:px-10">
+        <Reveal type="none">
+          <div data-port={id} className="flex items-center gap-4 md:gap-6">
+            {/* The stub out of the wire. */}
+            <div className="h-px w-6 shrink-0 bg-[var(--accent)] md:w-10" />
+            <h2 className="display-md shrink-0 accent">{title}</h2>
+            <div className="h-px flex-1 bg-[var(--line)]" />
+          </div>
+        </Reveal>
 
-        <div className="no-scrollbar flex flex-1 flex-col justify-center overflow-y-auto py-8">
-          {children}
-        </div>
+        <div className={`pl-10 md:pl-16 ${contentClass}`}>{children}</div>
       </div>
     </div>
   );

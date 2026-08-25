@@ -2,109 +2,40 @@
 
 import PropTypes from "prop-types";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { useScroll } from "framer-motion";
 
 /**
- * Scroll ranges are expressed in viewport heights (100 = one full screen).
- * Class names are written out in full so Tailwind's static extractor can see
- * them — never build these by interpolation.
+ * The page has ONE ground. Sections are distinguished by composition and by
+ * their position on the heat ramp, not by repainting the whole viewport — the
+ * old per-section background flip is what made every boundary a jump cut.
+ *
+ * `accent` walks from Arca's blue to Wyren's orange, routed through violet so
+ * the midpoint stays chromatic instead of going grey.
  */
 export const sections = [
-  {
-    id: "home",
-    start: 0,
-    end: 100,
-    bg: "bg-brand-black",
-    bgSoft: "bg-brand-black/75",
-    inacText: "text-brand-white",
-    actText: "text-brand-primary",
-    actBg: "bg-brand-primary",
-    actBorder: "border-brand-primary",
-    blur: "",
-  },
-  {
-    id: "projects",
-    start: 100,
-    end: 200,
-    bg: "bg-brand-primary",
-    bgSoft: "bg-brand-primary/75",
-    // Black, not white: #F3EFEE on #5e8cff is 2.76:1 and fails WCAG AA.
-    inacText: "text-brand-black/80",
-    actText: "text-brand-black",
-    actBg: "bg-brand-black",
-    actBorder: "border-brand-black",
-    blur: "backdrop-blur-xs",
-  },
-  {
-    id: "experience",
-    start: 200,
-    end: 300,
-    bg: "bg-brand-black",
-    bgSoft: "bg-brand-black/75",
-    inacText: "text-brand-white",
-    actText: "text-brand-primary",
-    actBg: "bg-brand-primary",
-    actBorder: "border-brand-primary",
-    blur: "backdrop-blur-md bg-brand-black/75",
-  },
-  {
-    id: "education",
-    start: 300,
-    end: 400,
-    bg: "bg-brand-black",
-    bgSoft: "bg-brand-black/75",
-    inacText: "text-brand-white",
-    actText: "text-brand-primary",
-    actBg: "bg-brand-primary",
-    actBorder: "border-brand-primary",
-    blur: "backdrop-blur-md bg-brand-black/75",
-  },
-  {
-    id: "skills",
-    start: 400,
-    end: 500,
-    bg: "bg-brand-primary",
-    bgSoft: "bg-brand-primary/75",
-    inacText: "text-brand-black/80",
-    actText: "text-brand-black",
-    actBg: "bg-brand-black",
-    actBorder: "border-brand-black",
-    blur: "backdrop-blur-xs",
-  },
-  {
-    id: "contact",
-    start: 500,
-    end: 600,
-    bg: "bg-brand-white",
-    bgSoft: "bg-brand-white/75",
-    inacText: "text-brand-black",
-    actText: "text-brand-primary",
-    actBg: "bg-brand-primary",
-    actBorder: "border-brand-primary",
-    blur: "backdrop-blur-md bg-brand-white/75",
-  },
+  { id: "home", accent: "#5E8CFF" },
+  { id: "projects", accent: "#6E7BFF" },
+  { id: "experience", accent: "#8B6BF5" },
+  { id: "education", accent: "#B45BD4" },
+  { id: "skills", accent: "#D9524F" },
+  { id: "contact", accent: "#E4502A" },
 ];
 
 export const routes = sections.map((section) => section.id);
 
 const byId = Object.fromEntries(sections.map((s) => [s.id, s]));
 
-// Pre-measurement fallback: assumes one viewport per section. Only used for the
-// first paint, before the layout has been measured.
-const LEAD = 10;
-const resolveByPercent = (percent) => {
-  let match = sections[0];
-  for (const section of sections) {
-    if (percent >= section.start - LEAD) match = section;
-  }
-  return match;
-};
-
-// Sections are min-height, not fixed height — a long Experience list on a phone
-// is taller than one viewport. Measuring real offsets keeps the theme in step
-// with what is actually on screen instead of assuming 100vh each.
-const resolveByBands = (bands, scrollY, viewportH) => {
-  const probe = scrollY + viewportH * 0.2;
+/**
+ * Which section am I looking at? The probe sits at the vertical middle of the
+ * viewport, which is what "looking at" actually means.
+ *
+ * It used to sit at 20%, so a section became "active" while 80% of the screen
+ * still showed the previous one. Everything keyed off that flag — background
+ * colour and content visibility both — so the theme changed and the outgoing
+ * content erased itself with most of it still in view. That was the whole of
+ * the "quality degrades as you scroll" complaint.
+ */
+const resolveActive = (bands, scrollY, viewportH) => {
+  const probe = scrollY + viewportH * 0.5;
   let match = bands[0];
   for (const band of bands) {
     if (probe >= band.top) match = band;
@@ -115,10 +46,9 @@ const resolveByBands = (bands, scrollY, viewportH) => {
 const ScrollContext = createContext(null);
 
 export function ScrollProvider({ children }) {
-  const { scrollY } = useScroll();
-  const [scrollPercent, setScrollPercent] = useState(0);
-  const [scrollPx, setScrollPx] = useState(0);
-  const [bands, setBands] = useState(null);
+  const [activeId, setActiveId] = useState("home");
+  const [bands, setBands] = useState([]);
+  const [docHeight, setDocHeight] = useState(0);
   const [introDone, setIntroDone] = useState(false);
 
   useEffect(() => {
@@ -130,6 +60,9 @@ export function ScrollProvider({ children }) {
     return () => clearTimeout(t);
   }, []);
 
+  // Sections are min-height, not fixed height — a long Experience list on a
+  // phone is taller than one viewport, so real offsets have to be measured
+  // rather than assumed at 100vh each.
   useEffect(() => {
     const measure = () => {
       const nodes = document.querySelectorAll("[data-section]");
@@ -144,44 +77,52 @@ export function ScrollProvider({ children }) {
           };
         }),
       );
+      setDocHeight(document.documentElement.scrollHeight);
     };
 
     measure();
     window.addEventListener("resize", measure);
-    // Section heights settle after fonts land and content animates in.
-    const t = setTimeout(measure, 1500);
+    // Heights settle after fonts land and the reveal animations run.
+    const t1 = setTimeout(measure, 800);
+    const t2 = setTimeout(measure, 2000);
     return () => {
       window.removeEventListener("resize", measure);
-      clearTimeout(t);
+      clearTimeout(t1);
+      clearTimeout(t2);
     };
   }, []);
 
   useEffect(() => {
-    const unsubscribe = scrollY.on("change", (currentY) => {
-      setScrollPx(currentY);
-      setScrollPercent((currentY / window.innerHeight) * 100);
-    });
-    return () => unsubscribe();
-  }, [scrollY]);
+    if (!bands.length) return;
 
-  const value = useMemo(() => {
-    const active = bands?.length
-      ? resolveByBands(bands, scrollPx, window.innerHeight)
-      : resolveByPercent(scrollPercent);
-    return {
-      activeSection: active.id,
-      introDone,
-      bgColor: active.bg,
-      bgSoft: active.bgSoft,
-      inacText: active.inacText,
-      actText: active.actText,
-      actBg: active.actBg,
-      actBorder: active.actBorder,
-      blur: active.blur,
-      scrollPercent,
-      sections,
+    let frame = null;
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = null;
+        setActiveId(resolveActive(bands, window.scrollY, window.innerHeight).id);
+      });
     };
-  }, [scrollPercent, scrollPx, bands, introDone]);
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [bands]);
+
+  const value = useMemo(
+    () => ({
+      activeSection: activeId,
+      accent: byId[activeId]?.accent ?? sections[0].accent,
+      introDone,
+      bands,
+      docHeight,
+      sections,
+    }),
+    [activeId, introDone, bands, docHeight],
+  );
 
   return <ScrollContext.Provider value={value}>{children}</ScrollContext.Provider>;
 }

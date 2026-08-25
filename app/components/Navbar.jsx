@@ -5,8 +5,18 @@ import { routes, useScrollTheme } from "../utils/ScrollProvider";
 import { Menu, X } from "lucide-react";
 import Logo from "./Logo";
 
+/**
+ * Set in the mono face rather than the display face.
+ *
+ * The nav is a control surface, not a headline — and keeping Syne out of it
+ * means the display face only ever appears at moments that earn it. It also
+ * ends the collision: section headings and nav items used to be the same
+ * typeface at similar weights, so when a heading transited under the bar you
+ * got two sets of Syne bold overlapping. Now they can't be confused, and the
+ * bar carries a real scrim instead of a faint gradient.
+ */
 export default function Navbar() {
-  const { activeSection, bgSoft, actText, inacText } = useScrollTheme();
+  const { activeSection, accent } = useScrollTheme();
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -16,14 +26,16 @@ export default function Navbar() {
     return () => window.removeEventListener("keydown", onKey);
   }, [menuOpen]);
 
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
   const handleScroll = (route) => {
     if (route === "home") {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
-      const targetElement = document.getElementById(route);
-      if (targetElement) {
-        targetElement.scrollIntoView({ behavior: "smooth" });
-      }
+      document.getElementById(route)?.scrollIntoView({ behavior: "smooth" });
     }
     setMenuOpen(false);
   };
@@ -31,97 +43,76 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={"from-brand-black/25 fixed top-0 z-50 flex h-20 w-screen items-center justify-between gap-4 bg-gradient-to-b to-transparent px-8 transition-all duration-500 ease-in lg:justify-start lg:gap-7 md:px-12"}
+        className="fixed inset-x-0 top-0 z-50 h-20"
+        style={{ "--accent": accent }}
       >
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ground via-ground/85 to-transparent backdrop-blur-[2px]" />
 
-        <div className="animate-slideDown cursor-pointer" onClick={() => handleScroll("home")}>
-          <Logo className={`size-12 ${inacText} transition-all hover:scale-110 duration-250 ease-in`} />
+        <div className="relative mx-auto flex h-full w-full max-w-5xl items-center justify-between px-6 md:px-10">
+          <button
+            type="button"
+            onClick={() => handleScroll("home")}
+            aria-label="Back to top"
+            className="cursor-pointer"
+          >
+            <Logo className="size-9 text-ink transition-transform duration-300 hover:scale-110" />
+          </button>
+
+          <div className="hidden items-center gap-7 lg:flex">
+            {routes.map((route) => {
+              const isActive = activeSection === route;
+              return (
+                <button
+                  key={route}
+                  type="button"
+                  onClick={() => handleScroll(route)}
+                  aria-current={isActive ? "true" : undefined}
+                  className={`mono relative cursor-pointer transition-colors duration-300 ${
+                    isActive ? "accent" : "ink-faint hover:text-ink"
+                  }`}
+                >
+                  {route}
+                  <span
+                    className="absolute -bottom-2 left-0 h-px bg-[var(--accent)] transition-all duration-300"
+                    style={{ width: isActive ? "100%" : "0%" }}
+                  />
+                </button>
+              );
+            })}
+          </div>
+
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            className={`z-50 cursor-pointer text-ink transition-transform duration-300 lg:hidden ${
+              menuOpen ? "rotate-90" : "rotate-0"
+            }`}
+          >
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
         </div>
-
-        {routes.map((route, index) => {
-          const isActive = activeSection === route;
-          return (
-            <button
-              key={route}
-              type="button"
-              onClick={() => handleScroll(route)}
-              aria-current={isActive ? "true" : undefined}
-              className={`navbar-options hidden text-shadow-lg lg:block font-var1 text-lg xl:text-xl cursor-pointer transition-colors duration-250 ease-in ${
-                isActive
-                  ? `${actText} hover:text-brand-darker`
-                  : `${inacText} hover:text-brand-gray`
-              } animate-slideDown`}
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              {route}
-            </button>
-          );
-        })}
-
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-          aria-expanded={menuOpen}
-          className={`animate-slideDown lg:hidden cursor-pointer transition-transform duration-250 z-50 ease-in ${inacText} ${
-            menuOpen ? "rotate-90" : "rotate-0"
-          }`}
-          style={{ animationDelay: "0.1s" }}
-        >
-          {menuOpen ? <X size={25} /> : <Menu size={25} />}
-        </button>
       </nav>
 
       <div
         onClick={() => setMenuOpen(false)}
-        className={`
-          ${bgSoft} backdrop-blur-sm
-          fixed inset-0 z-49 flex flex-col items-center justify-center space-y-6 lg:hidden
-          transition-all duration-250 ease-in-out
-          ${menuOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}
-        `}
+        style={{ "--accent": accent }}
+        className={`fixed inset-0 z-40 flex flex-col items-center justify-center gap-7 bg-ground/95 backdrop-blur-md transition-all duration-300 lg:hidden ${
+          menuOpen ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
       >
         {routes.map((route) => (
           <button
             key={route}
             onClick={() => handleScroll(route)}
-            className={`heading3 cursor-pointer px-6 py-2 transition-colors duration-200 ease-in ${
-              activeSection === route
-                ? actText
-                : `${inacText} hover:text-brand-gray`
+            className={`display-md cursor-pointer transition-colors duration-200 ${
+              activeSection === route ? "accent" : "ink-dim hover:text-ink"
             }`}
           >
             {route}
           </button>
         ))}
       </div>
-
-      <style jsx>{`
-        .navbar-options {
-          opacity: 0;
-        }
-
-        @keyframes slideDown {
-          0% {
-            transform: translateY(-100px);
-            opacity: 0;
-          }
-          50% {
-            transform: translateY(5px);
-            opacity: 1;
-          }
-          75% {
-            transform: translateY(-1px);
-            opacity: 1;
-          }
-          100% {
-            transform: translateY(0);
-            opacity: 1;
-          }
-        }
-        .animate-slideDown {
-          animation: slideDown 1s ease-out forwards;
-        }
-      `}</style>
     </>
   );
 }

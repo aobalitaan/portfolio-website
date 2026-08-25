@@ -1,70 +1,60 @@
 import React from "react";
-import { Mail, Github, Linkedin, ArrowUpRight } from "lucide-react";
-import { useScrollTheme } from "../utils/ScrollProvider";
+import { ArrowUpRight } from "lucide-react";
 import contactList from "../utils/ContactList";
-import SlideDiv from "../components/animation/SlideDiv";
-import FadeScroll from "../components/animation/FadeScroll";
+import Section from "../components/Section";
+import Reveal from "../components/animation/Reveal";
 
-const icons = { Email: Mail, GitHub: Github, LinkedIn: Linkedin };
-
+/**
+ * The terminus. The wire's last port docks on this heading, and the heat ramp
+ * has arrived at Wyren's orange by the time you get here.
+ *
+ * The old version floated a short block in the middle of a min-h-svh box with
+ * ~250px of dead air above it and the footer rule stranded at the bottom edge.
+ * This one is composed to close the page.
+ */
 export default function Contact() {
-  const { activeSection, actText, actBg, inacText } = useScrollTheme();
-  const isActive = activeSection === "contact";
-
   return (
-    <div
-      id="contact"
-      className={`relative flex w-full flex-1 flex-col ${inacText} px-6 pb-12 pt-24 md:px-10 md:pt-28`}
-    >
-      <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center gap-8">
-        <SlideDiv show={isActive} animateOnce type="left" delay={0.1} className="overflow-visible">
-          <FadeScroll show={isActive}>
-            <div className={`smalltext uppercase tracking-widest ${actText}`}>get in touch</div>
-            <div className="heading1 mt-2 leading-[0.95] md:text-7xl">Let&apos;s build<br />something.</div>
-            <div className="regulartext mt-3 max-w-xl opacity-80">
-              Open to software engineering roles and collaborations on AI-powered products.
-            </div>
-          </FadeScroll>
-        </SlideDiv>
+    <Section id="contact" title="contact" contentClass="mt-14 md:mt-20">
+      <Reveal type="up">
+        <h3 className="display-xl max-w-[14ch]">
+          Let&apos;s build something.
+        </h3>
+        <p className="body-lg ink-dim mt-8 max-w-[46ch]">
+          Open to software engineering roles and collaborations on AI-powered products.
+        </p>
+      </Reveal>
 
-        <div className="flex flex-col gap-3">
-          {contactList.map((item, i) => {
-            const Icon = icons[item.label];
-            return (
-              <SlideDiv
-                key={item.label}
-                show={isActive}
-                animateOnce
-                type="left"
-                delay={0.25 + i * 0.1}
-                className="overflow-visible"
-              >
-                <FadeScroll show={isActive}>
-                  <a
-                    href={item.href}
-                    target={item.href.startsWith("mailto:") ? undefined : "_blank"}
-                    rel="noreferrer"
-                    className="group inline-flex items-center gap-3 transition-opacity hover:opacity-60"
-                  >
-                    <span className={`flex size-9 items-center justify-center rounded-full ${actBg} text-brand-white`}>
-                      <Icon size={18} />
-                    </span>
-                    <span className="largetext">{item.value}</span>
-                    <ArrowUpRight size={18} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </a>
-                </FadeScroll>
-              </SlideDiv>
-            );
-          })}
-        </div>
+      <div className="mt-16 flex flex-col md:mt-20">
+        {contactList.map((item, i) => (
+          <Reveal key={item.label} type="up" delay={0.06 + i * 0.06}>
+            <a
+              href={item.href}
+              target={item.href.startsWith("mailto:") ? undefined : "_blank"}
+              rel="noreferrer"
+              className="group grid items-baseline gap-1 border-t border-[var(--line)] py-6 transition-colors duration-300 hover:border-[var(--accent)] md:grid-cols-[168px_1fr] md:gap-10"
+            >
+              <span className="mono ink-faint transition-colors group-hover:text-[var(--accent)]">
+                {item.label}
+              </span>
+              <span className="title inline-flex items-center gap-2 transition-colors group-hover:text-[var(--accent)]">
+                {item.value}
+                <ArrowUpRight
+                  size={18}
+                  className="shrink-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+                />
+              </span>
+            </a>
+          </Reveal>
+        ))}
+        <div className="border-t border-[var(--line)]" />
       </div>
 
-      <FadeScroll show={isActive} className="mx-auto w-full max-w-5xl">
-        <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
-          <div className={`h-1.5 w-24 md:w-auto md:flex-1 ${actBg}`} />
-          <div className="smalltext shrink-0 opacity-70">© 2026 Axel Balitaan · All Rights Reserved</div>
+      <Reveal type="none" delay={0.2}>
+        <div className="mt-20 flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between md:gap-6">
+          <div className="mono ink-faint">Axel Balitaan · Software Engineer · Philippines</div>
+          <div className="mono ink-faint">© 2026 All rights reserved</div>
         </div>
-      </FadeScroll>
-    </div>
+      </Reveal>
+    </Section>
   );
 }

@@ -1,4 +1,4 @@
-import { Syne, Plus_Jakarta_Sans } from "next/font/google";
+import { Syne, Plus_Jakarta_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import AppShell from "./components/AppShell";
 
@@ -12,6 +12,15 @@ const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-jakarta",
+});
+
+// The utility face. Syne is wide and geometric, so Plex Mono complements it
+// better than a narrower grotesque mono would.
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+  variable: "--font-plex-mono",
 });
 
 // Set NEXT_PUBLIC_SITE_URL to the custom domain once it's pointed; Vercel
@@ -42,8 +51,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${syne.variable} ${jakarta.variable}`}>
-      <body className="bg-brand-black overflow-x-clip">
+    <html lang="en" className={`${syne.variable} ${jakarta.variable} ${plexMono.variable}`}>
+      <body className="bg-ground text-ink overflow-x-clip">
         <AppShell>{children}</AppShell>
       </body>
     </html>
