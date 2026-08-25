@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionTemplate } from "framer-motion";
 import { useScrollTheme } from "../utils/ScrollProvider";
 import SlideDiv from "../components/animation/SlideDiv";
 import Wave from "../components/Wave";
@@ -22,16 +22,40 @@ export default function Hero() {
   const show = introDone;
 
   const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
+
+  // Driven by window scroll, NOT by useScroll({ target: ref }).
+  //
+  // The hero is sticky, and a sticky element does not move relative to the
+  // viewport while it's pinned — so a target-based scrollYProgress sits at 0
+  // for the entire pin and every effect hung off it silently does nothing.
+  // That's measured against the viewport height directly instead.
+  const { scrollY } = useScroll();
+  const vh = () => (typeof window === "undefined" ? 800 : window.innerHeight);
+
+  const waveY = useTransform(scrollY, (y) => {
+    const p = Math.min(Math.max(y / vh(), 0), 1);
+    return `${p * 18}%`;
   });
-  // Parallax only. Fading the hero out is the veil's job now (see Backdrop) —
-  // it blurs first and then dissolves as the work scrolls over the top.
-  const waveY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
+
+  // The defocus, applied to the hero's own layer rather than as a
+  // backdrop-filter on a fixed overlay above it. A backdrop-filter re-blurs the
+  // whole viewport on every frame of the scroll and cost ~9fps plus 14 long
+  // frames; this blurs one static subtree instead, and the radius is quantised
+  // to 3px steps so the browser recomputes it a handful of times across the
+  // transition rather than continuously. The steps aren't visible at this speed.
+  const blurPx = useTransform(scrollY, (y) => {
+    const raw = Math.min(Math.max(y / (vh() * 0.55), 0), 1) * 12;
+    return Math.round(raw / 3) * 3;
+  });
+  const heroFilter = useMotionTemplate`blur(${blurPx}px)`;
 
   return (
-    <div ref={ref} id="home" className="relative flex h-full w-full flex-col">
+    <motion.div
+      ref={ref}
+      id="home"
+      className="relative flex h-full w-full flex-col"
+      style={{ filter: heroFilter }}
+    >
       <motion.div
         className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
         style={{ y: waveY }}
@@ -93,6 +117,6 @@ export default function Hero() {
           </div>
         </SlideDiv>
       </div>
-    </div>
+    </motion.div>
   );
 }
