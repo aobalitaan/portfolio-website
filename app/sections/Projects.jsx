@@ -1,152 +1,83 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useScrollTheme } from "../utils/ScrollProvider";
-import ProjectCard from "../components/ProjectCard";
+import React from "react";
+import ProjectPreview from "../components/ProjectPreview";
+import { ArrowUpRight } from "lucide-react";
 import projectList from "../utils/ProjectList";
-import CardsAnimation from "../components/animation/CardsAnimation";
+import Section from "../components/Section";
+import Reveal from "../components/animation/Reveal";
 
-export default function Projects() {
-  const { activeSection, actText, actBg, scrollPercent } = useScrollTheme();
-
-  const isActive = activeSection !== "home";
-
-  const [hoveredCard, setHoveredCard] = useState(null);
-  const [disableSwitch, setDisableSwitch] = useState(false);
-
-  const cardRefs = useRef([]);
-  const containerRef = useRef(null);
-
-  const switchCard = async (index) => {
-    if (index === hoveredCard || !isActive) return;
-
-    const cardEl = cardRefs.current[index];
-    if (cardEl) {
-      cardEl.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-    }
-
-    setHoveredCard(null);
-    setDisableSwitch(true);
-    await new Promise(res => setTimeout(res, 100));
-    setDisableSwitch(false);
-    setHoveredCard(index);
-  };
-
-
-  const hasScrolledToFirst = useRef(false);
-
-  useEffect(() => {
-    const containerEl = containerRef.current;
-    if (!containerEl) return;
-
-    // Centre a single card, not the rail's midpoint — with two cards the
-    // midpoint falls in the gap between them and both get half-cut on mobile.
-    // On desktop the rail doesn't overflow, so this is a no-op there.
-    const centreCard = (i) => {
-      const cardEl = cardRefs.current[i];
-      if (!cardEl) return;
-      containerEl.scrollTo({
-        left: cardEl.offsetLeft - (containerEl.clientWidth - cardEl.offsetWidth) / 2,
-        behavior: "smooth",
-      });
-    };
-
-    if (!isActive) {
-      setHoveredCard(null);
-      hasScrolledToFirst.current = false;
-      centreCard(0);
-    }
-
-    if (isActive && !hasScrolledToFirst.current) {
-      centreCard(0);
-      hasScrolledToFirst.current = true;
-    }
-  }, [isActive, scrollPercent]);
-
-
-  const getCardStyles = (index) => {
-    const isHovered = hoveredCard === index;
-    const noHover = hoveredCard === null;
-    const zIndex = isHovered ? 29 : noHover ? 25 : 28 - Math.abs(hoveredCard - index);
-
-    if (noHover || isHovered) {
-      return {
-        zIndex,
-        style: { transform: isHovered ? "scale(1.05)" : "none" },
-      };
-    }
-
-    // Computed transforms cannot be Tailwind classes — Tailwind only ships
-    // utilities it can find as literal strings. These go inline.
-    const signed = index - hoveredCard;
-    const diff = Math.abs(signed);
-    const deg = Math.sign(signed) * ((diff * 5) % 30);
-    const tx = -Math.sign(signed) * diff * 100;
-
-    return {
-      zIndex,
-      style: {
-        transform: `translateX(${tx}px) translateY(4rem) rotate(${deg}deg) scale(0.85)`,
-        filter: "blur(1px) brightness(0.9)",
-      },
-    };
-  };
-
+/**
+ * Two projects, presented large.
+ *
+ * They used to sit in a hover-shuffle carousel — a stacking, rotating,
+ * blur-on-unfocus rail built for a deck of cards, holding two. That machinery
+ * read as padding around a thin section. Two projects shown enormous reads as
+ * confidence instead.
+ *
+ * Each panel wears its own brand colour rather than the section accent: these
+ * are real products with real identities, and Wyren's orange and Arca's blue
+ * are already the endpoints of the page's heat ramp.
+ */
+function Project({ project, delay }) {
   return (
-    <div
-      id="projects"
-      className={`relative flex w-full flex-1 flex-col ${actText} px-0 pt-24 pb-4 md:pb-8 md:pt-28 overflow-x-clip`}
-    >
-      {isActive && (
-        <div className="mx-auto w-full max-w-5xl px-6 md:px-10">
-          <div className="flex items-center gap-4">
-            <h2 className={`heading2 whitespace-nowrap ${actText}`}>selected projects</h2>
-            <div className={`h-px flex-1 opacity-25 ${actBg}`} />
+    <Reveal type="up" delay={delay}>
+      <a
+        href={project.prodLink || project.repoLink}
+        target="_blank"
+        rel="noreferrer"
+        className="group block"
+        style={{ "--project": project.color }}
+      >
+        <div className="relative aspect-16/10 w-full overflow-hidden rounded-lg border border-[var(--line)] transition-colors duration-500 group-hover:border-[var(--project)] md:aspect-16/9">
+          <ProjectPreview
+            src={`/${project.previewPath}`}
+            poster={`/${project.imagePath}`}
+            alt={`${project.title} — ${project.subtitle}`}
+            priority={delay === 0}
+          />
+        </div>
+
+        {/* The title sits below the image, not on it. These are screenshots of
+            real products with their own headlines in them — an overlaid title
+            landed straight on top of Wyren's own hero copy. */}
+        <div className="mt-7 grid gap-5 md:grid-cols-[1fr_220px] md:gap-12">
+          <div>
+            <div className="flex items-baseline gap-3">
+              <h3
+                className="display-lg transition-opacity duration-500 group-hover:opacity-80"
+                style={{ color: project.color }}
+              >
+                {project.title}
+              </h3>
+              <ArrowUpRight
+                size={24}
+                className="shrink-0 transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1"
+                style={{ color: project.color }}
+              />
+            </div>
+
+            <div className="title ink-dim mt-3">{project.subtitle}</div>
+            <p className="body ink-dim mt-4 max-w-[58ch]">{project.desc}</p>
+          </div>
+
+          <div className="mono-plain ink-faint flex flex-col gap-1 md:pt-4">
+            {project.stack.map((tag) => (
+              <span key={tag}>{tag}</span>
+            ))}
           </div>
         </div>
-      )}
+      </a>
+    </Reveal>
+  );
+}
 
-      <div className="no-scrollbar flex flex-1 items-center overflow-visible transition-all">
-        <div
-          ref={containerRef}
-          className="no-scrollbar ml-auto mr-auto flex h-full w-fit snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4"
-        >
-          {projectList.map((project, index) => {
-            const { zIndex, style } = getCardStyles(index);
-
-            return (
-              <a
-                key={project.title}
-                ref={el => (cardRefs.current[index] = el)}
-                href={project.prodLink || project.repoLink}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`${project.title} — ${project.subtitle}`}
-                className="snap-center relative block"
-                style={{ zIndex }}
-                onClick={(e) => { if (!isActive) e.preventDefault(); }}
-              >
-                <div className="transition-all duration-250 ease-in-out" style={style}>
-                  <CardsAnimation
-                    toggledisableSwitch={setDisableSwitch}
-                    changeHoveredCard={setHoveredCard}
-                    index={index}
-                    length={projectList.length}
-                    show={isActive}
-                  >
-                    <ProjectCard
-                      show={isActive}
-                      disableSwitch={disableSwitch}
-                      switchCard={switchCard}
-                      changeHoveredCard={setHoveredCard}
-                      index={index}
-                      project={project}
-                    />
-                  </CardsAnimation>
-                </div>
-              </a>
-            );
-          })}
-        </div>
+export default function Projects() {
+  return (
+    <Section id="projects" title="selected projects" contentClass="mt-14 md:mt-20">
+      <div className="flex flex-col gap-24 md:gap-36">
+        {projectList.map((project, i) => (
+          <Project key={project.title} project={project} delay={i * 0.08} />
+        ))}
       </div>
-    </div>
+    </Section>
   );
 }

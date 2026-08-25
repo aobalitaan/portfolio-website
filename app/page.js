@@ -1,6 +1,8 @@
 "use client";
 
 import Backdrop from "./components/Backdrop";
+import Spine from "./components/Spine";
+import { sections } from "./utils/ScrollProvider";
 import Hero from "./sections/Hero";
 import Projects from "./sections/Projects";
 import Experience from "./sections/Experience";
@@ -8,40 +10,64 @@ import Education from "./sections/Education";
 import Skills from "./sections/Skills";
 import Contact from "./sections/Contact";
 
-// min-h rather than fixed h: Experience/Education/Skills overflow one viewport
-// on narrow screens, and ScrollProvider measures the real offsets anyway.
-// `flex` matters — with height:auto a child's h-full collapses to content, so
-// sections stretch via flex-1 instead.
-const sectionClass = "relative z-10 flex min-h-svh";
+const CONTENT = {
+  projects: Projects,
+  experience: Experience,
+  education: Education,
+  skills: Skills,
+  contact: Contact,
+};
 
+const below = sections.filter((s) => s.id !== "home");
+
+/**
+ * The hero pins and the work rises over it.
+ *
+ * `sticky top-0` was already on the hero before, but its parent was exactly
+ * h-svh — sticky with no room to travel behaves like static, so it just
+ * scrolled away like any other block. Here the sticky element's parent is the
+ * whole page, so it holds while the sections below climb over the top of it,
+ * and Backdrop's veil blurs then dissolves it on the way.
+ *
+ * Sections size to their content. They used to be forced to min-h-svh with the
+ * body centred inside, which is what produced the ~150px bands of dead air
+ * above and below almost every block.
+ *
+ * Each section publishes its own point on the heat ramp as `--accent`, so
+ * children never have to be handed colour classes through props — the old
+ * actText/actBg/inacText plumbing is gone.
+ */
 export default function Home() {
   return (
     <div className="relative">
-      <Backdrop />
-
-      <section data-section="home" className="sticky top-0 z-0 h-svh min-h-[720px]">
+      <section
+        data-section="home"
+        className="sticky top-0 z-0 h-svh"
+        style={{ "--accent": sections[0].accent }}
+      >
         <Hero />
       </section>
 
-      <section data-section="projects" className={sectionClass}>
-        <Projects />
-      </section>
+      {/* Everything below the hero shares one stacking context that sits above
+          it, so the veil and the work both occlude the pinned hero. */}
+      <div className="relative z-10">
+        <Backdrop />
+        <Spine />
 
-      <section data-section="experience" className={sectionClass}>
-        <Experience />
-      </section>
-
-      <section data-section="education" className={sectionClass}>
-        <Education />
-      </section>
-
-      <section data-section="skills" className={sectionClass}>
-        <Skills />
-      </section>
-
-      <section data-section="contact" className={sectionClass}>
-        <Contact />
-      </section>
+        {below.map(({ id, accent }) => {
+          const Content = CONTENT[id];
+          return (
+            <section
+              key={id}
+              data-section={id}
+              className="relative z-10"
+              style={{ "--accent": accent }}
+            >
+              <Content />
+            </section>
+          );
+        })}
+      </div>
     </div>
   );
 }

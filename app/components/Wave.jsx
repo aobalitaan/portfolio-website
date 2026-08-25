@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+import { useReducedMotion } from "framer-motion";
 
 const interpolateColor = (color1, color2, factor) => {
   const hex = (color) => parseInt(color, 16);
@@ -18,15 +19,17 @@ const generatePathD = (startY, yOffset, waveStrength, twistStrength, i, time) =>
   return `M0 ${startY} Q 10 ${qY}, 20 ${yOffset} T 50 ${yOffset} T 70 ${yOffset} T 90 ${yOffset} T 100 ${yOffset}`;
 };
 
-const Wave = ({ startColor = "#1F51FF", endColor = "#FF3131" }) => {
-  const numLines = 30;
+const Wave = ({ startColor = "#2B5BFF", endColor = "#E4502A" }) => {
+  const numLines = 44;
   const waveStrength = 6;
   const twistStrength = 3;
   const duration = 60;
 
   const pathRefs = useRef([]);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
+    if (reduced) return;
     let frameId;
     const startTime = performance.now();
 
@@ -48,7 +51,7 @@ const Wave = ({ startColor = "#1F51FF", endColor = "#FF3131" }) => {
 
     frameId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(frameId);
-  }, []);
+  }, [reduced]);
 
   return (
     <div className="h-6/4 overflow-hidden">
@@ -70,7 +73,7 @@ const Wave = ({ startColor = "#1F51FF", endColor = "#FF3131" }) => {
               d={`M0 ${startY} Q 10 ${yOffset - waveStrength}, 20 ${yOffset} T 40 ${yOffset} T 60 ${yOffset} T 80 ${yOffset} T 100 ${yOffset}`}
               fill="none"
               stroke={strokeColor}
-              strokeWidth="0.05"
+              strokeWidth="0.045"
               strokeLinecap="round"
             />
           );

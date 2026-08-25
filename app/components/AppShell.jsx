@@ -60,13 +60,13 @@ export default function AppShell({ children }) {
 function LoadingScreen({ fadeOut, startTyping }) {
   return (
     <div
-      className={`fixed inset-0 z-[1000] flex items-center justify-center bg-brand-black text-brand-brighter transition-all duration-1000 ease-in-out ${
+      className={`fixed inset-0 z-[1000] flex items-center justify-center bg-ground text-heat-0 transition-all duration-1000 ease-in-out ${
         fadeOut ? "opacity-0 scale-105 pointer-events-none" : "opacity-100 scale-100"
       }`}
       aria-hidden="true"
     >
       {startTyping && (
-        <div className="heading2 md:heading1 animate-typing overflow-hidden whitespace-nowrap border-r-2 border-current opacity-100">
+        <div className="display-lg animate-typing overflow-hidden whitespace-nowrap border-r-2 border-current">
           hello world!
         </div>
       )}

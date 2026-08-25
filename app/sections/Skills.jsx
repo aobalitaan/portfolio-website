@@ -1,48 +1,40 @@
 import React from "react";
-import { useScrollTheme } from "../utils/ScrollProvider";
 import skillList from "../utils/SkillList";
-import SkillIcon from "../components/SkillIcon";
 import Section from "../components/Section";
-import SlideDiv from "../components/animation/SlideDiv";
-import FadeScroll from "../components/animation/FadeScroll";
+import Reveal from "../components/animation/Reveal";
 
+/**
+ * Set as type, not as a logo wall.
+ *
+ * This was 25 vendor logos in a grid, all rendered in flat black — which
+ * stripped Python, React and Postgres of the one thing that makes them
+ * recognisable at 24px and left a field of near-identical blobs. It was also
+ * the most template-looking screen on the site. A dense typographic list reads
+ * more senior, loads nothing, and drops the simple-icons dependency.
+ */
 export default function Skills() {
-  const { activeSection, actText, actBg, inacText } = useScrollTheme();
-  const isActive = activeSection === "skills";
-
   return (
-    <Section
-      id="skills"
-      title="skills"
-      show={isActive}
-      actText={actText}
-      actBg={actBg}
-      inacText={inacText}
-    >
-      <div className="flex flex-col gap-8 md:gap-10">
+    <Section id="skills" title="skills" contentClass="mt-14 md:mt-20">
+      <div className="flex flex-col gap-14 md:gap-16">
         {skillList.map((group, i) => (
-          <SlideDiv
-            key={group.group}
-            show={isActive}
-            animateOnce
-            type="left"
-            delay={0.1 + i * 0.1}
-            className="overflow-visible"
-          >
-            <FadeScroll show={isActive}>
-              {/* Same 150px meta rail as Experience and Education. Inside the
-                  max-w-5xl column the grid reads dense instead of stranded
-                  across the full 1440px. */}
-              <div className="grid gap-3 md:grid-cols-[150px_1fr] md:gap-8">
-                <div className="smalltext uppercase tracking-[0.15em] opacity-50 md:pt-1.5">
-                  {group.group}
-                </div>
-                <div className="grid grid-cols-4 gap-x-4 gap-y-6 sm:grid-cols-6">
-                  {group.items.map((item) => <SkillIcon key={item} label={item} />)}
-                </div>
+          <Reveal key={group.group} type="up" delay={i * 0.08}>
+            <div className="grid gap-4 md:grid-cols-[168px_1fr] md:gap-10">
+              <div className="mono ink-faint md:pt-3">{group.group}</div>
+
+              <div className="flex flex-wrap items-baseline gap-x-1 gap-y-2">
+                {group.items.map((item, j) => (
+                  <span key={item} className="inline-flex items-baseline">
+                    <span className="body-lg">{item}</span>
+                    {/* Trailing, not leading: a leading separator would strand
+                        a "/" at the start of every wrapped line. */}
+                    {j < group.items.length - 1 && (
+                      <span className="accent mx-3 select-none opacity-40" aria-hidden="true">/</span>
+                    )}
+                  </span>
+                ))}
               </div>
-            </FadeScroll>
-          </SlideDiv>
+            </div>
+          </Reveal>
         ))}
       </div>
     </Section>

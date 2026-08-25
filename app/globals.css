@@ -3,67 +3,146 @@
 /* Fonts are self-hosted through next/font in app/layout.js — no render-blocking
    request to fonts.googleapis.com. */
 @theme static {
-  --font-var1: var(--font-syne), sans-serif;
-  --font-var2: var(--font-jakarta), sans-serif;
-  
-  --color-brand-white: #F3EFEE;
-  --color-brand-primary: #5e8cff;
-  --color-brand-black: #080808;
-  --color-brand-gray: #C8C5C4;
-  --color-brand-darker: #2d488a;
-  --color-brand-brighter: #5e8cff;
+  --font-display: var(--font-syne), sans-serif;
+  --font-body: var(--font-jakarta), sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  /* One ground the whole way down. Section identity comes from composition and
+     accent, not from repainting the screen — the old full-bleed alternation is
+     what made every boundary read as a jump cut. */
+  --color-ground: #08080A;
+  --color-ground-2: #0C0A0D;
+  --color-ink: #F3EFEE;
+
+  /* The heat ramp. Both ends are taken from the work itself: Arca's blue at the
+     top of the page, Wyren's orange at the bottom. The path runs through violet
+     rather than straight across — a direct blue→orange lerp goes grey at the
+     midpoint. */
+  --color-heat-0: #5E8CFF;
+  --color-heat-1: #6E7BFF;
+  --color-heat-2: #8B6BF5;
+  --color-heat-3: #B45BD4;
+  --color-heat-4: #D9524F;
+  --color-heat-5: #E4502A;
+}
+
+:root {
+  --ink-dim: rgba(243, 239, 238, 0.62);
+  --ink-faint: rgba(243, 239, 238, 0.36);
+  --line: rgba(243, 239, 238, 0.12);
+  /* Overridden per section; the fallback keeps standalone components sane. */
+  --accent: #5E8CFF;
 }
 
 @layer components {
-  .heading1 {
-    @apply font-var1 text-4xl md:text-6xl;
+  /* ---- Display: Syne. Used at real scale, which is the whole point — it was
+     previously reduced to small lowercase labels below the hero. ---- */
+  .display-xl {
+    font-family: var(--font-display);
     font-weight: 750;
+    font-size: clamp(2.75rem, 8.5vw, 6.5rem);
+    line-height: 0.88;
+    letter-spacing: -0.02em;
   }
-  .heading2 {
-    @apply font-var1 text-2xl md:text-4xl;
+  .display-lg {
+    font-family: var(--font-display);
     font-weight: 750;
+    font-size: clamp(2rem, 5vw, 3.75rem);
+    line-height: 0.94;
+    letter-spacing: -0.015em;
   }
-  .heading3 {
-    @apply font-var1 text-xl md:text-2xl;
+  .display-md {
+    font-family: var(--font-display);
     font-weight: 750;
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
   }
-  .largetext {
-    @apply font-var2 text-xl md:text-2xl;
-    font-weight: 200;
+  .title {
+    font-family: var(--font-display);
+    font-weight: 750;
+    font-size: clamp(1.125rem, 1.8vw, 1.5rem);
+    line-height: 1.15;
   }
-  .regulartext {
-    @apply font-var2 text-base md:text-lg;
+
+  /* ---- Body: Plus Jakarta Sans ---- */
+  .body-lg {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: clamp(1.0625rem, 1.4vw, 1.3125rem);
+    line-height: 1.55;
+  }
+  .body {
+    font-family: var(--font-body);
     font-weight: 400;
+    font-size: clamp(0.9375rem, 1.05vw, 1.0625rem);
+    line-height: 1.65;
   }
-  .smalltext {
-    @apply font-var2 text-xs md:text-sm;
+  .body-sm {
+    font-family: var(--font-body);
     font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.6;
   }
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
+
+  /* ---- Utility: IBM Plex Mono. The engineered voice — ports, periods, stacks,
+     credential IDs. This is the register the lower page was missing. ---- */
+  .mono {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1.4;
   }
+  .mono-plain {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: 0.8125rem;
+    letter-spacing: 0.01em;
+    line-height: 1.5;
+  }
+
+  .ink-dim { color: var(--ink-dim); }
+  .ink-faint { color: var(--ink-faint); }
+  .accent { color: var(--accent); }
+
+  .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  .snap-center {
-    scroll-snap-align: center;
-  }
-  .mask-to-t {
-    mask-image: linear-gradient(to top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 75%, rgba(0, 0, 0, 0.75) 100%);
-    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 75%, rgba(0, 0, 0, 0.75) 100%);
-  }
 }
 
-nav{
-  @apply font-var1 text-3xl;
-  font-weight: 750;
+html {
+  background-color: var(--color-ground);
+}
+
+::selection {
+  background: var(--accent);
+  color: #08080A;
 }
 
 :focus-visible {
-  outline: 2px solid currentColor;
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 2px;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 8.75ch; }
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+.animate-typing {
+  width: 0;
+  animation:
+    typing 0.4s steps(11, end) forwards,
+    blink 0.75s step-end infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -72,39 +151,4 @@ nav{
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-.wave{
-  animation: wave-animation 60s infinite;
-}
-
-@keyframes wave-animation {
-  0%, 100% {
-    transform: scale(1) rotateX(5deg) rotate(-3deg) scaleX(1);
-  }
-  50% {
-    transform: scale(1.05) rotateX(0deg) rotate(3deg) scaleX(1.05);
-  }
-}
-
-@keyframes typing {
-  from {
-    width: 0;
-  }
-  to {
-    width: 8.75ch;
-  }
-}
-
-@keyframes blink {
-  50% {
-    border-color: transparent;
-  }
-}
-
-.animate-typing {
-  width: 0;
-  animation:
-    typing 0.4s steps(11, end) forwards,
-    blink 0.75s step-end infinite;
 }

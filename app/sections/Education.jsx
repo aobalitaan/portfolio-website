@@ -1,59 +1,60 @@
 import React from "react";
 import { ArrowUpRight } from "lucide-react";
-import { useScrollTheme } from "../utils/ScrollProvider";
 import { education, certifications, publications } from "../utils/EducationList";
 import Section from "../components/Section";
-import SlideDiv from "../components/animation/SlideDiv";
-import FadeScroll from "../components/animation/FadeScroll";
+import Reveal from "../components/animation/Reveal";
 
-// Same meta-left / content-right rail as Experience, so the eye keeps one
-// vertical anchor across sections instead of relearning the layout each screen.
-function Row({ label, show, delay, children }) {
+// Compact records (degree, certification) keep the meta rail. Research does
+// not — a paper published in the ACM Digital Library was being rendered as a
+// footnote under the same 150px label as everything else, and it's the
+// strongest credential in the section.
+function Record({ label, delay, children }) {
   return (
-    <SlideDiv show={show} animateOnce type="left" delay={delay} className="overflow-visible">
-      <FadeScroll show={show}>
-        <div className="grid gap-1 md:grid-cols-[150px_1fr] md:gap-8">
-          <div className="smalltext uppercase tracking-[0.15em] opacity-50 md:pt-1.5">{label}</div>
-          <div>{children}</div>
-        </div>
-      </FadeScroll>
-    </SlideDiv>
+    <Reveal type="up" delay={delay}>
+      <div className="grid gap-3 md:grid-cols-[168px_1fr] md:gap-10">
+        <div className="mono ink-faint md:pt-2">{label}</div>
+        <div>{children}</div>
+      </div>
+    </Reveal>
   );
 }
 
 export default function Education() {
-  const { activeSection, actText, actBg, inacText } = useScrollTheme();
-  const isActive = activeSection === "education";
+  const paper = publications[0];
 
   return (
-    <Section
-      id="education"
-      title="education"
-      show={isActive}
-      actText={actText}
-      actBg={actBg}
-      inacText={inacText}
-    >
-      <div className="flex flex-col gap-10 md:gap-12">
+    <Section id="education" title="education" contentClass="mt-14 md:mt-20">
+      <div className="flex flex-col gap-16 md:gap-20">
 
-        <Row label="Degree" show={isActive} delay={0.1}>
-          <div className={`heading3 ${actText}`}>{education.degree}</div>
-          <div className="regulartext">{education.school}</div>
-          <div className="regulartext mt-2">
-            {education.honors.join(" · ")}
-            <span className="opacity-50"> · {education.period}</span>
+        <Record label="Degree" delay={0}>
+          <div className="display-md accent">{education.degree}</div>
+          <div className="body-lg ink-dim mt-2">{education.school}</div>
+
+          {/* Summa Cum Laude is the headline fact here, so it gets marked
+              rather than buried in a middot-separated run of text. */}
+          <div className="mt-5 flex flex-wrap items-center gap-2">
+            {education.honors.map((h) => (
+              <span
+                key={h}
+                className="mono rounded-full border border-[var(--accent)] px-3 py-1.5 accent"
+              >
+                {h}
+              </span>
+            ))}
+            <span className="mono ink-faint pl-1">{education.period}</span>
           </div>
-          <ul className="mt-3 flex flex-col gap-1">
+
+          <ul className="mt-5 flex flex-col gap-2">
             {education.awards.map((a) => (
-              <li key={a} className="regulartext flex items-baseline gap-3 text-sm opacity-75">
-                <span className={`h-px w-3 shrink-0 opacity-50 ${actBg}`} />
+              <li key={a} className="body-sm ink-dim flex items-baseline gap-3">
+                <span className="mt-2 h-px w-3 shrink-0 bg-[var(--accent)] opacity-60" />
                 {a}
               </li>
             ))}
           </ul>
-        </Row>
+        </Record>
 
-        <Row label="Certification" show={isActive} delay={0.2}>
+        <Record label="Certification" delay={0.06}>
           {certifications.map((c) => (
             <a
               key={c.credentialId}
@@ -62,31 +63,44 @@ export default function Education() {
               rel="noreferrer"
               className="group block transition-opacity hover:opacity-70"
             >
-              <div className={`largetext inline-flex items-start gap-1 leading-snug ${actText}`}>
+              <div className="title inline-flex items-start gap-1.5 accent">
                 {c.title}
-                <ArrowUpRight size={16} className="mt-1.5 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight size={16} className="mt-1 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </div>
-              <div className="regulartext opacity-75">
-                {c.issuer}
-                <span className="opacity-70"> · {c.period} · ID {c.credentialId}</span>
-              </div>
+              <div className="body ink-dim mt-1">{c.issuer} · {c.period}</div>
+              <div className="mono-plain ink-faint mt-1">ID {c.credentialId}</div>
             </a>
           ))}
-        </Row>
+        </Record>
 
-        <Row label="Research" show={isActive} delay={0.3}>
-          {publications.map((p) => (
-            <div key={p.title}>
-              <div className={`largetext max-w-[46ch] leading-snug ${actText}`}>{p.title}</div>
-              <div className="regulartext mt-1 opacity-75">{p.authors}</div>
-              <div className="regulartext text-sm opacity-50">
-                {p.venue} · {p.period} · {p.publisher}
-              </div>
+        {/* Peer-reviewed publication — given a panel of its own. */}
+        <Reveal type="up" delay={0.12}>
+          <div className="relative rounded-lg border border-[var(--line)] p-6 md:p-10">
+            <div className="mono accent">Peer-reviewed publication</div>
+
+            <h3 className="display-md mt-5 max-w-[26ch] leading-[1.1]">{paper.title}</h3>
+
+            <div className="body ink-dim mt-5 max-w-[62ch]">{paper.authors}</div>
+
+            <div className="mt-6 flex flex-wrap gap-x-8 gap-y-3 border-t border-[var(--line)] pt-5">
+              <Fact label="Venue" value={paper.venue} />
+              <Fact label="Held at" value={paper.location} />
+              <Fact label="Dates" value={paper.period} />
+              <Fact label="Published in" value={paper.publisher} />
             </div>
-          ))}
-        </Row>
+          </div>
+        </Reveal>
 
       </div>
     </Section>
+  );
+}
+
+function Fact({ label, value }) {
+  return (
+    <div className="max-w-[30ch]">
+      <div className="mono ink-faint">{label}</div>
+      <div className="body-sm mt-1.5">{value}</div>
+    </div>
   );
 }
