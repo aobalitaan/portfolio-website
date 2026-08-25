@@ -29,31 +29,40 @@ export default function ProjectPreview({ src, poster, alt, href, priority }) {
   const videoRef = useRef(null);
   const reduced = useReducedMotion();
   const [playing, setPlaying] = useState(false);
+  const [wanted, setWanted] = useState(false);
   const [canHover, setCanHover] = useState(true);
 
   useEffect(() => {
     setCanHover(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
   }, []);
 
+  // `playing` is driven by the element's own `playing` event, not by the
+  // play() promise. The promise can resolve before a frame has decoded, which
+  // would reveal an empty video box on top of the poster — indistinguishable
+  // from "the video is broken". `wanted` tracks intent so a slow first load
+  // still reveals the clip once it genuinely starts.
   const play = useCallback(() => {
     const el = videoRef.current;
     if (!el || reduced) return;
-    el.play().then(() => setPlaying(true)).catch(() => {});
+    setWanted(true);
+    const p = el.play();
+    if (p?.catch) p.catch(() => setWanted(false));
   }, [reduced]);
 
   const stop = useCallback(() => {
     const el = videoRef.current;
+    setWanted(false);
+    setPlaying(false);
     if (!el) return;
     el.pause();
     el.currentTime = 0;
-    setPlaying(false);
   }, []);
 
   const toggle = (e) => {
     // Never let the control trigger the card's link.
     e.preventDefault();
     e.stopPropagation();
-    playing ? stop() : play();
+    wanted ? stop() : play();
   };
 
   return (
@@ -78,9 +87,15 @@ export default function ProjectPreview({ src, poster, alt, href, priority }) {
           muted
           loop
           playsInline
-          preload="none"
+          // "metadata", not "none": the clip still isn't downloaded up front,
+          // but the element is ready enough that the first hover starts almost
+          // immediately instead of sitting blank while it negotiates.
+          preload="metadata"
           aria-hidden="true"
           tabIndex={-1}
+          onPlaying={() => setPlaying(true)}
+          onPause={() => setPlaying(false)}
+          onError={() => { setPlaying(false); setWanted(false); }}
           className={`absolute inset-0 size-full object-cover object-top transition-opacity duration-500 ${
             playing ? "opacity-100" : "opacity-0"
           }`}
@@ -100,7 +115,7 @@ export default function ProjectPreview({ src, poster, alt, href, priority }) {
       {canHover && !reduced && (
         <div
           className={`pointer-events-none absolute bottom-4 left-4 z-20 rounded-full border border-[rgba(243,239,238,0.25)] bg-ground/70 px-3 py-1.5 backdrop-blur-sm transition-opacity duration-500 ${
-            playing ? "opacity-0" : "opacity-100"
+            wanted ? "opacity-0" : "opacity-100"
           }`}
         >
           <span className="mono text-ink">hover to play</span>
@@ -111,15 +126,15 @@ export default function ProjectPreview({ src, poster, alt, href, priority }) {
         <button
           type="button"
           onClick={toggle}
-          aria-label={playing ? "Pause preview" : "Play preview"}
+          aria-label={wanted ? "Pause preview" : "Play preview"}
           className="absolute bottom-4 left-4 z-20 flex items-center gap-2 rounded-full border border-[rgba(243,239,238,0.3)] bg-ground/80 py-2 pl-3 pr-4 backdrop-blur-sm active:scale-95 transition-transform"
         >
-          {playing ? (
+          {wanted ? (
             <Pause size={14} className="text-ink" fill="currentColor" />
           ) : (
             <Play size={14} className="text-ink" fill="currentColor" />
           )}
-          <span className="mono text-ink">{playing ? "pause" : "play"}</span>
+          <span className="mono text-ink">{wanted ? "pause" : "play"}</span>
         </button>
       )}
     </div>
