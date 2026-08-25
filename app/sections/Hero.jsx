@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useMotionTemplate } from "framer-motion";
 import { useScrollTheme } from "../utils/ScrollProvider";
 import SlideDiv from "../components/animation/SlideDiv";
@@ -37,6 +37,27 @@ export default function Hero() {
     return `${p * 18}%`;
   });
 
+  // The hero clears out well before the first section is seated, so scrolling
+  // into the work never overlaps a live hero. Past this point the canvas loop
+  // is switched off entirely rather than merely hidden.
+  const [waveActive, setWaveActive] = useState(true);
+  useEffect(() => {
+    let frame = null;
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = null;
+        setWaveActive(window.scrollY < window.innerHeight * 0.62);
+      });
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
+
   // The defocus, applied to the hero's own layer rather than as a
   // backdrop-filter on a fixed overlay above it. A backdrop-filter re-blurs the
   // whole viewport on every frame of the scroll and cost ~9fps plus 14 long
@@ -44,17 +65,21 @@ export default function Hero() {
   // to 3px steps so the browser recomputes it a handful of times across the
   // transition rather than continuously. The steps aren't visible at this speed.
   const blurPx = useTransform(scrollY, (y) => {
-    const raw = Math.min(Math.max(y / (vh() * 0.55), 0), 1) * 12;
+    const raw = Math.min(Math.max(y / (vh() * 0.38), 0), 1) * 12;
     return Math.round(raw / 3) * 3;
   });
   const heroFilter = useMotionTemplate`blur(${blurPx}px)`;
+
+  const heroOpacity = useTransform(scrollY, (y) =>
+    1 - Math.min(Math.max((y - vh() * 0.06) / (vh() * 0.5), 0), 1),
+  );
 
   return (
     <motion.div
       ref={ref}
       id="home"
       className="relative flex h-full w-full flex-col"
-      style={{ filter: heroFilter }}
+      style={{ filter: heroFilter, opacity: heroOpacity }}
     >
       <motion.div
         className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
@@ -62,7 +87,7 @@ export default function Hero() {
         aria-hidden="true"
       >
         <div className="h-full w-full [mask-image:linear-gradient(to_bottom,rgba(0,0,0,0.35)_0%,rgba(0,0,0,1)_45%,rgba(0,0,0,0.55)_100%)]">
-          <Wave />
+          <Wave active={waveActive} />
         </div>
       </motion.div>
 

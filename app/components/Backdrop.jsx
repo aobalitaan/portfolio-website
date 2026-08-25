@@ -33,7 +33,7 @@ export default function Backdrop() {
   const vh = () => (typeof window === "undefined" ? 800 : window.innerHeight);
 
   const groundOpacity = useTransform(scrollY, (y) =>
-    Math.min(Math.max((y - vh() * 0.18) / (vh() * 0.62), 0), 1),
+    Math.min(Math.max((y - vh() * 0.06) / (vh() * 0.46), 0), 1),
   );
 
   return (
